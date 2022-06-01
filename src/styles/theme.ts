@@ -1,25 +1,43 @@
-import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#1DB954',
-            light: '#45DE73',
+const theme = responsiveFontSizes(
+    createTheme({
+        palette: {
+            primary: {
+                main: '#191414',
+            },
+            secondary: {
+                main: '#1DB954',
+            },
+            background: {
+                default: '#121212',
+                paper: '#181818',
+            },
+            text: {
+                primary: '#FFFFFF',
+                secondary: 'rgba(255, 255, 255, 0.7)',
+                disabled: 'rgba(255, 255, 255, 0.5)',
+            },
+            action: {
+                active: '#FFFFFF',
+                hover: 'rgba(255, 255, 255, 0.08)',
+                selected: 'rgba(255, 255, 255, 0.16)',
+                disabled: 'rgba(255, 255, 255, 0.3)',
+                disabledBackground: 'rgba(255, 255, 255, 0.12)',
+            },
+            divider: 'rgba(255, 255, 255, 0.12)',
         },
-        secondary: {
-            main: '#1ED760',
+        typography: {
+            fontFamily: [
+                '"Helvetica Neue"',
+                'Helvetica',
+                'Arial',
+                'sans-serif',
+            ].join(','),
         },
-        error: {
-            main: red.A400,
-        },
-        background: {
-            default: '#191414',
-        },
-        text: {
-            primary: '#ffffff',
-        },
-    },
-});
+    }),
+);
+
+console.log(theme.palette.text);
 
 export default theme;
