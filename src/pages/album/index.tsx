@@ -70,10 +70,12 @@ export default function Album() {
                             spacing={2}
                             justifyContent="center"
                         >
-                            <Button variant="contained">
+                            <Button color="secondary" variant="contained">
                                 Main call to action
                             </Button>
-                            <Button variant="outlined">Secondary action</Button>
+                            <Button color="secondary" variant="outlined">
+                                Secondary action
+                            </Button>
                         </Stack>
                     </Container>
                 </Box>

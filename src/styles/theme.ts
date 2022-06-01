@@ -38,6 +38,4 @@ const theme = responsiveFontSizes(
     }),
 );
 
-console.log(theme.palette.text);
-
 export default theme;
