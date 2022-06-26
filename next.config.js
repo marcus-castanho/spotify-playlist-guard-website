@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-export default nextConfig = {
+const nextConfig = {
     reactStrictMode: true,
     webpack: (config) => {
         config.module.rules.push({
@@ -11,3 +11,5 @@ export default nextConfig = {
         return config;
     },
 };
+
+export default nextConfig;
