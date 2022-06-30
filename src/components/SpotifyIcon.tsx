@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import SpotifyLogo from '../assets/Spotify_Icon_RGB_Black.svg';
+import SpotifyLogo from '../assets/spotify_icon_RGB_black.svg';
 import SvgIcon from '@mui/material/SvgIcon';
 
 const SpotifyIcon: FC = () => {
