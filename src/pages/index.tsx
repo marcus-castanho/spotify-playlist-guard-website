@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, IconButton } from '@mui/material';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -7,6 +7,7 @@ import Link from '../components/Link';
 import SpotifyIcon from '../components/SpotifyIcon';
 import GuardBotLogo from '../components/GuardBotLogo';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 const Home: NextPage = () => {
     const menuTabs = ['About', 'The app', 'Other projects'];
@@ -17,7 +18,7 @@ const Home: NextPage = () => {
                 <title>Spotify Playlist Guard</title>
             </Head>
             <Box
-                display={'flex'}
+                display="flex"
                 alignItems="center"
                 padding="1rem 1rem"
                 sx={{ backgroundColor: '#000000' }}
@@ -28,15 +29,15 @@ const Home: NextPage = () => {
                     </Link>
                 </Box>
                 <Box
-                    display={'flex'}
+                    display="flex"
                     position="relative"
                     left="50%"
                     sx={{ transform: 'translateX(-50%)' }}
                 >
-                    {menuTabs.map((menuTab, index) => {
+                    {menuTabs.map((menuTab) => {
                         return (
                             <Link
-                                key={index}
+                                key={menuTab}
                                 href="/"
                                 sx={{ textDecoration: 'none' }}
                                 margin="0 2rem"
@@ -53,43 +54,70 @@ const Home: NextPage = () => {
                     })}
                 </Box>
             </Box>
-            <Box padding="6vh 0">
-                <Box display="flex" justifyContent="center" margin={'3rem 0'}>
-                    <Image
-                        src="/guardBot-1db954-circle.png"
-                        alt="logo"
-                        width="250"
-                        height="250"
-                    />
-                </Box>
+            <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                padding="3rem 0"
+                minHeight="95vh"
+            >
+                <Image
+                    src="/guardBot-1db954-circle.png"
+                    alt="logo"
+                    width="250"
+                    height="250"
+                />
                 <Typography
-                    variant="body2"
+                    variant="body1"
                     align="center"
-                    color={'text.primary'}
-                    margin={'3rem 0'}
+                    color="text.primary"
+                    margin="3rem 0 1rem"
+                    justifyContent="space-between"
                 >
-                    A guard bot for your collaborative playlist on Spotify.
+                    A guard bot for your collaborative playlists on Spotify.
                     <br />
                     Start guarding your playlists now:
                 </Typography>
-                <Box display="flex" justifyContent="center">
-                    <Button
-                        color="secondary"
-                        variant="contained"
-                        startIcon={<SpotifyIcon />}
-                    >
-                        <Link href="/login" sx={{ textDecoration: 'none' }}>
-                            <Typography align="center">
-                                Sign in with spotify
-                            </Typography>
-                        </Link>
-                    </Button>
-                </Box>
-                <Box display="flex" justifyContent="center" margin={' 3rem 0 '}>
+                <Button
+                    color="secondary"
+                    variant="contained"
+                    startIcon={<SpotifyIcon />}
+                >
+                    <Link href="/login" sx={{ textDecoration: 'none' }}>
+                        <Typography align="center">
+                            Sign in with spotify
+                        </Typography>
+                    </Link>
+                </Button>
+                <Box display="flex" justifyContent="center" margin=" 5rem 0 0">
                     <Button color="inherit" variant="text">
                         <KeyboardArrowDownOutlinedIcon />
                     </Button>
                 </Box>
+            </Box>
+            <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                padding="1rem 1rem"
+                sx={{ backgroundColor: '#000000' }}
+            >
+                <IconButton
+                    component="a"
+                    href="https://github.com/marcus-castanho/spotify-playlist-guard-website"
+                >
+                    <GitHubIcon />
+                </IconButton>
+                <Typography align="center">
+                    MIT Licensed | Copyright © 2022{' '}
+                    <Link
+                        color="inherit"
+                        href="https://github.com/marcus-castanho"
+                    >
+                        Marcus
+                    </Link>
+                </Typography>
             </Box>
         </Box>
     );
