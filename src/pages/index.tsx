@@ -23,9 +23,13 @@ const Home: NextPage = () => {
                 padding="1rem 1rem"
                 sx={{ backgroundColor: '#000000' }}
             >
-                <Box>
-                    <Link href="/" sx={{ textDecoration: 'none' }}>
-                        <GuardBotLogo />
+                <Box display="flex-columns">
+                    <Link
+                        href="/"
+                        sx={{ textDecoration: 'none' }}
+                        display="flex"
+                    >
+                        <GuardBotLogo height="30px" width="30px" />
                     </Link>
                 </Box>
                 <Box
@@ -41,6 +45,8 @@ const Home: NextPage = () => {
                                 href="/"
                                 sx={{ textDecoration: 'none' }}
                                 margin="0 2rem"
+                                underline="hover"
+                                color="text.primary"
                             >
                                 <Typography
                                     variant="body2"
