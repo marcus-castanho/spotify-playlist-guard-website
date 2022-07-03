@@ -1,13 +1,13 @@
 import React from 'react';
-import { Box, Button, Typography, IconButton } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from '../components/Link';
 import SpotifyIcon from '../components/SpotifyIcon';
 import GuardBotLogo from '../components/GuardBotLogo';
+import Footer from '../components/Footer';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-import GitHubIcon from '@mui/icons-material/GitHub';
 
 const Home: NextPage = () => {
     const menuTabs = ['About', 'The app', 'Other projects'];
@@ -102,29 +102,7 @@ const Home: NextPage = () => {
                     </Button>
                 </Box>
             </Box>
-            <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                padding="1rem 1rem"
-                sx={{ backgroundColor: '#000000' }}
-            >
-                <IconButton
-                    component="a"
-                    href="https://github.com/marcus-castanho/spotify-playlist-guard-website"
-                >
-                    <GitHubIcon />
-                </IconButton>
-                <Typography align="center">
-                    MIT Licensed | Copyright © 2022{' '}
-                    <Link
-                        color="inherit"
-                        href="https://github.com/marcus-castanho"
-                    >
-                        Marcus
-                    </Link>
-                </Typography>
-            </Box>
+            <Footer />
         </Box>
     );
 };
