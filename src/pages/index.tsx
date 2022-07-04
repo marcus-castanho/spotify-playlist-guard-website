@@ -1,66 +1,65 @@
 import React from 'react';
-import { Box, Button, Container, Stack, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { NextPage } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from '../components/Link';
 import SpotifyIcon from '../components/SpotifyIcon';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 
 const Home: NextPage = () => {
     return (
-        <>
+        <Box sx={{ backgroundColor: 'background.paper' }}>
             <Head>
                 <title>Spotify Playlist Guard</title>
             </Head>
-            <main>
-                <Box
-                    sx={{
-                        pt: '4rem',
-                        pb: '4rem',
-                        display: 'flex',
-                        flex: 1,
-                        flexDirection: 'column',
-                        minHeight: '100vh',
-                        justifyContent: 'center',
-                    }}
+            <Header />
+            <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                padding="3rem 0"
+                minHeight="95vh"
+            >
+                <Image
+                    src="/guardBot-1db954-circle.png"
+                    alt="logo"
+                    width="250"
+                    height="250"
+                />
+                <Typography
+                    variant="body1"
+                    align="center"
+                    color="text.primary"
+                    margin="3rem 0 1rem"
+                    justifyContent="space-between"
                 >
-                    <Container>
-                        <Typography variant="h2" align="center">
-                            Spotify Playlist Guard
+                    A guard bot for your collaborative playlists on Spotify.
+                    <br />
+                    Start guarding your playlists now:
+                </Typography>
+                <Button
+                    color="secondary"
+                    variant="contained"
+                    startIcon={<SpotifyIcon />}
+                >
+                    <Link href="/login" sx={{ textDecoration: 'none' }}>
+                        <Typography align="center">
+                            Sign in with spotify
                         </Typography>
-                        <Typography
-                            variant="h5"
-                            align="center"
-                            color="text.secondary"
-                            paragraph
-                        >
-                            A guard bot for your collaborative playlist on
-                            Spotify.
-                            <br />
-                            Start guarding your playlists now:
-                        </Typography>
-                        <Stack
-                            sx={{ pt: 4 }}
-                            direction="row"
-                            spacing={2}
-                            justifyContent="center"
-                        >
-                            <Button
-                                color="secondary"
-                                variant="contained"
-                                startIcon={<SpotifyIcon />}
-                            >
-                                <Link
-                                    href="/login"
-                                    sx={{ textDecoration: 'none' }}
-                                >
-                                    Sign in with spotify
-                                </Link>
-                            </Button>
-                        </Stack>
-                    </Container>
+                    </Link>
+                </Button>
+                <Box display="flex" justifyContent="center" margin=" 5rem 0 0">
+                    <Button color="inherit" variant="text">
+                        <KeyboardArrowDownOutlinedIcon />
+                    </Button>
                 </Box>
-            </main>
-        </>
+            </Box>
+            <Footer />
+        </Box>
     );
 };
 
