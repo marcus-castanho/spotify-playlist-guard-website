@@ -11,6 +11,9 @@
         "enable-hooks": "husky install",
         "disable-hooks": "husky uninstall"
     },
+    "engines": {
+        "node": "18.*"
+    },
     "dependencies": {
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
