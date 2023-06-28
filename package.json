@@ -8,7 +8,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "prepare": "husky install"
+        "enable-hooks": "husky install",
+        "disable-hooks": "husky uninstall"
     },
     "dependencies": {
         "@emotion/react": "^11.9.0",
