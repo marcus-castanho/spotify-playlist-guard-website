@@ -2,12 +2,12 @@ import React from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 
-const Index: NextPage = () => {
+const Home: NextPage = () => {
     return (
         <div>
-            <Link href="/signin">Sign in</Link>
+            <Link href="/">Log Out</Link>
         </div>
     );
 };
 
-export default Index;
+export default Home;
