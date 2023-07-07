@@ -1,31 +1,28 @@
 import React, { useEffect } from 'react';
-import {
-    GetServerSideProps,
-    InferGetServerSidePropsType,
-    NextPage,
-} from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { setCookie } from 'nookies';
+import { CookieKey } from '../@types';
 
-export type GetServerSidePropsReturn = {
-    apiUrl: string;
-};
-
-export const getServerSideProps: GetServerSideProps<
-    GetServerSidePropsReturn
-> = async (context) => {
-    const apiUrl = process.env.API_URL || '';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const { code } = context.query;
 
-    if (!code) return { props: { apiUrl } };
+    if (!code) return { props: {} };
 
     const response = await fetch(`${apiUrl}/auth/redirect?code=${code}`);
 
-    if (response.status !== 201) return { props: { apiUrl } };
+    if (response.status !== 201) return { props: {} };
 
-    const userInfo = await response.json().catch(() => ({}));
     const token = response.headers.get('authorization')?.split(' ')[1];
 
-    if (!token) return { props: { apiUrl } };
+    if (!token) return { props: {} };
+
+    const cookieKey: CookieKey = 's-p-guard:token';
+
+    setCookie(context, cookieKey, token, {
+        maxAge: 60 * 60 * 1,
+    });
 
     return {
         redirect: {
@@ -35,11 +32,7 @@ export const getServerSideProps: GetServerSideProps<
     };
 };
 
-export type SignInProps = InferGetServerSidePropsType<
-    typeof getServerSideProps
->;
-
-const SignIn: NextPage<SignInProps> = ({ apiUrl }) => {
+const SignIn: NextPage = () => {
     const router = useRouter();
     const { code } = router.query;
 
@@ -51,7 +44,11 @@ const SignIn: NextPage<SignInProps> = ({ apiUrl }) => {
 
     return (
         <div>
-            <button onClick={() => router.push(`${apiUrl}/auth/login`)}>
+            <button
+                onClick={() =>
+                    router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`)
+                }
+            >
                 Sign in with Spotify
             </button>
         </div>
