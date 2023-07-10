@@ -1,8 +1,28 @@
 import React from 'react';
-import { NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import { useAuth } from '../contexts/AuthContext';
+import { CookieKey } from '../@types';
+import nookies from 'nookies';
 
-const Home: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const tokenCookieKey: CookieKey = 's-p-guard:token';
+    const { [tokenCookieKey]: token } = nookies.get(context);
+
+    if (!token) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        };
+    }
+
+    return {
+        props: {},
+    };
+};
+
+const Profile: NextPage = () => {
     const { signOut } = useAuth();
 
     return (
@@ -12,4 +32,4 @@ const Home: NextPage = () => {
     );
 };
 
-export default Home;
+export default Profile;
