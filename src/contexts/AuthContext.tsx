@@ -5,13 +5,10 @@ import React, {
     useState,
     useContext,
 } from 'react';
-import { parseCookies } from 'nookies';
-import { getUserInfo } from '../services/auth';
-import { CookieKey } from '../@types';
-
-export type User = {
-    id: string;
-};
+import { destroyCookie, parseCookies } from 'nookies';
+import { getUserInfo } from '../services/api';
+import { CookieKey, User } from '../@types';
+import { useRouter } from 'next/router';
 
 export type AuthContextType = {
     user: User | null;
@@ -26,6 +23,7 @@ export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null);
+    const router = useRouter();
 
     const isAuthenticated = !!user;
 
@@ -33,13 +31,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const cookieKey: CookieKey = 's-p-guard:token';
         const { [cookieKey]: token } = parseCookies();
 
-        if (token) {
-            getUserInfo(token).then((response) => {
-                const { id } = response;
-                setUser({ id });
+        if (!token) return;
+
+        getUserInfo(token)
+            .then((response) => {
+                setUser(response);
+            })
+            .catch(() => {
+                destroyCookie(null, cookieKey);
+                if (router.isReady) router.push('/');
             });
-        }
-    }, []);
+    }, [router]);
 
     return (
         <AuthContext.Provider value={{ user, isAuthenticated }}>
