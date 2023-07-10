@@ -7,6 +7,7 @@ import { CookieKey } from '../@types';
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const { code } = context.query;
+    const tokenCookieKey: CookieKey = 's-p-guard:token';
 
     if (!code) return { props: {} };
 
@@ -14,13 +15,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     if (response.status !== 201) return { props: {} };
 
-    const token = response.headers.get('authorization')?.split(' ')[1];
+    const token = response.headers.get('Authorization')?.split(' ')[1];
 
     if (!token) return { props: {} };
 
-    const cookieKey: CookieKey = 's-p-guard:token';
-
-    setCookie(context, cookieKey, token, {
+    setCookie(context, tokenCookieKey, token, {
         maxAge: 60 * 60 * 1,
     });
 
