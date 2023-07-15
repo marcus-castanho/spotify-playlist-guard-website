@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const userSchema = z.object({
     id: z.string(),
+    spotify_id: z.string(),
     country: z.string(),
     display_name: z.string(),
     email: z.string(),
