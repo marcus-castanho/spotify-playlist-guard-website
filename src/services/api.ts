@@ -54,7 +54,9 @@ function validatePlaylistSchema(payload: unknown) {
     return success ? validation.data : undefined;
 }
 
-export async function getUserInfo(token: string) {
+export async function getUserInfo(context?: Pick<NextPageContext, 'req'>) {
+    const tokenCookieKey: CookieKey = 's-p-guard:token';
+    const { [tokenCookieKey]: token } = parseCookies(context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const response = await fetch(`${apiUrl}/users/me`, {
         method: 'GET',
@@ -86,9 +88,13 @@ export async function getUserPlaylists(context?: Pick<NextPageContext, 'req'>) {
     return playlists;
 }
 
-export async function activateDeactivatePlaylist(id: string, active: boolean) {
+export async function activateDeactivatePlaylist(
+    id: string,
+    active: boolean,
+    context?: Pick<NextPageContext, 'req'>,
+) {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
-    const { [tokenCookieKey]: token } = parseCookies();
+    const { [tokenCookieKey]: token } = parseCookies(context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const response = await fetch(`${apiUrl}/playlists/active/${id}`, {
         method: 'PATCH',
