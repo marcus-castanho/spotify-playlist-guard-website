@@ -17,7 +17,7 @@ export type AuthContextType = {
 };
 
 export type AuthProviderProps = {
-    children: ReactNode;
+    children?: ReactNode;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -57,6 +57,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 export function useAuth() {
     const context = useContext(AuthContext);
+    const contextIsProvided = Object.keys(context).length > 0;
+
+    if (!contextIsProvided) throw new Error('AuthContext was not provided');
 
     return context;
 }
