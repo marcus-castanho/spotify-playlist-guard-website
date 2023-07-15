@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { parseCookies } from 'nookies';
 import { CookieKey } from '../@types';
+import { NextPageContext } from 'next';
 
 export const userSchema = z.object({
     id: z.string(),
@@ -68,7 +69,9 @@ export async function getUserInfo(token: string) {
     return userData;
 }
 
-export async function getUserPlaylists(token: string) {
+export async function getUserPlaylists(context?: Pick<NextPageContext, 'req'>) {
+    const tokenCookieKey: CookieKey = 's-p-guard:token';
+    const { [tokenCookieKey]: token } = parseCookies(context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const response = await fetch(`${apiUrl}/playlists/list/1`, {
         method: 'GET',

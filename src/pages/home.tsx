@@ -1,14 +1,15 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useAuth } from '../contexts/AuthContext';
-import { CookieKey, Playlist } from '../@types';
-import nookies from 'nookies';
+import { CookieKey, Playlist, QueryKey } from '../@types';
+import { parseCookies } from 'nookies';
 import Link from 'next/link';
 import { activateDeactivatePlaylist, getUserPlaylists } from '../services/api';
+import { useQuery } from '@tanstack/react-query';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
-    const { [tokenCookieKey]: token } = nookies.get(context);
+    const { [tokenCookieKey]: token } = parseCookies(context);
 
     if (!token) {
         return {
@@ -19,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         };
     }
 
-    const playlists = await getUserPlaylists(token);
+    const playlists = await getUserPlaylists(context);
 
     return {
         props: { playlists },
@@ -31,9 +32,16 @@ export type HomeProps = {
 };
 const Home: NextPage<HomeProps> = ({ playlists }) => {
     const { signOut } = useAuth();
+    const playlistQueryKey: QueryKey = 'playlists';
+    const playlistsQuery = useQuery([playlistQueryKey], {
+        queryFn: () => getUserPlaylists(),
+        initialData: playlists,
+    });
 
     const handleActivatePlaylist = async (id: string, active: boolean) => {
-        await activateDeactivatePlaylist(id, active);
+        await activateDeactivatePlaylist(id, active).then(() =>
+            playlistsQuery.refetch(),
+        );
         return;
     };
 
@@ -44,8 +52,8 @@ const Home: NextPage<HomeProps> = ({ playlists }) => {
                 <button onClick={signOut}>Log Out</button>
             </div>
             <div>
-                {playlists &&
-                    playlists.map((playlist) => {
+                {playlistsQuery.data &&
+                    playlistsQuery.data.map((playlist) => {
                         const { id, active } = playlist;
                         return (
                             <div key={id}>
