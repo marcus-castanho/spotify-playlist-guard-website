@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { parseCookies } from 'nookies';
+import { CookieKey } from '../@types';
 
 export const userSchema = z.object({
     id: z.string(),
@@ -79,4 +81,22 @@ export async function getUserPlaylists(token: string) {
     if (!playlists) throw new Error('Invalid response');
 
     return playlists;
+}
+
+export async function activateDeactivatePlaylist(id: string, active: boolean) {
+    const tokenCookieKey: CookieKey = 's-p-guard:token';
+    const { [tokenCookieKey]: token } = parseCookies();
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const response = await fetch(`${apiUrl}/playlists/active/${id}`, {
+        method: 'PATCH',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ active }),
+    });
+
+    if (response.status !== 204) throw new Error('Invalid response');
+
+    return;
 }

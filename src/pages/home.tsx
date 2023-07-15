@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { CookieKey, Playlist } from '../@types';
 import nookies from 'nookies';
 import Link from 'next/link';
-import { getUserPlaylists } from '../services/api';
+import { activateDeactivatePlaylist, getUserPlaylists } from '../services/api';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
@@ -32,6 +32,11 @@ export type HomeProps = {
 const Home: NextPage<HomeProps> = ({ playlists }) => {
     const { signOut } = useAuth();
 
+    const handleActivatePlaylist = async (id: string, active: boolean) => {
+        await activateDeactivatePlaylist(id, active);
+        return;
+    };
+
     return (
         <>
             <div>
@@ -41,20 +46,30 @@ const Home: NextPage<HomeProps> = ({ playlists }) => {
             <div>
                 {playlists &&
                     playlists.map((playlist) => {
+                        const { id, active } = playlist;
                         return (
-                            <>
+                            <div key={id}>
                                 {'{'}
                                 {Object.keys(playlist).map((key) => {
                                     return (
-                                        <div key={key}>{`${key}: ${
-                                            playlist[
-                                                key as keyof typeof playlist
-                                            ]
-                                        }`}</div>
+                                        <div key={key}>
+                                            {`${key}: ${
+                                                playlist[
+                                                    key as keyof typeof playlist
+                                                ]
+                                            }`}
+                                        </div>
                                     );
                                 })}
                                 {'}'}
-                            </>
+                                <button
+                                    onClick={() =>
+                                        handleActivatePlaylist(id, !active)
+                                    }
+                                >
+                                    {active ? 'Desativar' : 'Ativar'}
+                                </button>
+                            </div>
                         );
                     })}
             </div>
