@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { getUserPlaylists } from '../services/api';
 import { PlaylistsList } from '../components/PlaylistsList';
 import { UsersSearchBox } from '../components/UsersSearchBox';
+import { UsersList } from '../components/UsersList';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
@@ -43,6 +44,9 @@ const Home: NextPage<HomeProps> = ({ playlists }) => {
                 <button onClick={signOut}>Log Out</button>
             </div>
             <PlaylistsList playlists={playlists} />
+            <UsersList
+                usersIds={['31ronlkcdosn3x3kkuvez6vo2jyi', '12148364973']}
+            />
             <UsersSearchBox />
         </>
     );

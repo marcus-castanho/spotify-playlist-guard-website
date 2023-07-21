@@ -60,6 +60,14 @@ export const queryUserSchema = z.array(
     }),
 );
 
+export const usersProfilesSchema = z.array(
+    z.object({
+        id: z.string(),
+        name: z.string(),
+        image_url: z.string(),
+    }),
+);
+
 function validateUserSchema(payload: unknown) {
     const validation = userSchema.safeParse(payload);
     const { success } = validation;
@@ -76,6 +84,13 @@ function validatePlaylistsSchema(payload: unknown) {
 
 function validateQueryUsersSchema(payload: unknown) {
     const validation = queryUserSchema.safeParse(payload);
+    const { success } = validation;
+
+    return success ? validation.data : undefined;
+}
+
+function validateUserProfilesSchema(payload: unknown) {
+    const validation = usersProfilesSchema.safeParse(payload);
     const { success } = validation;
 
     return success ? validation.data : undefined;
@@ -164,4 +179,33 @@ export async function queryUsers(
     if (!users) throw new Error('Invalid response');
 
     return users;
+}
+
+export async function getUserProfiles(
+    userIds: string[],
+    context?: Pick<NextPageContext, 'req'>,
+) {
+    const tokenCookieKey: CookieKey = 's-p-guard:token';
+    const { [tokenCookieKey]: token } = parseCookies(context);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const response = await fetch(
+        `${apiUrl}/users/profile?${qs.stringify({ spotify_id: userIds })}`,
+        {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        },
+    );
+
+    if (response.status !== 200) throw new Error('Invalid response');
+
+    const resBody = await response.json().catch(() => ({}));
+
+    const profiles = validateUserProfilesSchema(resBody);
+
+    if (!profiles) throw new Error('Invalid response');
+
+    return profiles;
 }

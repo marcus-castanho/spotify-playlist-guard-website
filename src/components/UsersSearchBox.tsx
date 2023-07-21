@@ -26,7 +26,7 @@ export const UsersSearchBox: FC = () => {
                       return (
                           <div key={user.id} style={{ border: 'solid white' }}>
                               <img
-                                  src={avatar?.sources[0].url || '/notDefineds'}
+                                  src={avatar?.sources[0].url || '/notDefined'}
                                   alt="logo"
                                   width="64"
                                   height="64"
