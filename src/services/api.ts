@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { parseCookies } from 'nookies';
 import { CookieKey } from '../@types';
 import { NextPageContext } from 'next';
+import qs from 'qs';
 
 export const userSchema = z.object({
     id: z.string(),
@@ -20,7 +21,7 @@ export const userSchema = z.object({
     updatedAt: z.string(),
 });
 
-export const playlistSchema = z.array(
+export const playlistsSchema = z.array(
     z.object({
         id: z.string(),
         spotify_id: z.string(),
@@ -40,6 +41,25 @@ export const playlistSchema = z.array(
     }),
 );
 
+export const queryUserSchema = z.array(
+    z.object({
+        id: z.string(),
+        displayName: z.string(),
+        avatar: z
+            .object({
+                sources: z.array(
+                    z.object({
+                        url: z.string(),
+                        width: z.number(),
+                        height: z.number(),
+                    }),
+                ),
+            })
+            .or(z.null())
+            .optional(),
+    }),
+);
+
 function validateUserSchema(payload: unknown) {
     const validation = userSchema.safeParse(payload);
     const { success } = validation;
@@ -47,8 +67,15 @@ function validateUserSchema(payload: unknown) {
     return success ? validation.data : undefined;
 }
 
-function validatePlaylistSchema(payload: unknown) {
-    const validation = playlistSchema.safeParse(payload);
+function validatePlaylistsSchema(payload: unknown) {
+    const validation = playlistsSchema.safeParse(payload);
+    const { success } = validation;
+
+    return success ? validation.data : undefined;
+}
+
+function validateQueryUsersSchema(payload: unknown) {
+    const validation = queryUserSchema.safeParse(payload);
     const { success } = validation;
 
     return success ? validation.data : undefined;
@@ -81,7 +108,7 @@ export async function getUserPlaylists(context?: Pick<NextPageContext, 'req'>) {
     });
     const resBody = await response.json().catch(() => ({}));
 
-    const playlists = validatePlaylistSchema(resBody);
+    const playlists = validatePlaylistsSchema(resBody);
 
     if (!playlists) throw new Error('Invalid response');
 
@@ -108,4 +135,33 @@ export async function activateDeactivatePlaylist(
     if (response.status !== 204) throw new Error('Invalid response');
 
     return;
+}
+
+export async function queryUsers(
+    identifier: string,
+    context?: Pick<NextPageContext, 'req'>,
+) {
+    const tokenCookieKey: CookieKey = 's-p-guard:token';
+    const { [tokenCookieKey]: token } = parseCookies(context);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const response = await fetch(
+        `${apiUrl}/users/query?${qs.stringify({ identifier })}`,
+        {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        },
+    );
+
+    if (response.status !== 200) throw new Error('Invalid response');
+
+    const resBody = await response.json().catch(() => ({}));
+
+    const users = validateQueryUsersSchema(resBody);
+
+    if (!users) throw new Error('Invalid response');
+
+    return users;
 }
