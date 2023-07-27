@@ -21,25 +21,25 @@ export const userSchema = z.object({
     updatedAt: z.string(),
 });
 
-export const playlistsSchema = z.array(
-    z.object({
-        id: z.string(),
-        spotify_id: z.string(),
-        collaborative: z.boolean(),
-        description: z.string(),
-        external_url: z.string(),
-        href: z.string(),
-        name: z.string(),
-        userId: z.string(),
-        public: z.boolean(),
-        snapshot_id: z.string(),
-        uri: z.string(),
-        active: z.boolean(),
-        allowed_userIds: z.array(z.string()),
-        createdAt: z.string(),
-        updatedAt: z.string(),
-    }),
-);
+export const playlistSchema = z.object({
+    id: z.string(),
+    spotify_id: z.string(),
+    collaborative: z.boolean(),
+    description: z.string(),
+    external_url: z.string(),
+    href: z.string(),
+    name: z.string(),
+    userId: z.string(),
+    public: z.boolean(),
+    snapshot_id: z.string(),
+    uri: z.string(),
+    active: z.boolean(),
+    allowed_userIds: z.array(z.string()),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+});
+
+export const playlistsSchema = z.array(playlistSchema);
 
 export const queryUserSchema = z.array(
     z.object({
@@ -91,6 +91,13 @@ function validateQueryUsersSchema(payload: unknown) {
 
 function validateUserProfilesSchema(payload: unknown) {
     const validation = usersProfilesSchema.safeParse(payload);
+    const { success } = validation;
+
+    return success ? validation.data : undefined;
+}
+
+function validatePlaylistSchema(payload: unknown) {
+    const validation = playlistSchema.safeParse(payload);
     const { success } = validation;
 
     return success ? validation.data : undefined;
@@ -208,4 +215,55 @@ export async function getUserProfiles(
     if (!profiles) throw new Error('Invalid response');
 
     return profiles;
+}
+
+export async function getPlaylist(
+    id: string,
+    context?: Pick<NextPageContext, 'req'>,
+) {
+    const tokenCookieKey: CookieKey = 's-p-guard:token';
+    const { [tokenCookieKey]: token } = parseCookies(context);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const response = await fetch(`${apiUrl}/playlists/find/${id}`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    const resBody = await response.json().catch(() => ({}));
+
+    const playlist = validatePlaylistSchema(resBody);
+
+    if (!playlist) throw new Error('Invalid response');
+
+    return playlist;
+}
+
+export async function updatePlaylistAllowedUsers(
+    playlistId: string,
+    userIds: string[],
+    context?: Pick<NextPageContext, 'req'>,
+) {
+    const tokenCookieKey: CookieKey = 's-p-guard:token';
+    const { [tokenCookieKey]: token } = parseCookies(context);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const response = await fetch(
+        `${apiUrl}/playlists/allowUsers/${playlistId}`,
+        {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ allowed_userIds: userIds }),
+        },
+    );
+
+    if (response.status !== 200) throw new Error('Invalid response');
+
+    const resBody = await response.json().catch(() => ({}));
+
+    const playlist = validatePlaylistSchema(resBody);
+
+    if (!playlist) throw new Error('Invalid response');
+
+    return;
 }
