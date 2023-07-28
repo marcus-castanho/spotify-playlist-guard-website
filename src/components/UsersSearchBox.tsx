@@ -1,6 +1,8 @@
 import React, { FC, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { queryUsers } from '../services/api';
+import { AllowedUser } from '../pages/playlist/hooks/useAllowedUsers';
+import Image from 'next/image';
 
 export type UsersSearchBoxProps = {
     allowedUsersIds: string[];
@@ -8,11 +10,7 @@ export type UsersSearchBoxProps = {
         id,
         name,
         imageURL,
-    }: {
-        id: string;
-        name: string;
-        imageURL: string;
-    }) => void;
+    }: Omit<AllowedUser, 'status'>) => void;
 };
 
 export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
@@ -38,7 +36,7 @@ export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
                 ? 'Loading'
                 : usersQuery.data?.map((user) => {
                       const { avatar, displayName, id } = user;
-                      const imageURL = avatar?.sources[0].url || '/notDefined';
+                      const imageSrc = avatar?.sources[0].url || '/notDefined';
 
                       return (
                           <div
@@ -50,11 +48,12 @@ export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
                                       : 'rgba(2, 0, 255, 0.3)',
                               }}
                           >
-                              <img
-                                  src={imageURL}
+                              <Image
+                                  src={imageSrc}
                                   alt="logo"
                                   width="64"
                                   height="64"
+                                  loader={() => imageSrc}
                               />
                               {`${id} | ${displayName}`}
                               <button
@@ -63,7 +62,7 @@ export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
                                       addNewAllowedUser({
                                           id,
                                           name: displayName,
-                                          imageURL,
+                                          imageURL: imageSrc,
                                       })
                                   }
                               >

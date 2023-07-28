@@ -8,6 +8,13 @@ import {
 } from '../../../services/api';
 import { match } from 'ts-pattern';
 
+export type AllowedUser = {
+    id: string;
+    name: string;
+    imageURL: string;
+    status: 'permanent' | 'idle' | 'removed' | 'added';
+};
+
 export type UseAllowedUsersParams = {
     playlist: Playlist;
     allowedUsers: UserProfile[];
@@ -19,14 +26,7 @@ export function useAllowedUsers({
     allowedUsers,
     ownerSpotifyId,
 }: UseAllowedUsersParams) {
-    const [users, setUsers] = useState<
-        {
-            id: string;
-            name: string;
-            imageURL: string;
-            status: 'permanent' | 'idle' | 'removed' | 'added';
-        }[]
-    >(() =>
+    const [users, setUsers] = useState<AllowedUser[]>(() =>
         allowedUsers.map(({ id, name, image_url }) => ({
             id,
             name,
@@ -55,9 +55,7 @@ export function useAllowedUsers({
         },
     });
 
-    const addNewAllowedUser = (
-        newUser: Omit<typeof users[number], 'status'>,
-    ) => {
+    const addNewAllowedUser = (newUser: Omit<AllowedUser, 'status'>) => {
         setUsers((state) => {
             return Array.from(
                 new Set([...state, { ...newUser, status: 'added' as const }]),
@@ -97,7 +95,7 @@ export function useAllowedUsers({
     };
 
     const handleAllowedUsers = (
-        userId: typeof users[number]['id'],
+        userId: AllowedUser['id'],
         status: 'added' | 'removed' | 'idle',
     ) => {
         setUsers((state) => {
