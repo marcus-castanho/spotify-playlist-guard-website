@@ -1,9 +1,24 @@
-/* eslint-disable @next/next/no-img-element */
-import { useMutation } from '@tanstack/react-query';
 import React, { FC, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { queryUsers } from '../services/api';
 
-export const UsersSearchBox: FC = () => {
+export type UsersSearchBoxProps = {
+    allowedUsersIds: string[];
+    addNewAllowedUser: ({
+        id,
+        name,
+        imageURL,
+    }: {
+        id: string;
+        name: string;
+        imageURL: string;
+    }) => void;
+};
+
+export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
+    allowedUsersIds,
+    addNewAllowedUser,
+}) => {
     const [userIdentifer, setUserIdentifier] = useState('');
     const usersQuery = useMutation({
         mutationFn: (identifier: typeof userIdentifer) => {
@@ -23,15 +38,37 @@ export const UsersSearchBox: FC = () => {
                 ? 'Loading'
                 : usersQuery.data?.map((user) => {
                       const { avatar, displayName, id } = user;
+                      const imageURL = avatar?.sources[0].url || '/notDefined';
+
                       return (
-                          <div key={user.id} style={{ border: 'solid white' }}>
+                          <div
+                              key={user.id}
+                              style={{
+                                  border: 'solid white',
+                                  backgroundColor: allowedUsersIds.includes(id)
+                                      ? 'rgba(255, 0, 0, 0.3)'
+                                      : 'rgba(2, 0, 255, 0.3)',
+                              }}
+                          >
                               <img
-                                  src={avatar?.sources[0].url || '/notDefined'}
+                                  src={imageURL}
                                   alt="logo"
                                   width="64"
                                   height="64"
                               />
                               {`${id} | ${displayName}`}
+                              <button
+                                  disabled={allowedUsersIds.includes(id)}
+                                  onClick={() =>
+                                      addNewAllowedUser({
+                                          id,
+                                          name: displayName,
+                                          imageURL,
+                                      })
+                                  }
+                              >
+                                  Add
+                              </button>
                           </div>
                       );
                   })}

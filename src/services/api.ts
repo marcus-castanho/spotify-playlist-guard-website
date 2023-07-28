@@ -60,13 +60,13 @@ export const queryUserSchema = z.array(
     }),
 );
 
-export const usersProfilesSchema = z.array(
-    z.object({
-        id: z.string(),
-        name: z.string(),
-        image_url: z.string(),
-    }),
-);
+export const usersProfileSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    image_url: z.string(),
+});
+
+export const usersProfilesSchema = z.array(usersProfileSchema);
 
 function validateUserSchema(payload: unknown) {
     const validation = userSchema.safeParse(payload);
@@ -98,6 +98,13 @@ function validateUserProfilesSchema(payload: unknown) {
 
 function validatePlaylistSchema(payload: unknown) {
     const validation = playlistSchema.safeParse(payload);
+    const { success } = validation;
+
+    return success ? validation.data : undefined;
+}
+
+function validateUserProfileSchema(payload: unknown) {
+    const validation = usersProfileSchema.safeParse(payload);
     const { success } = validation;
 
     return success ? validation.data : undefined;
@@ -266,4 +273,30 @@ export async function updatePlaylistAllowedUsers(
     if (!playlist) throw new Error('Invalid response');
 
     return;
+}
+
+export async function getUserProfile(
+    userId: string,
+    context?: Pick<NextPageContext, 'req'>,
+) {
+    const tokenCookieKey: CookieKey = 's-p-guard:token';
+    const { [tokenCookieKey]: token } = parseCookies(context);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const response = await fetch(`${apiUrl}/users/profile/${userId}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    });
+
+    if (response.status !== 200) throw new Error('Invalid response');
+
+    const resBody = await response.json().catch(() => ({}));
+
+    const profile = validateUserProfileSchema(resBody);
+
+    if (!profile) throw new Error('Invalid response');
+
+    return profile;
 }

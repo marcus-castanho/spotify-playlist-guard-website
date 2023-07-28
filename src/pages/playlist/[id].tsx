@@ -1,16 +1,17 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import { useAuth } from '../../contexts/AuthContext';
 import { CookieKey, Playlist, QueryKey, UserProfile } from '../../@types';
 import { parseCookies } from 'nookies';
 import {
     getPlaylist,
+    getUserInfo,
+    getUserProfile,
     getUserProfiles,
-    queryUsers,
     updatePlaylistAllowedUsers,
 } from '../../services/api';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { UsersSearchBox } from '../../components/UsersSearchBox';
+import Link from 'next/link';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
@@ -34,220 +35,237 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         };
     }
 
-    const allowedUsers = await getUserProfiles(
-        playlist?.allowed_userIds,
-        context,
+    const allowedUsers = await Promise.all(
+        playlist.allowed_userIds.map((userId) =>
+            getUserProfile(userId, context).catch(() => ({
+                id: userId,
+                name: 'Data not found.',
+                image_url: 'Data not found.',
+            })),
+        ),
     );
 
-    return { props: { playlist, allowedUsers } };
+    const user = await getUserInfo(context).catch(() => null);
+
+    if (!allowedUsers || !user?.spotify_id) {
+        return {
+            notFound: true,
+        };
+    }
+
+    return {
+        props: {
+            playlist,
+            allowedUsers,
+            ownerSpotifyId: user.spotify_id,
+        },
+    };
 };
 
 export type PlaylistProps = {
     playlist: Playlist;
     allowedUsers: UserProfile[];
+    ownerSpotifyId: string;
 };
 
-const Playlist: NextPage<PlaylistProps> = ({ playlist, allowedUsers }) => {
-    const { user } = useAuth();
-    const queryClient = useQueryClient();
-
-    //USERSLIST
-    const usersProfilesKey: QueryKey = 'users-profiles';
-    const usersProfilesQuery = useQuery([usersProfilesKey], {
-        queryFn: () => getUserProfiles(allowedUsers.map(({ id }) => id)),
-        initialData: allowedUsers,
-        keepPreviousData: true,
-    });
-    const usersProfilesMutation = useMutation({
-        mutationFn: async (userIds: string[]) => {
-            if (!playlist) return;
-            return updatePlaylistAllowedUsers(playlist.id, userIds);
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries([usersProfilesKey]);
-        },
-    });
+const Playlist: NextPage<PlaylistProps> = ({
+    playlist,
+    allowedUsers,
+    ownerSpotifyId,
+}) => {
     const [users, setUsers] = useState<
         {
             id: string;
             name: string;
             imageURL: string;
-            status?: 'removed' | 'added';
+            status: 'permanent' | 'idle' | 'removed' | 'added';
         }[]
-    >([]);
+    >(() =>
+        allowedUsers.map(({ id, name, image_url }) => ({
+            id,
+            name,
+            imageURL: image_url,
+            status: id === ownerSpotifyId ? 'permanent' : 'idle',
+        })),
+    );
+    const usersProfilesKey: QueryKey = 'users-profiles';
+    const usersProfilesQuery = useQuery([usersProfilesKey], {
+        queryFn: () => {
+            return getUserProfiles(
+                users
+                    .filter(({ status }) => status !== 'removed')
+                    .map(({ id }) => id),
+            );
+        },
+        initialData: allowedUsers,
+        keepPreviousData: true,
+        staleTime: Infinity,
+    });
+    const usersProfilesMutation = useMutation({
+        mutationFn: async (userIds: string[]) =>
+            updatePlaylistAllowedUsers(playlist.id, userIds),
+        onSuccess: () => {
+            usersProfilesQuery.refetch();
+        },
+    });
 
-    const addRemoveNewAllowedUser = (
-        user: Omit<typeof users[number], 'status'>,
+    const addNewAllowedUser = (
+        newUser: Omit<typeof users[number], 'status'>,
+    ) => {
+        setUsers((state) => {
+            return Array.from(
+                new Set([...state, { ...newUser, status: 'added' as const }]),
+            );
+        });
+    };
+
+    const removeNewAllowedUser = (state: typeof users, idPosition: number) => {
+        const newState = [...state];
+        newState.splice(idPosition, 1);
+
+        return newState;
+    };
+
+    const removeAllowedUser = (state: typeof users, idPosition: number) => {
+        const newState = [...state];
+        const userProfile = newState[idPosition];
+
+        newState.splice(idPosition, 1, {
+            ...userProfile,
+            status: 'removed' as const,
+        });
+
+        return newState;
+    };
+
+    const restoreAllowedUser = (state: typeof users, idPosition: number) => {
+        const newState = [...state];
+        const userProfile = newState[idPosition];
+
+        newState.splice(idPosition, 1, {
+            ...userProfile,
+            status: 'idle' as const,
+        });
+
+        return newState;
+    };
+
+    const handleAllowedUsers = (
+        userId: typeof users[number]['id'],
+        status: 'added' | 'removed' | 'idle',
     ) => {
         setUsers((state) => {
             const newState = [...state];
             const usersIds = state.map(({ id }) => id);
-            const idPosition = usersIds.findIndex((id) => id === user.id);
+            const idPosition = usersIds.findIndex((id) => id === userId);
 
-            if (idPosition === -1)
-                return Array.from(
-                    new Set([
-                        ...newState,
-                        { ...user, status: 'added' as const },
-                    ]),
-                );
+            if (idPosition === -1) return [...state];
 
-            newState.splice(idPosition, 1);
+            if (status === 'added')
+                return removeNewAllowedUser(newState, idPosition);
+            if (status === 'removed')
+                return restoreAllowedUser(newState, idPosition);
+            if (status === 'idle')
+                return removeAllowedUser(newState, idPosition);
 
             return newState;
         });
     };
 
-    //
-    //USERSSARCHBOX
-    const [userIdentifer, setUserIdentifier] = useState('');
-    const usersQuery = useMutation({
-        mutationFn: (identifier: typeof userIdentifer) => {
-            return queryUsers(identifier);
-        },
-    });
-    //
-
     useEffect(() => {
-        if (!usersProfilesQuery.data || !user) return;
+        if (!usersProfilesQuery.data) return;
+
         const usersProfiles = usersProfilesQuery.data.map((userProfile) => {
             const { image_url, ...rest } = userProfile;
 
             return {
                 ...rest,
                 imageURL: image_url,
+                status:
+                    rest.id === ownerSpotifyId
+                        ? ('permanent' as const)
+                        : ('idle' as const),
             };
         });
+
         setUsers(usersProfiles);
-    }, [usersProfilesQuery.data, user]);
+    }, [usersProfilesQuery.data, ownerSpotifyId]);
 
     return (
         <div>
-            <div
-                style={{
-                    display: 'inline-block',
-                    width: '50%',
-                    position: 'fixed',
-                    top: '0',
-                }}
-            >
+            <Link href="/home">Home</Link>
+            <div>
                 {playlist && (
                     <>
                         <div>
-                            {usersProfilesQuery.isLoading
-                                ? 'Loading'
-                                : users.map((user) => {
-                                      const { imageURL, name, id, status } =
-                                          user;
-                                      const usersIds = users.map(
-                                          (user) => user.id,
-                                      );
-                                      return (
-                                          <div
-                                              key={user.id}
-                                              style={{ border: 'solid white' }}
-                                          >
-                                              <img
-                                                  src={
-                                                      imageURL || '/notDefined'
-                                                  }
-                                                  alt="logo"
-                                                  width="64"
-                                                  height="64"
-                                              />
-                                              {`${id} | ${name}`}
-                                              {status && (
-                                                  <button
-                                                      onClick={() =>
-                                                          addRemoveNewAllowedUser(
-                                                              {
-                                                                  id,
-                                                                  name,
-                                                                  imageURL,
-                                                              },
-                                                          )
-                                                      }
-                                                  >
-                                                      {usersIds.includes(id)
-                                                          ? 'Remover'
-                                                          : 'Adicionar'}
-                                                  </button>
-                                              )}
-                                              {status &&
-                                                  `${
-                                                      status === 'added'
-                                                          ? 'Adicionado'
-                                                          : ''
-                                                  }`}
-                                          </div>
-                                      );
-                                  })}
+                            {users.map((allowedUser) => {
+                                const { imageURL, name, id, status } =
+                                    allowedUser;
+                                return (
+                                    <div
+                                        key={id}
+                                        style={{ border: 'solid white' }}
+                                    >
+                                        <img
+                                            src={imageURL || '/notDefined'}
+                                            alt="logo"
+                                            width="64"
+                                            height="64"
+                                        />
+                                        {`${id} | ${name} | `}
+                                        {status &&
+                                            status !== 'permanent' &&
+                                            `${
+                                                status === 'added'
+                                                    ? 'Added'
+                                                    : status === 'removed'
+                                                    ? 'Removed'
+                                                    : status === 'idle'
+                                                    ? 'Editable'
+                                                    : ''
+                                            }`}
+                                        {status !== 'permanent' && (
+                                            <button
+                                                onClick={() =>
+                                                    handleAllowedUsers(
+                                                        id,
+                                                        status,
+                                                    )
+                                                }
+                                            >
+                                                {status === 'added' ||
+                                                status === 'idle'
+                                                    ? 'Remove'
+                                                    : status === 'removed'
+                                                    ? 'Add'
+                                                    : ''}
+                                            </button>
+                                        )}
+                                    </div>
+                                );
+                            })}
                             <button
                                 onClick={() =>
                                     usersProfilesMutation.mutate(
-                                        users.map(({ id }) => id),
+                                        users
+                                            .filter(
+                                                ({ status }) =>
+                                                    status !== 'removed',
+                                            )
+                                            .map(({ id }) => id),
                                     )
                                 }
                             >
                                 Save
                             </button>
+                            {(usersProfilesMutation.isLoading ||
+                                usersProfilesQuery.isLoading) &&
+                                'Saving'}
                         </div>
-                        <div>
-                            <input
-                                onChange={(event) =>
-                                    setUserIdentifier(event.target.value)
-                                }
-                            />
-                            <button
-                                onClick={() => usersQuery.mutate(userIdentifer)}
-                            >
-                                Search
-                            </button>
-                            {usersQuery.isLoading
-                                ? 'Loading'
-                                : usersQuery.data?.map((user) => {
-                                      const { avatar, displayName, id } = user;
-                                      const imageURL =
-                                          avatar?.sources[0].url ||
-                                          '/notDefined';
-                                      const usersIds = users.map(
-                                          (user) => user.id,
-                                      );
-                                      return (
-                                          <div
-                                              key={user.id}
-                                              style={{
-                                                  border: 'solid white',
-                                                  backgroundColor:
-                                                      usersIds.includes(id)
-                                                          ? 'rgba(255, 0, 0, 0.3)'
-                                                          : 'rgba(2, 0, 255, 0.3)',
-                                              }}
-                                          >
-                                              <img
-                                                  src={imageURL}
-                                                  alt="logo"
-                                                  width="64"
-                                                  height="64"
-                                              />
-                                              {`${id} | ${displayName}`}
-                                              <button
-                                                  onClick={() =>
-                                                      addRemoveNewAllowedUser({
-                                                          id,
-                                                          name: displayName,
-                                                          imageURL,
-                                                      })
-                                                  }
-                                              >
-                                                  {usersIds.includes(id)
-                                                      ? 'Remover'
-                                                      : 'Adicionar'}
-                                              </button>
-                                          </div>
-                                      );
-                                  })}
-                        </div>
+                        <UsersSearchBox
+                            allowedUsersIds={users.map(({ id }) => id)}
+                            addNewAllowedUser={addNewAllowedUser}
+                        />
                     </>
                 )}
             </div>
