@@ -6,6 +6,7 @@ import {
     getUserProfiles,
     updatePlaylistAllowedUsers,
 } from '../../../services/api';
+import { match } from 'ts-pattern';
 
 export type UseAllowedUsersParams = {
     playlist: Playlist;
@@ -106,14 +107,11 @@ export function useAllowedUsers({
 
             if (idPosition === -1) return [...state];
 
-            if (status === 'added')
-                return removeNewAllowedUser(newState, idPosition);
-            if (status === 'removed')
-                return restoreAllowedUser(newState, idPosition);
-            if (status === 'idle')
-                return removeAllowedUser(newState, idPosition);
-
-            return newState;
+            return match(status)
+                .with('added', () => removeNewAllowedUser(newState, idPosition))
+                .with('removed', () => restoreAllowedUser(newState, idPosition))
+                .with('idle', () => removeAllowedUser(newState, idPosition))
+                .otherwise(() => newState);
         });
     };
 

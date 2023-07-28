@@ -7,6 +7,7 @@ import { UsersSearchBox } from '../../components/UsersSearchBox';
 import Link from 'next/link';
 import { useAllowedUsers } from './hooks/useAllowedUsers';
 import Image from 'next/image';
+import { P, match } from 'ts-pattern';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
@@ -103,15 +104,14 @@ const Playlist: NextPage<PlaylistProps> = ({
                                         {`${id} | ${name} | `}
                                         {status &&
                                             status !== 'permanent' &&
-                                            `${
-                                                status === 'added'
-                                                    ? 'Added'
-                                                    : status === 'removed'
-                                                    ? 'Removed'
-                                                    : status === 'idle'
-                                                    ? 'Editable'
-                                                    : ''
-                                            }`}
+                                            `${match(status)
+                                                .with('added', () => 'Added')
+                                                .with(
+                                                    'removed',
+                                                    () => 'Removed',
+                                                )
+                                                .with('idle', () => 'Editable')
+                                                .otherwise(() => '')}`}
                                         {status !== 'permanent' && (
                                             <button
                                                 onClick={() =>
@@ -121,12 +121,19 @@ const Playlist: NextPage<PlaylistProps> = ({
                                                     )
                                                 }
                                             >
-                                                {status === 'added' ||
-                                                status === 'idle'
-                                                    ? 'Remove'
-                                                    : status === 'removed'
-                                                    ? 'Add'
-                                                    : ''}
+                                                {match(status)
+                                                    .with(
+                                                        P.union(
+                                                            'added',
+                                                            'idle',
+                                                        ),
+                                                        () => 'Remove',
+                                                    )
+                                                    .with(
+                                                        'removed',
+                                                        () => 'Add',
+                                                    )
+                                                    .otherwise(() => '')}
                                             </button>
                                         )}
                                     </div>
