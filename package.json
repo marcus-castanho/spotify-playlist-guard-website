@@ -50,7 +50,7 @@
         "eslint-plugin-promise": "^6.0.0",
         "eslint-plugin-react": "^7.29.4",
         "husky": "^8.0.1",
-        "typescript": "^4.6.2"
+        "typescript": "^5.1.6"
     },
     "config": {
         "commitizen": {
