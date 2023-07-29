@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { queryUsers } from '../services/api';
-import { AllowedUser } from '../pages/playlist/hooks/useAllowedUsers';
+import { AllowedUser } from '../hooks/useAllowedUsers';
 import Image from 'next/image';
 
 export type UsersSearchBoxProps = {

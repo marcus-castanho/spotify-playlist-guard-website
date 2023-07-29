@@ -5,7 +5,7 @@ import { parseCookies } from 'nookies';
 import { getPlaylist, getUserInfo, getUserProfile } from '../../services/api';
 import { UsersSearchBox } from '../../components/UsersSearchBox';
 import Link from 'next/link';
-import { useAllowedUsers } from './hooks/useAllowedUsers';
+import { useAllowedUsers } from '../../hooks/useAllowedUsers';
 import Image from 'next/image';
 import { P, match } from 'ts-pattern';
 

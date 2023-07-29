@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
-import Playlist from '../[id]';
-import { QueryKey, UserProfile } from '../../../@types';
+import Playlist from '../pages/playlist/[id]';
+import { QueryKey, UserProfile } from '../@types';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-    getUserProfile,
-    updatePlaylistAllowedUsers,
-} from '../../../services/api';
+import { getUserProfile, updatePlaylistAllowedUsers } from '../services/api';
 import { match } from 'ts-pattern';
 
 export type AllowedUser = {
