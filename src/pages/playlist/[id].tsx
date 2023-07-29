@@ -74,7 +74,7 @@ const Playlist: NextPage<PlaylistProps> = ({
         addNewAllowedUser,
         handleAllowedUsers,
         handleSubmit,
-        isLoading,
+        isUpdating,
     } = useAllowedUsers({ playlist, allowedUsers, ownerSpotifyId });
 
     return (
@@ -140,7 +140,7 @@ const Playlist: NextPage<PlaylistProps> = ({
                                 );
                             })}
                             <button onClick={() => handleSubmit()}>Save</button>
-                            {isLoading && 'Saving'}
+                            {isUpdating && 'Saving'}
                         </div>
                         <UsersSearchBox
                             allowedUsersIds={users.map(({ id }) => id)}

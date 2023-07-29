@@ -34,6 +34,7 @@ export function useAllowedUsers({
             status: id === ownerSpotifyId ? 'permanent' : 'idle',
         })),
     );
+    const [updating, setUpdating] = useState(false);
     const usersProfilesKey: QueryKey = 'users-profiles';
     const usersProfilesQuery = useQuery([usersProfilesKey], {
         queryFn: () => {
@@ -48,8 +49,10 @@ export function useAllowedUsers({
         staleTime: Infinity,
     });
     const usersProfilesMutation = useMutation({
-        mutationFn: async (userIds: string[]) =>
-            updatePlaylistAllowedUsers(playlist.id, userIds),
+        mutationFn: async (userIds: string[]) => {
+            setUpdating(true);
+            return updatePlaylistAllowedUsers(playlist.id, userIds);
+        },
         onSuccess: () => {
             usersProfilesQuery.refetch();
         },
@@ -130,6 +133,7 @@ export function useAllowedUsers({
         });
 
         setUsers(usersProfiles);
+        setUpdating(false);
     }, [usersProfilesQuery.data, ownerSpotifyId]);
 
     return {
@@ -142,7 +146,6 @@ export function useAllowedUsers({
                     .filter(({ status }) => status !== 'removed')
                     .map(({ id }) => id),
             ),
-        isLoading:
-            usersProfilesMutation.isLoading || usersProfilesQuery.isLoading,
+        isUpdating: updating,
     };
 }
