@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { CookieKey, Playlist, UserProfile } from '../../@types';
 import { parseCookies } from 'nookies';
@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useAllowedUsers } from '../../hooks/useAllowedUsers';
 import Image from 'next/image';
 import { P, match } from 'ts-pattern';
+import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
@@ -76,7 +77,12 @@ const Playlist: NextPage<PlaylistProps> = ({
         handleSubmit,
         isUpdating,
     } = useAllowedUsers({ playlist, allowedUsers, ownerSpotifyId });
-    const [userIdInput, setUserIdInput] = useState('');
+    const {
+        handleUserIdInput,
+        userIdInput,
+        isValid,
+        ['handleSubmit']: handleSubmitUserId,
+    } = useAllowedUserInput();
 
     return (
         <div>
@@ -146,16 +152,22 @@ const Playlist: NextPage<PlaylistProps> = ({
                         <div>
                             <input
                                 onChange={(event) =>
-                                    setUserIdInput(event.target.value)
+                                    handleUserIdInput(event.target.value)
                                 }
+                                value={userIdInput}
+                                style={{
+                                    borderColor: isValid ? 'black' : 'red',
+                                }}
                             />
                             <button
                                 onClick={() =>
-                                    addNewAllowedUser({
-                                        id: userIdInput,
-                                        name: 'Data not found.',
-                                        imageURL: 'Data not found.',
-                                    })
+                                    handleSubmitUserId(() =>
+                                        addNewAllowedUser({
+                                            id: userIdInput,
+                                            name: 'Data not found.',
+                                            imageURL: 'Data not found.',
+                                        }),
+                                    )
                                 }
                             >
                                 Insert ID
