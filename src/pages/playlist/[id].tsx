@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { CookieKey, Playlist, UserProfile } from '../../@types';
 import { parseCookies } from 'nookies';
@@ -76,6 +76,7 @@ const Playlist: NextPage<PlaylistProps> = ({
         handleSubmit,
         isUpdating,
     } = useAllowedUsers({ playlist, allowedUsers, ownerSpotifyId });
+    const [userIdInput, setUserIdInput] = useState('');
 
     return (
         <div>
@@ -141,6 +142,24 @@ const Playlist: NextPage<PlaylistProps> = ({
                             })}
                             <button onClick={() => handleSubmit()}>Save</button>
                             {isUpdating && 'Saving'}
+                        </div>
+                        <div>
+                            <input
+                                onChange={(event) =>
+                                    setUserIdInput(event.target.value)
+                                }
+                            />
+                            <button
+                                onClick={() =>
+                                    addNewAllowedUser({
+                                        id: userIdInput,
+                                        name: 'Data not found.',
+                                        imageURL: 'Data not found.',
+                                    })
+                                }
+                            >
+                                Insert ID
+                            </button>
                         </div>
                         <UsersSearchBox
                             allowedUsersIds={users.map(({ id }) => id)}

@@ -3,7 +3,7 @@ import Playlist from '../[id]';
 import { QueryKey, UserProfile } from '../../../@types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
-    getUserProfiles,
+    getUserProfile,
     updatePlaylistAllowedUsers,
 } from '../../../services/api';
 import { match } from 'ts-pattern';
@@ -38,10 +38,16 @@ export function useAllowedUsers({
     const usersProfilesKey: QueryKey = 'users-profiles';
     const usersProfilesQuery = useQuery([usersProfilesKey], {
         queryFn: () => {
-            return getUserProfiles(
+            return Promise.all(
                 users
                     .filter(({ status }) => status !== 'removed')
-                    .map(({ id }) => id),
+                    .map(({ id }) =>
+                        getUserProfile(id).catch(() => ({
+                            id,
+                            name: 'Data not found.',
+                            image_url: 'Data not found.',
+                        })),
+                    ),
             );
         },
         initialData: allowedUsers,
