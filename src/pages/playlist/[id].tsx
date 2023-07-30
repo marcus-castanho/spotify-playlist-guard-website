@@ -15,29 +15,22 @@ import { P, match } from 'ts-pattern';
 import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
 import { sessionIsActive } from '../../useCases/auth';
 import { handleErrorResponse } from '../../middlewares';
+import { InternalServerError, UnauthorizedError } from '../../errors';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
         const { id } = context.query;
 
-        if (!sessionIsActive(context)) {
-            return {
-                redirect: {
-                    destination: '/',
-                    permanent: false,
-                },
-            };
-        }
+        if (!sessionIsActive(context)) throw new UnauthorizedError({});
 
-        const playlist = await getPlaylist(id as string, context).catch(
-            () => null,
+        const playlist = await getPlaylist(id as string, context).then(
+            ({ status, data }) => {
+                if (status === 401) throw new UnauthorizedError({});
+                if (status !== 200 || !data) throw new InternalServerError({});
+
+                return data;
+            },
         );
-
-        if (!playlist) {
-            return {
-                notFound: true,
-            };
-        }
 
         const allowedUsers = await Promise.all(
             playlist.allowed_userIds.map((userId) =>
