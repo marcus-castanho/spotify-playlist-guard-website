@@ -1,7 +1,11 @@
 import React, { FC } from 'react';
-import { Playlist, QueryKey } from '../@types';
+import { QueryKey } from '../@types';
 import { useQuery } from '@tanstack/react-query';
-import { activateDeactivatePlaylist, getUserPlaylists } from '../services/api';
+import {
+    Playlist,
+    activateDeactivatePlaylist,
+    getUserPlaylists,
+} from '../services/spotifyPlaylistGuardApi';
 import Link from 'next/link';
 
 export type PlaylistsListProps = {

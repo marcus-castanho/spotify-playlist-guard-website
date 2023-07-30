@@ -6,8 +6,8 @@ import React, {
     useContext,
 } from 'react';
 import { destroyCookie, parseCookies } from 'nookies';
-import { getUserInfo } from '../services/api';
-import { CookieKey, User } from '../@types';
+import { User, getUserInfo } from '../services/spotifyPlaylistGuardApi';
+import { CookieKey } from '../@types';
 import { useRouter } from 'next/router';
 
 export type AuthContextType = {

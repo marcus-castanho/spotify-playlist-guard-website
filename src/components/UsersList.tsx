@@ -1,8 +1,8 @@
-/* eslint-disable @next/next/no-img-element */
 import { useQuery } from '@tanstack/react-query';
 import React, { FC } from 'react';
-import { getUserProfiles } from '../services/api';
+import { getUserProfiles } from '../services/spotifyPlaylistGuardApi';
 import { QueryKey } from '../@types';
+import Image from 'next/image';
 
 export type UsersListProps = {
     usersIds: string[];
@@ -19,10 +19,11 @@ export const UsersList: FC<UsersListProps> = ({ usersIds }) => {
                 ? 'Loading'
                 : usersProfilesQuery.data?.map((user) => {
                       const { image_url, name, id } = user;
+                      const imageSrc = image_url || '/notDefined';
                       return (
                           <div key={user.id} style={{ border: 'solid white' }}>
-                              <img
-                                  src={image_url || '/notDefined'}
+                              <Image
+                                  src={imageSrc}
                                   alt="logo"
                                   width="64"
                                   height="64"

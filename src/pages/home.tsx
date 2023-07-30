@@ -1,9 +1,11 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useAuth } from '../contexts/AuthContext';
-import { Playlist } from '../@types';
 import Link from 'next/link';
-import { getUserPlaylists } from '../services/api';
+import {
+    Playlist,
+    getUserPlaylists,
+} from '../services/spotifyPlaylistGuardApi';
 import { PlaylistsList } from '../components/PlaylistsList';
 import { sessionIsActive } from '../useCases/auth';
 

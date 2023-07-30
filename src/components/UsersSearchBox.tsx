@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { queryUsers } from '../services/api';
+import { getQueryUsers } from '../services/spotifyPlaylistGuardApi';
 import { AllowedUser } from '../hooks/useAllowedUsers';
 import Image from 'next/image';
 
@@ -20,7 +20,7 @@ export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
     const [userIdentifer, setUserIdentifier] = useState('');
     const usersQuery = useMutation({
         mutationFn: (identifier: typeof userIdentifer) => {
-            return queryUsers(identifier);
+            return getQueryUsers(identifier);
         },
     });
 
@@ -53,7 +53,6 @@ export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
                                   alt="logo"
                                   width="64"
                                   height="64"
-                                  loader={() => imageSrc}
                               />
                               {`${id} | ${displayName}`}
                               <button

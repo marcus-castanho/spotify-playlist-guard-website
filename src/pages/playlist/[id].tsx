@@ -1,7 +1,12 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import { Playlist, UserProfile } from '../../@types';
-import { getPlaylist, getUserInfo, getUserProfile } from '../../services/api';
+import {
+    UserProfile,
+    Playlist,
+    getPlaylist,
+    getUserInfo,
+    getUserProfile,
+} from '../../services/spotifyPlaylistGuardApi';
 import { UsersSearchBox } from '../../components/UsersSearchBox';
 import Link from 'next/link';
 import { useAllowedUsers } from '../../hooks/useAllowedUsers';

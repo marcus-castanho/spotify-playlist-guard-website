@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { CookieKey } from '../@types';
 import { parseCookies, setCookie } from 'nookies';
-import { getAuth } from '../services/api';
+import { getAuth } from '../services/spotifyPlaylistGuardApi';
 
 export async function authenticate(
     code: string,

@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import Playlist from '../pages/playlist/[id]';
-import { QueryKey, UserProfile } from '../@types';
+import { QueryKey } from '../@types';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getUserProfile, updatePlaylistAllowedUsers } from '../services/api';
+import {
+    UserProfile,
+    getUserProfile,
+    patchPlaylistAllowedUsers,
+} from '../services/spotifyPlaylistGuardApi';
 import { match } from 'ts-pattern';
 
 export type AllowedUser = {
@@ -54,7 +58,7 @@ export function useAllowedUsers({
     const usersProfilesMutation = useMutation({
         mutationFn: async (userIds: string[]) => {
             setUpdating(true);
-            return updatePlaylistAllowedUsers(playlist.id, userIds);
+            return patchPlaylistAllowedUsers(playlist.id, userIds);
         },
         onSuccess: () => {
             usersProfilesQuery.refetch();
