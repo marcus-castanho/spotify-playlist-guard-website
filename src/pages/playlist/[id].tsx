@@ -11,50 +11,62 @@ import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
 import { sessionIsActive } from '../../useCases/auth';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { id } = context.query;
+    try {
+        const { id } = context.query;
 
-    if (!sessionIsActive(context)) {
+        if (!sessionIsActive(context)) {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false,
+                },
+            };
+        }
+
+        const playlist = await getPlaylist(id as string, context).catch(
+            () => null,
+        );
+
+        if (!playlist) {
+            return {
+                notFound: true,
+            };
+        }
+
+        const allowedUsers = await Promise.all(
+            playlist.allowed_userIds.map((userId) =>
+                getUserProfile(userId, context).catch(() => ({
+                    id: userId,
+                    name: 'Data not found.',
+                    image_url: 'Data not found.',
+                })),
+            ),
+        );
+
+        const user = await getUserInfo(context).catch(() => null);
+
+        if (!allowedUsers || !user?.spotify_id) {
+            return {
+                notFound: true,
+            };
+        }
+
+        return {
+            props: {
+                playlist,
+                allowedUsers,
+                ownerSpotifyId: user.spotify_id,
+            },
+        };
+    } catch (error) {
+        console.log(error);
         return {
             redirect: {
-                destination: '/',
+                destination: '/500',
                 permanent: false,
             },
         };
     }
-
-    const playlist = await getPlaylist(id as string, context).catch(() => null);
-
-    if (!playlist) {
-        return {
-            notFound: true,
-        };
-    }
-
-    const allowedUsers = await Promise.all(
-        playlist.allowed_userIds.map((userId) =>
-            getUserProfile(userId, context).catch(() => ({
-                id: userId,
-                name: 'Data not found.',
-                image_url: 'Data not found.',
-            })),
-        ),
-    );
-
-    const user = await getUserInfo(context).catch(() => null);
-
-    if (!allowedUsers || !user?.spotify_id) {
-        return {
-            notFound: true,
-        };
-    }
-
-    return {
-        props: {
-            playlist,
-            allowedUsers,
-            ownerSpotifyId: user.spotify_id,
-        },
-    };
 };
 
 export type PlaylistProps = {

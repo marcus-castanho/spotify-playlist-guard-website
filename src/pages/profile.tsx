@@ -5,18 +5,25 @@ import Link from 'next/link';
 import { sessionIsActive } from '../useCases/auth';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    if (!sessionIsActive(context)) {
+    try {
+        if (!sessionIsActive(context)) {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false,
+                },
+            };
+        }
+
         return {
-            redirect: {
-                destination: '/',
-                permanent: false,
-            },
+            props: {},
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            props: {},
         };
     }
-
-    return {
-        props: {},
-    };
 };
 
 const Profile: NextPage = () => {

@@ -8,20 +8,30 @@ import { PlaylistsList } from '../components/PlaylistsList';
 import { sessionIsActive } from '../useCases/auth';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    if (!sessionIsActive(context)) {
+    try {
+        if (!sessionIsActive(context)) {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false,
+                },
+            };
+        }
+
+        const playlists = await getUserPlaylists(context);
+
+        return {
+            props: { playlists },
+        };
+    } catch (error) {
+        console.log(error);
         return {
             redirect: {
-                destination: '/',
+                destination: '/500',
                 permanent: false,
             },
         };
     }
-
-    const playlists = await getUserPlaylists(context);
-
-    return {
-        props: { playlists },
-    };
 };
 
 export type HomeProps = {
