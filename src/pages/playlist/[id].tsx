@@ -53,13 +53,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             ),
         );
 
-        const user = await getUserInfo(context);
+        const user = await getUserInfo(context).then(({ status, data }) => {
+            if (status === 401) throw new UnauthorizedError({});
+            if (status !== 200 || !data) throw new InternalServerError({});
 
-        if (!allowedUsers || !user?.spotify_id) {
-            return {
-                notFound: true,
-            };
-        }
+            return data;
+        });
 
         return {
             props: {

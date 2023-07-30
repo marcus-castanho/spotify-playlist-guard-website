@@ -26,9 +26,12 @@ function validateUserSchema(payload: unknown) {
     const validation = userSchema.safeParse(payload);
     const { success } = validation;
 
-    return success
-        ? { data: validation.data }
-        : { error: validation.error.issues };
+    if (!success)
+        throw new InvalidResponseDataError(
+            JSON.stringify(validation.error.issues),
+        );
+
+    return validation.data;
 }
 
 export async function getUserInfo(context?: GetServerSidePropsContext) {
@@ -38,11 +41,12 @@ export async function getUserInfo(context?: GetServerSidePropsContext) {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
     });
+    const { status } = response;
     const resBody = await response.json().catch(() => ({}));
 
-    const { ['data']: userData, error } = validateUserSchema(resBody);
+    if (status !== 200) return { status, data: null };
 
-    if (!userData) throw new InvalidResponseDataError(JSON.stringify(error));
+    const userData = validateUserSchema(resBody);
 
-    return userData;
+    return { status: status as 200, data: userData };
 }
