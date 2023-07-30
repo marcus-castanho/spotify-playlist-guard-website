@@ -43,11 +43,22 @@ export function useAllowedUsers({
                 users
                     .filter(({ status }) => status !== 'removed')
                     .map(({ id }) =>
-                        getUserProfile(id).catch(() => ({
-                            id,
-                            name: 'Data not found.',
-                            image_url: 'Data not found.',
-                        })),
+                        getUserProfile(id)
+                            .then(({ status, data }) => {
+                                if (status !== 200 || !data)
+                                    return {
+                                        id,
+                                        name: 'Data not found.',
+                                        image_url: 'Data not found.',
+                                    };
+
+                                return data;
+                            })
+                            .catch(() => ({
+                                id,
+                                name: 'Data not found.',
+                                image_url: 'Data not found.',
+                            })),
                     ),
             );
         },

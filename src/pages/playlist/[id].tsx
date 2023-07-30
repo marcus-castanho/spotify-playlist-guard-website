@@ -34,15 +34,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
         const allowedUsers = await Promise.all(
             playlist.allowed_userIds.map((userId) =>
-                getUserProfile(userId, context).catch(() => ({
-                    id: userId,
-                    name: 'Data not found.',
-                    image_url: 'Data not found.',
-                })),
+                getUserProfile(userId, context)
+                    .then(({ status, data }) => {
+                        if (status !== 200 || !data)
+                            return {
+                                id: userId,
+                                name: 'Data not found.',
+                                image_url: 'Data not found.',
+                            };
+
+                        return data;
+                    })
+                    .catch(() => ({
+                        id: userId,
+                        name: 'Data not found.',
+                        image_url: 'Data not found.',
+                    })),
             ),
         );
 
-        const user = await getUserInfo(context).catch(() => null);
+        const user = await getUserInfo(context);
 
         if (!allowedUsers || !user?.spotify_id) {
             return {
