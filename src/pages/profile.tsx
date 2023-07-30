@@ -2,7 +2,7 @@ import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useAuth } from '../contexts/AuthContext';
 import Link from 'next/link';
-import { sessionIsActive } from '../validations/sessionIsActive';
+import { sessionIsActive } from '../useCases/auth';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     if (!sessionIsActive(context)) {

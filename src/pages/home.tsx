@@ -5,7 +5,7 @@ import { Playlist } from '../@types';
 import Link from 'next/link';
 import { getUserPlaylists } from '../services/api';
 import { PlaylistsList } from '../components/PlaylistsList';
-import { sessionIsActive } from '../validations/sessionIsActive';
+import { sessionIsActive } from '../useCases/auth';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     if (!sessionIsActive(context)) {

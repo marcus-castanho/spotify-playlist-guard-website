@@ -8,7 +8,7 @@ import { useAllowedUsers } from '../../hooks/useAllowedUsers';
 import Image from 'next/image';
 import { P, match } from 'ts-pattern';
 import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
-import { sessionIsActive } from '../../validations/sessionIsActive';
+import { sessionIsActive } from '../../useCases/auth';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { id } = context.query;
