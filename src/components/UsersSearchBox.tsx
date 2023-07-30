@@ -29,7 +29,7 @@ export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
 
                     return data;
                 })
-                .catch(() => signOut());
+                .catch(() => []);
         },
     });
 
