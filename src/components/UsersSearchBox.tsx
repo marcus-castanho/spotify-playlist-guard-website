@@ -53,6 +53,7 @@ export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
                                   alt="logo"
                                   width="64"
                                   height="64"
+                                  loader={() => imageSrc}
                               />
                               {`${id} | ${displayName}`}
                               <button

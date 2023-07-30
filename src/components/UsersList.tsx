@@ -27,6 +27,7 @@ export const UsersList: FC<UsersListProps> = ({ usersIds }) => {
                                   alt="logo"
                                   width="64"
                                   height="64"
+                                  loader={() => imageSrc}
                               />
                               {`${id} | ${name}`}
                           </div>
