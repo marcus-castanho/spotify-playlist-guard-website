@@ -5,6 +5,8 @@ import {
     NotFoundError,
     UnauthorizedError,
 } from '../errors';
+import { destroyCookie } from 'nookies';
+import { CookieKey } from '../@types';
 
 export function handleErrorResponse(
     error: any,
@@ -53,6 +55,8 @@ export function handleErrorResponse(
     }
 
     if (error instanceof UnauthorizedError) {
+        const tokenCookieKey: CookieKey = 's-p-guard:token';
+        destroyCookie(null, tokenCookieKey);
         return {
             redirect: {
                 destination: '/',
