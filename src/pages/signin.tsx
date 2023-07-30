@@ -1,32 +1,26 @@
 import React, { useEffect } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { setCookie } from 'nookies';
-import { CookieKey } from '../@types';
-import { getAuth } from '../services/api';
+import { authenticate } from '../useCases/auth';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { code } = context.query;
-    const tokenCookieKey: CookieKey = 's-p-guard:token';
+    try {
+        const { code } = context.query;
 
-    if (!code || Array.isArray(code)) return { props: {} };
+        if (typeof code !== 'string') return { props: {} };
 
-    const { token } = await getAuth(code).catch(() => ({
-        token: null,
-    }));
+        await authenticate(code, context);
 
-    if (!token) return { props: {} };
-
-    setCookie(context, tokenCookieKey, token, {
-        maxAge: 60 * 60 * 1,
-    });
-
-    return {
-        redirect: {
-            destination: '/home',
-            permanent: false,
-        },
-    };
+        return {
+            redirect: {
+                destination: '/home',
+                permanent: false,
+            },
+        };
+    } catch (error) {
+        console.log(error);
+        return { props: {} };
+    }
 };
 
 const SignIn: NextPage = () => {
