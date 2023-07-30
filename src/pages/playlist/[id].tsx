@@ -1,7 +1,6 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import { CookieKey, Playlist, UserProfile } from '../../@types';
-import { parseCookies } from 'nookies';
+import { Playlist, UserProfile } from '../../@types';
 import { getPlaylist, getUserInfo, getUserProfile } from '../../services/api';
 import { UsersSearchBox } from '../../components/UsersSearchBox';
 import Link from 'next/link';
@@ -9,13 +8,12 @@ import { useAllowedUsers } from '../../hooks/useAllowedUsers';
 import Image from 'next/image';
 import { P, match } from 'ts-pattern';
 import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
+import { sessionIsActive } from '../../validations/sessionIsActive';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const tokenCookieKey: CookieKey = 's-p-guard:token';
-    const { [tokenCookieKey]: token } = parseCookies(context);
     const { id } = context.query;
 
-    if (!token) {
+    if (!sessionIsActive(context)) {
         return {
             redirect: {
                 destination: '/',

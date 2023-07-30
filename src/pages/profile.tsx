@@ -1,15 +1,11 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useAuth } from '../contexts/AuthContext';
-import { CookieKey } from '../@types';
-import nookies from 'nookies';
 import Link from 'next/link';
+import { sessionIsActive } from '../validations/sessionIsActive';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const tokenCookieKey: CookieKey = 's-p-guard:token';
-    const { [tokenCookieKey]: token } = nookies.get(context);
-
-    if (!token) {
+    if (!sessionIsActive(context)) {
         return {
             redirect: {
                 destination: '/',

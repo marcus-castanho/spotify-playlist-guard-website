@@ -1,17 +1,14 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useAuth } from '../contexts/AuthContext';
-import { CookieKey, Playlist } from '../@types';
-import { parseCookies } from 'nookies';
+import { Playlist } from '../@types';
 import Link from 'next/link';
 import { getUserPlaylists } from '../services/api';
 import { PlaylistsList } from '../components/PlaylistsList';
+import { sessionIsActive } from '../validations/sessionIsActive';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const tokenCookieKey: CookieKey = 's-p-guard:token';
-    const { [tokenCookieKey]: token } = parseCookies(context);
-
-    if (!token) {
+    if (!sessionIsActive(context)) {
         return {
             redirect: {
                 destination: '/',
