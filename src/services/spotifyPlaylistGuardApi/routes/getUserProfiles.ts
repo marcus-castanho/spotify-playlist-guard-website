@@ -18,9 +18,12 @@ function validateUserProfilesSchema(payload: unknown) {
     const validation = usersProfilesSchema.safeParse(payload);
     const { success } = validation;
 
-    return success
-        ? { data: validation.data }
-        : { error: validation.error.issues };
+    if (!success)
+        throw new InvalidResponseDataError(
+            JSON.stringify(validation.error.issues),
+        );
+
+    return validation.data;
 }
 
 export async function getUserProfiles(
@@ -39,14 +42,12 @@ export async function getUserProfiles(
             },
         },
     );
-
-    if (response.status !== 200) throw new Error('Invalid response');
-
+    const { status } = response;
     const resBody = await response.json().catch(() => ({}));
 
-    const { ['data']: profiles, error } = validateUserProfilesSchema(resBody);
+    if (status !== 200) return { status, data: null };
 
-    if (!profiles) throw new InvalidResponseDataError(JSON.stringify(error));
+    const profiles = validateUserProfilesSchema(resBody);
 
-    return profiles;
+    return { status: status as 200, data: profiles };
 }
