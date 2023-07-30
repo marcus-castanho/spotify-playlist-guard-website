@@ -3,19 +3,17 @@ import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { setCookie } from 'nookies';
 import { CookieKey } from '../@types';
+import { getAuth } from '../services/api';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const { code } = context.query;
     const tokenCookieKey: CookieKey = 's-p-guard:token';
 
-    if (!code) return { props: {} };
+    if (!code || Array.isArray(code)) return { props: {} };
 
-    const response = await fetch(`${apiUrl}/auth/redirect?code=${code}`);
-
-    if (response.status !== 201) return { props: {} };
-
-    const token = response.headers.get('Authorization')?.split(' ')[1];
+    const { token } = await getAuth(code).catch(() => ({
+        token: null,
+    }));
 
     if (!token) return { props: {} };
 

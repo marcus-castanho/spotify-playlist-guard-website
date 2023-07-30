@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { parseCookies } from 'nookies';
 import { CookieKey } from '../@types';
-import { NextPageContext } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import qs from 'qs';
 
 export const userSchema = z.object({
@@ -110,7 +110,7 @@ function validateUserProfileSchema(payload: unknown) {
     return success ? validation.data : undefined;
 }
 
-export async function getUserInfo(context?: Pick<NextPageContext, 'req'>) {
+export async function getUserInfo(context?: GetServerSidePropsContext) {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
     const { [tokenCookieKey]: token } = parseCookies(context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
@@ -127,7 +127,7 @@ export async function getUserInfo(context?: Pick<NextPageContext, 'req'>) {
     return userData;
 }
 
-export async function getUserPlaylists(context?: Pick<NextPageContext, 'req'>) {
+export async function getUserPlaylists(context?: GetServerSidePropsContext) {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
     const { [tokenCookieKey]: token } = parseCookies(context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
@@ -147,7 +147,7 @@ export async function getUserPlaylists(context?: Pick<NextPageContext, 'req'>) {
 export async function activateDeactivatePlaylist(
     id: string,
     active: boolean,
-    context?: Pick<NextPageContext, 'req'>,
+    context?: GetServerSidePropsContext,
 ) {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
     const { [tokenCookieKey]: token } = parseCookies(context);
@@ -168,7 +168,7 @@ export async function activateDeactivatePlaylist(
 
 export async function queryUsers(
     identifier: string,
-    context?: Pick<NextPageContext, 'req'>,
+    context?: GetServerSidePropsContext,
 ) {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
     const { [tokenCookieKey]: token } = parseCookies(context);
@@ -197,7 +197,7 @@ export async function queryUsers(
 
 export async function getUserProfiles(
     userIds: string[],
-    context?: Pick<NextPageContext, 'req'>,
+    context?: GetServerSidePropsContext,
 ) {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
     const { [tokenCookieKey]: token } = parseCookies(context);
@@ -226,7 +226,7 @@ export async function getUserProfiles(
 
 export async function getPlaylist(
     id: string,
-    context?: Pick<NextPageContext, 'req'>,
+    context?: GetServerSidePropsContext,
 ) {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
     const { [tokenCookieKey]: token } = parseCookies(context);
@@ -247,7 +247,7 @@ export async function getPlaylist(
 export async function updatePlaylistAllowedUsers(
     playlistId: string,
     userIds: string[],
-    context?: Pick<NextPageContext, 'req'>,
+    context?: GetServerSidePropsContext,
 ) {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
     const { [tokenCookieKey]: token } = parseCookies(context);
@@ -277,7 +277,7 @@ export async function updatePlaylistAllowedUsers(
 
 export async function getUserProfile(
     userId: string,
-    context?: Pick<NextPageContext, 'req'>,
+    context?: GetServerSidePropsContext,
 ) {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
     const { [tokenCookieKey]: token } = parseCookies(context);
@@ -299,4 +299,17 @@ export async function getUserProfile(
     if (!profile) throw new Error('Invalid response');
 
     return profile;
+}
+
+export async function getAuth(code: string) {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const response = await fetch(`${apiUrl}/auth/redirect?code=${code}`);
+
+    if (response.status !== 201) throw new Error('Invalid response');
+
+    const token = response.headers.get('Authorization')?.split(' ')[1];
+
+    if (!token) throw new Error('Invalid response');
+
+    return { token };
 }
