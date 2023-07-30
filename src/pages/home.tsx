@@ -8,31 +8,27 @@ import {
 } from '../services/spotifyPlaylistGuardApi';
 import { PlaylistsList } from '../components/PlaylistsList';
 import { sessionIsActive } from '../useCases/auth';
+import { InternalServerError, UnauthorizedError } from '../errors';
+import { handleErrorResponse } from '../middlewares';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
-        if (!sessionIsActive(context)) {
-            return {
-                redirect: {
-                    destination: '/',
-                    permanent: false,
-                },
-            };
-        }
+        if (!sessionIsActive(context)) throw new UnauthorizedError({});
 
-        const playlists = await getUserPlaylists(context);
+        const playlists = await getUserPlaylists(context).then(
+            ({ status, data }) => {
+                if (status === 401) throw new UnauthorizedError({});
+                if (status !== 200 || !data) throw new InternalServerError({});
+
+                return data;
+            },
+        );
 
         return {
             props: { playlists },
         };
     } catch (error) {
-        console.log(error);
-        return {
-            redirect: {
-                destination: '/500',
-                permanent: false,
-            },
-        };
+        return handleErrorResponse(error);
     }
 };
 

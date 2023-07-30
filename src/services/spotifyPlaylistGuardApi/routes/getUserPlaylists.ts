@@ -29,9 +29,12 @@ function validatePlaylistsSchema(payload: unknown) {
     const validation = playlistsSchema.safeParse(payload);
     const { success } = validation;
 
-    return success
-        ? { data: validation.data }
-        : { error: validation.error.issues };
+    if (!success)
+        throw new InvalidResponseDataError(
+            JSON.stringify(validation.error.issues),
+        );
+
+    return validation.data;
 }
 
 export async function getUserPlaylists(context?: GetServerSidePropsContext) {
@@ -41,11 +44,12 @@ export async function getUserPlaylists(context?: GetServerSidePropsContext) {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
     });
+    const { status } = response;
     const resBody = await response.json().catch(() => ({}));
 
-    const { ['data']: playlists, error } = validatePlaylistsSchema(resBody);
+    if (status !== 200) return { status, data: null };
 
-    if (!playlists) throw new InvalidResponseDataError(JSON.stringify(error));
+    const playlists = validatePlaylistsSchema(resBody);
 
-    return playlists;
+    return { status: status as 200, data: playlists };
 }

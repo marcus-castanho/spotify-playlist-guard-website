@@ -7,15 +7,25 @@ import {
     getUserPlaylists,
 } from '../services/spotifyPlaylistGuardApi';
 import Link from 'next/link';
+import { useAuth } from '../contexts/AuthContext';
 
 export type PlaylistsListProps = {
     playlists: Playlist[];
 };
 
 export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
+    const { signOut } = useAuth();
     const playlistQueryKey: QueryKey = 'playlists';
     const playlistsQuery = useQuery([playlistQueryKey], {
-        queryFn: () => getUserPlaylists(),
+        queryFn: () =>
+            getUserPlaylists()
+                .then(({ status, data }) => {
+                    if (status === 401) signOut();
+                    if (status !== 200 || !data) return [];
+
+                    return data;
+                })
+                .catch(() => []),
         initialData: playlists,
         keepPreviousData: true,
     });
