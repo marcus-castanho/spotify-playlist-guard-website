@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { getToken } from '../auth';
+import { InvalidResponseDataError } from '../../../errors';
 
 const playlistSchema = z.object({
     id: z.string(),
@@ -24,7 +25,9 @@ function validatePlaylistSchema(payload: unknown) {
     const validation = playlistSchema.safeParse(payload);
     const { success } = validation;
 
-    return success ? validation.data : undefined;
+    return success
+        ? { data: validation.data }
+        : { error: validation.error.issues };
 }
 
 export async function getPlaylist(
@@ -39,9 +42,9 @@ export async function getPlaylist(
     });
     const resBody = await response.json().catch(() => ({}));
 
-    const playlist = validatePlaylistSchema(resBody);
+    const { ['data']: playlist, error } = validatePlaylistSchema(resBody);
 
-    if (!playlist) throw new Error('Invalid response');
+    if (!playlist) throw new InvalidResponseDataError(JSON.stringify(error));
 
     return playlist;
 }

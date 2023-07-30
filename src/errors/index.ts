@@ -1,9 +1,10 @@
-export class InvalidResponseData extends Error {
+export class InvalidResponseDataError extends Error {
     constructor(
-        readonly errorName = 'BaseError',
+        readonly errorName = 'InvalidResponseDataError',
         readonly errorMessage?: string,
     ) {
         super(errorMessage);
+        this.name = errorName;
     }
 }
 

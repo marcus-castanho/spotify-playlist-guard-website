@@ -1,11 +1,30 @@
 import { GetServerSideProps } from 'next';
-import { BaseError, NotFoundError, UnauthorizedError } from '../errors';
+import {
+    BaseError,
+    InvalidResponseDataError,
+    NotFoundError,
+    UnauthorizedError,
+} from '../errors';
 
 export function handleErrorResponse(
     error: any,
 ): Awaited<ReturnType<GetServerSideProps>> {
     if (!(error instanceof BaseError)) {
         console.log('Uncaught error', {
+            message: error.message,
+            stack: error.stack,
+        });
+
+        return {
+            redirect: {
+                destination: '/500',
+                permanent: false,
+            },
+        };
+    }
+
+    if (error instanceof InvalidResponseDataError) {
+        console.log(error.name, {
             message: error.message,
             stack: error.stack,
         });

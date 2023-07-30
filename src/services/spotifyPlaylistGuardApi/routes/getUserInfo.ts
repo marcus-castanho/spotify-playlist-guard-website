@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { getToken } from '../auth';
+import { InvalidResponseDataError } from '../../../errors';
 
 export type User = z.infer<typeof userSchema>;
 
@@ -25,7 +26,9 @@ function validateUserSchema(payload: unknown) {
     const validation = userSchema.safeParse(payload);
     const { success } = validation;
 
-    return success ? validation.data : undefined;
+    return success
+        ? { data: validation.data }
+        : { error: validation.error.issues };
 }
 
 export async function getUserInfo(context?: GetServerSidePropsContext) {
@@ -37,9 +40,9 @@ export async function getUserInfo(context?: GetServerSidePropsContext) {
     });
     const resBody = await response.json().catch(() => ({}));
 
-    const userData = validateUserSchema(resBody);
+    const { ['data']: userData, error } = validateUserSchema(resBody);
 
-    if (!userData) throw new Error('Invalid response');
+    if (!userData) throw new InvalidResponseDataError(JSON.stringify(error));
 
     return userData;
 }

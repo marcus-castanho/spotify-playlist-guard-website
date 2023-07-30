@@ -1,3 +1,5 @@
+import { InvalidResponseDataError } from '../../../errors';
+
 export async function getAuth(code: string) {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const response = await fetch(`${apiUrl}/auth/redirect?code=${code}`);
@@ -6,7 +8,7 @@ export async function getAuth(code: string) {
 
     const token = response.headers.get('Authorization')?.split(' ')[1];
 
-    if (!token) throw new Error('Invalid response');
+    if (!token) throw new InvalidResponseDataError('Invalid token received');
 
     return { token };
 }

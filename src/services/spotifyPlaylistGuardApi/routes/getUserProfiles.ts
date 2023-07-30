@@ -2,6 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import qs from 'qs';
 import { getToken } from '../auth';
+import { InvalidResponseDataError } from '../../../errors';
 
 export type UserProfile = z.infer<typeof userProfileSchema>;
 
@@ -17,7 +18,9 @@ function validateUserProfilesSchema(payload: unknown) {
     const validation = usersProfilesSchema.safeParse(payload);
     const { success } = validation;
 
-    return success ? validation.data : undefined;
+    return success
+        ? { data: validation.data }
+        : { error: validation.error.issues };
 }
 
 export async function getUserProfiles(
@@ -41,9 +44,9 @@ export async function getUserProfiles(
 
     const resBody = await response.json().catch(() => ({}));
 
-    const profiles = validateUserProfilesSchema(resBody);
+    const { ['data']: profiles, error } = validateUserProfilesSchema(resBody);
 
-    if (!profiles) throw new Error('Invalid response');
+    if (!profiles) throw new InvalidResponseDataError(JSON.stringify(error));
 
     return profiles;
 }

@@ -2,6 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import qs from 'qs';
 import { getToken } from '../auth';
+import { InvalidResponseDataError } from '../../../errors';
 
 export type QueryUser = z.infer<typeof queryUserSchema>[number];
 
@@ -28,7 +29,9 @@ function validateQueryUsersSchema(payload: unknown) {
     const validation = queryUserSchema.safeParse(payload);
     const { success } = validation;
 
-    return success ? validation.data : undefined;
+    return success
+        ? { data: validation.data }
+        : { error: validation.error.issues };
 }
 
 export async function getQueryUsers(
@@ -52,9 +55,9 @@ export async function getQueryUsers(
 
     const resBody = await response.json().catch(() => ({}));
 
-    const users = validateQueryUsersSchema(resBody);
+    const { ['data']: users, error } = validateQueryUsersSchema(resBody);
 
-    if (!users) throw new Error('Invalid response');
+    if (!users) throw new InvalidResponseDataError(JSON.stringify(error));
 
     return users;
 }
