@@ -19,11 +19,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         };
     } catch (error) {
         console.log(error);
-        return { props: {} };
+        return { props: { authError: 'Something went wrong.' } };
     }
 };
 
-const SignIn: NextPage = () => {
+export type SignInProps = {
+    authError?: string;
+};
+
+const SignIn: NextPage<SignInProps> = ({ authError }) => {
     const router = useRouter();
     const { code } = router.query;
 
@@ -42,6 +46,7 @@ const SignIn: NextPage = () => {
             >
                 Sign in with Spotify
             </button>
+            {authError && <p>{authError}</p>}
         </div>
     );
 };
