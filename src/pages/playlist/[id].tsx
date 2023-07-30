@@ -14,6 +14,7 @@ import Image from 'next/image';
 import { P, match } from 'ts-pattern';
 import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
 import { sessionIsActive } from '../../useCases/auth';
+import { handleErrorResponse } from '../../middlewares';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
@@ -64,13 +65,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             },
         };
     } catch (error) {
-        console.log(error);
-        return {
-            redirect: {
-                destination: '/500',
-                permanent: false,
-            },
-        };
+        return handleErrorResponse(error);
     }
 };
 
