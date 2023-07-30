@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { getQueryUsers } from '../services/spotifyPlaylistGuardApi';
 import { AllowedUser } from '../hooks/useAllowedUsers';
 import Image from 'next/image';
+import { useAuth } from '../contexts/AuthContext';
 
 export type UsersSearchBoxProps = {
     allowedUsersIds: string[];
@@ -17,10 +18,18 @@ export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
     allowedUsersIds,
     addNewAllowedUser,
 }) => {
+    const { signOut } = useAuth();
     const [userIdentifer, setUserIdentifier] = useState('');
     const usersQuery = useMutation({
-        mutationFn: (identifier: typeof userIdentifer) => {
-            return getQueryUsers(identifier);
+        mutationFn: async (identifier: typeof userIdentifer) => {
+            return getQueryUsers(identifier)
+                .then(({ status, data }) => {
+                    if (status === 401) signOut();
+                    if (status !== 200 || !data) return [];
+
+                    return data;
+                })
+                .catch(() => signOut());
         },
     });
 

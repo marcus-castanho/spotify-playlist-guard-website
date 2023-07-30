@@ -29,9 +29,12 @@ function validateQueryUsersSchema(payload: unknown) {
     const validation = queryUserSchema.safeParse(payload);
     const { success } = validation;
 
-    return success
-        ? { data: validation.data }
-        : { error: validation.error.issues };
+    if (!success)
+        throw new InvalidResponseDataError(
+            JSON.stringify(validation.error.issues),
+        );
+
+    return validation.data;
 }
 
 export async function getQueryUsers(
@@ -50,14 +53,12 @@ export async function getQueryUsers(
             },
         },
     );
-
-    if (response.status !== 200) throw new Error('Invalid response');
-
+    const { status } = response;
     const resBody = await response.json().catch(() => ({}));
 
-    const { ['data']: users, error } = validateQueryUsersSchema(resBody);
+    if (status !== 200) return { status, data: null };
 
-    if (!users) throw new InvalidResponseDataError(JSON.stringify(error));
+    const users = validateQueryUsersSchema(resBody);
 
-    return users;
+    return { status: status as 200, data: users };
 }
