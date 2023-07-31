@@ -41,8 +41,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         if (!token) return;
 
         getUserInfo()
-            .then(({ status, data }) => {
-                if (status !== 200 || !data) throw new Error('Unauthorized');
+            .then(({ success, data }) => {
+                if (!success) throw new Error('Unauthorized');
                 return data;
             })
             .then((userInfo) => {

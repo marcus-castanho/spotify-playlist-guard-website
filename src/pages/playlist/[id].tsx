@@ -24,10 +24,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         if (!sessionIsActive(context)) throw new UnauthorizedError({});
 
         const playlist = await getPlaylist(id as string, context).then(
-            ({ status, data }) => {
+            ({ success, status, data }) => {
                 if (status === 401)
                     throw new UnauthorizedError({ sessionEnd: true });
-                if (status !== 200 || !data) throw new InternalServerError({});
+                if (!success) throw new InternalServerError({});
 
                 return data;
             },
@@ -41,23 +41,23 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                     image_url: 'Data not found.',
                 };
                 return getUserProfile(userId, context)
-                    .then(({ status, data }) => {
-                        if (status !== 200 || !data) return defaultValue;
-
+                    .then(({ success, data }) => {
+                        if (!success) return defaultValue;
                         return data;
                     })
                     .catch(() => defaultValue);
             }),
         );
 
-        const user = await getUserInfo(context).then(({ status, data }) => {
-            if (status === 401)
-                throw new UnauthorizedError({ sessionEnd: true });
+        const user = await getUserInfo(context).then(
+            ({ success, status, data }) => {
+                if (status === 401)
+                    throw new UnauthorizedError({ sessionEnd: true });
+                if (!success) throw new InternalServerError({});
 
-            if (status !== 200 || !data) throw new InternalServerError({});
-
-            return data;
-        });
+                return data;
+            },
+        );
 
         return {
             props: {

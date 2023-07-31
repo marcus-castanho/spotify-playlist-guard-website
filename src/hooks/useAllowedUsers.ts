@@ -51,10 +51,8 @@ export function useAllowedUsers({
                             image_url: 'Data not found.',
                         };
                         return getUserProfile(id)
-                            .then(({ status, data }) => {
-                                if (status !== 200 || !data)
-                                    return defaultValue;
-
+                            .then(({ success, data }) => {
+                                if (!success) return defaultValue;
                                 return data;
                             })
                             .catch(() => defaultValue);
@@ -69,9 +67,9 @@ export function useAllowedUsers({
         mutationFn: async (userIds: string[]) => {
             setUpdating(true);
             return patchPlaylistAllowedUsers(playlist.id, userIds)
-                .then(({ status, data }) => {
+                .then(({ success, status, data }) => {
                     if (status === 401) return signOut(true);
-                    if (status !== 200 || !data) return null;
+                    if (!success) return null;
 
                     return data;
                 })

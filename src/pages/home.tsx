@@ -16,10 +16,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         if (!sessionIsActive(context)) throw new UnauthorizedError({});
 
         const playlists = await getUserPlaylists(context).then(
-            ({ status, data }) => {
+            ({ success, status, data }) => {
                 if (status === 401)
                     throw new UnauthorizedError({ sessionEnd: true });
-                if (status !== 200 || !data) throw new InternalServerError({});
+                if (!success) throw new InternalServerError({});
 
                 return data;
             },

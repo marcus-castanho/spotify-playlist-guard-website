@@ -10,9 +10,8 @@ export async function authenticate(
 ) {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
 
-    const token = await getAuth(code).then(({ status, data }) => {
-        if (status !== 201 || !data) throw new InternalServerError({});
-
+    const token = await getAuth(code).then(({ success, data }) => {
+        if (!success) throw new InternalServerError({});
         return data;
     });
 

@@ -23,9 +23,9 @@ export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
     const usersQuery = useMutation({
         mutationFn: async (identifier: typeof userIdentifer) => {
             return getQueryUsers(identifier)
-                .then(({ status, data }) => {
+                .then(({ success, status, data }) => {
                     if (status === 401) return signOut(true);
-                    if (status !== 200 || !data) return [];
+                    if (!success) return [];
 
                     return data;
                 })
