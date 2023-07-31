@@ -25,9 +25,12 @@ function validatePlaylistSchema(payload: unknown) {
     const validation = playlistSchema.safeParse(payload);
     const { success } = validation;
 
-    return success
-        ? { data: validation.data }
-        : { error: validation.error.issues };
+    if (!success)
+        throw new InvalidResponseDataError(
+            JSON.stringify(validation.error.issues),
+        );
+
+    return validation.data;
 }
 
 export async function patchPlaylistAllowedUsers(
@@ -48,14 +51,12 @@ export async function patchPlaylistAllowedUsers(
             body: JSON.stringify({ allowed_userIds: userIds }),
         },
     );
-
-    if (response.status !== 200) throw new Error('Invalid response');
-
+    const { status } = response;
     const resBody = await response.json().catch(() => ({}));
 
-    const { ['data']: playlist, error } = validatePlaylistSchema(resBody);
+    if (status !== 200) return { status, data: null };
 
-    if (!playlist) throw new InvalidResponseDataError(JSON.stringify(error));
+    const playlist = validatePlaylistSchema(resBody);
 
-    return;
+    return { status: status as 200, data: playlist };
 }

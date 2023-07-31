@@ -8,6 +8,7 @@ import {
     patchPlaylistAllowedUsers,
 } from '../services/spotifyPlaylistGuardApi';
 import { match } from 'ts-pattern';
+import { useAuth } from '../contexts/AuthContext';
 
 export type AllowedUser = {
     id: string;
@@ -27,6 +28,7 @@ export function useAllowedUsers({
     allowedUsers,
     ownerSpotifyId,
 }: UseAllowedUsersParams) {
+    const { signOut } = useAuth();
     const [users, setUsers] = useState<AllowedUser[]>(() =>
         allowedUsers.map(({ id, name, image_url }) => ({
             id,
@@ -69,12 +71,21 @@ export function useAllowedUsers({
     const usersProfilesMutation = useMutation({
         mutationFn: async (userIds: string[]) => {
             setUpdating(true);
-            return patchPlaylistAllowedUsers(playlist.id, userIds);
+            return patchPlaylistAllowedUsers(playlist.id, userIds)
+                .then(({ status, data }) => {
+                    if (status === 401) return signOut();
+                    if (status !== 200 || !data) return null;
+
+                    return data;
+                })
+                .catch(() => null);
         },
         onSuccess: () => {
             usersProfilesQuery.refetch();
         },
     });
+
+    usersProfilesMutation.data;
 
     const addNewAllowedUser = (newUser: Omit<AllowedUser, 'status'>) => {
         setUsers((state) => {
