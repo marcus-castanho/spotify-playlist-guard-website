@@ -3,6 +3,7 @@ import { z } from 'zod';
 import qs from 'qs';
 import { getToken } from '../auth';
 import { InvalidResponseDataError } from '../../../errors';
+import { SpotifyPlaylistGuardApiReturn } from '../../../@types';
 
 export type UserProfile = z.infer<typeof userProfileSchema>;
 
@@ -29,7 +30,7 @@ function validateUserProfilesSchema(payload: unknown) {
 export async function getUserProfiles(
     userIds: string[],
     context?: GetServerSidePropsContext,
-) {
+): Promise<SpotifyPlaylistGuardApiReturn<z.infer<typeof usersProfilesSchema>>> {
     const token = getToken(context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const response = await fetch(
@@ -45,12 +46,12 @@ export async function getUserProfiles(
     const { status } = response;
     const resBody = await response.json().catch(() => ({}));
 
-    if (status !== 200) return { status, data: null };
+    if (status !== 200) return { success: false, status, data: null };
 
     const profiles = validateUserProfilesSchema(resBody);
 
     return {
-        success: status === 200 && !!profiles,
+        success: true,
         status: status as 200,
         data: profiles,
     };

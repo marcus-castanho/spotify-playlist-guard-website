@@ -1,11 +1,12 @@
 import { GetServerSidePropsContext } from 'next';
 import { getToken } from '../auth';
+import { SpotifyPlaylistGuardApiReturn } from '../../../@types';
 
 export async function patchActivateDeactivatePlaylist(
     id: string,
     active: boolean,
     context?: GetServerSidePropsContext,
-) {
+): Promise<SpotifyPlaylistGuardApiReturn> {
     const token = getToken(context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const response = await fetch(`${apiUrl}/playlists/active/${id}`, {
@@ -18,10 +19,11 @@ export async function patchActivateDeactivatePlaylist(
     });
     const { status } = response;
 
-    if (status !== 204) return { status };
+    if (status !== 204) return { success: false, status };
 
     return {
-        success: status === 204,
+        success: true,
         status: status as 204,
+        data: undefined,
     };
 }

@@ -2,6 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { getToken } from '../auth';
 import { InvalidResponseDataError } from '../../../errors';
+import { SpotifyPlaylistGuardApiReturn } from '../../../@types';
 
 export type Playlist = z.infer<typeof playlistsSchema>[number];
 
@@ -37,7 +38,9 @@ function validatePlaylistsSchema(payload: unknown) {
     return validation.data;
 }
 
-export async function getUserPlaylists(context?: GetServerSidePropsContext) {
+export async function getUserPlaylists(
+    context?: GetServerSidePropsContext,
+): Promise<SpotifyPlaylistGuardApiReturn<z.infer<typeof playlistsSchema>>> {
     const token = getToken(context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const response = await fetch(`${apiUrl}/playlists/list/1`, {
@@ -47,12 +50,12 @@ export async function getUserPlaylists(context?: GetServerSidePropsContext) {
     const { status } = response;
     const resBody = await response.json().catch(() => ({}));
 
-    if (status !== 200) return { status, data: null };
+    if (status !== 200) return { success: false, status, data: null };
 
     const playlists = validatePlaylistsSchema(resBody);
 
     return {
-        success: status === 200 && !!playlists,
+        success: true,
         status: status as 200,
         data: playlists,
     };
