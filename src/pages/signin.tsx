@@ -29,13 +29,13 @@ export type SignInProps = {
 
 const SignIn: NextPage<SignInProps> = ({ authError }) => {
     const router = useRouter();
-    const { code } = router.query;
+    const { code, sessionEnd } = router.query;
 
     useEffect(() => {
-        if (router.isReady && code) {
+        if (router.isReady && (code || sessionEnd)) {
             router.replace(router.route);
         }
-    }, [router, code]);
+    }, [router, code, sessionEnd]);
 
     return (
         <div>
@@ -47,6 +47,9 @@ const SignIn: NextPage<SignInProps> = ({ authError }) => {
                 Sign in with Spotify
             </button>
             {authError && <p>{authError}</p>}
+            {sessionEnd && (
+                <p>Youre session was expired. Please sign in to continue</p>
+            )}
         </div>
     );
 };
