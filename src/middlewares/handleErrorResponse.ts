@@ -9,7 +9,7 @@ import { destroyCookie } from 'nookies';
 import { CookieKey } from '../@types';
 
 export function handleErrorResponse(
-    error: any,
+    error,
 ): Awaited<ReturnType<GetServerSideProps>> {
     if (!(error instanceof BaseError)) {
         console.log('Uncaught error', {
