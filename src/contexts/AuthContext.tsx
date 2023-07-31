@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 export type AuthContextType = {
     user: User | null;
     isAuthenticated: boolean;
-    signOut: () => void;
+    signOut: (sessionEnd?: boolean) => void;
 };
 
 export type AuthProviderProps = {
@@ -29,10 +29,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const tokenCookieKey: CookieKey = 's-p-guard:token';
     const { [tokenCookieKey]: token } = parseCookies();
 
-    const signOut = async () => {
+    const signOut = async (sessionEnd?: boolean) => {
         destroyCookie(null, tokenCookieKey);
 
-        router.push('/');
+        if (sessionEnd) return router.push(`/signin/?sessionEnd=${true}`);
+
+        router.push('/signin');
     };
 
     useEffect(() => {
@@ -48,7 +50,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             })
             .catch(() => {
                 destroyCookie(null, tokenCookieKey);
-                if (router.isReady) router.push('/');
+                if (router.isReady) router.push(`/signin/?sessionEnd=${true}`);
             });
     }, [router, token]);
 

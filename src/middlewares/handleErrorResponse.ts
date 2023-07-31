@@ -55,11 +55,14 @@ export function handleErrorResponse(
     }
 
     if (error instanceof UnauthorizedError) {
+        const { sessionEnd } = error;
         const tokenCookieKey: CookieKey = 's-p-guard:token';
         destroyCookie(null, tokenCookieKey);
         return {
             redirect: {
-                destination: '/',
+                destination: sessionEnd
+                    ? `/signin/?sessionEnd=${sessionEnd}`
+                    : '/signin',
                 permanent: false,
             },
         };

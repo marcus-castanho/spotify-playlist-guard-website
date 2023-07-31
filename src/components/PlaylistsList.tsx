@@ -20,7 +20,7 @@ export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
         queryFn: () =>
             getUserPlaylists()
                 .then(({ status, data }) => {
-                    if (status === 401) return signOut();
+                    if (status === 401) return signOut(true);
                     if (status !== 200 || !data) return [];
 
                     return data;
@@ -33,7 +33,7 @@ export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
     const handleActivatePlaylist = async (id: string, active: boolean) => {
         await patchActivateDeactivatePlaylist(id, active)
             .then(({ status }) => {
-                if (status === 401) signOut();
+                if (status === 401) signOut(true);
                 if (status !== 204) return;
 
                 playlistsQuery.refetch();

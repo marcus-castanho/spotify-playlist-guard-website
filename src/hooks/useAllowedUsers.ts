@@ -73,7 +73,7 @@ export function useAllowedUsers({
             setUpdating(true);
             return patchPlaylistAllowedUsers(playlist.id, userIds)
                 .then(({ status, data }) => {
-                    if (status === 401) return signOut();
+                    if (status === 401) return signOut(true);
                     if (status !== 200 || !data) return null;
 
                     return data;

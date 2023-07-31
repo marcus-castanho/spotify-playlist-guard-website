@@ -21,8 +21,18 @@ export class BaseError extends Error {
 }
 
 export class UnauthorizedError extends BaseError {
-    constructor({ message = '', error }: { message?: string; error?: Error }) {
+    readonly sessionEnd?: boolean;
+    constructor({
+        message = '',
+        sessionEnd = false,
+        error,
+    }: {
+        message?: string;
+        sessionEnd?: boolean;
+        error?: Error;
+    }) {
         super(...['UnauthorizedError', message, 401, error]);
+        this.sessionEnd = sessionEnd;
     }
 }
 

@@ -25,7 +25,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
         const playlist = await getPlaylist(id as string, context).then(
             ({ status, data }) => {
-                if (status === 401) throw new UnauthorizedError({});
+                if (status === 401)
+                    throw new UnauthorizedError({ sessionEnd: true });
                 if (status !== 200 || !data) throw new InternalServerError({});
 
                 return data;
@@ -50,7 +51,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         );
 
         const user = await getUserInfo(context).then(({ status, data }) => {
-            if (status === 401) throw new UnauthorizedError({});
+            if (status === 401)
+                throw new UnauthorizedError({ sessionEnd: true });
+
             if (status !== 200 || !data) throw new InternalServerError({});
 
             return data;

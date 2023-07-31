@@ -17,7 +17,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
         const playlists = await getUserPlaylists(context).then(
             ({ status, data }) => {
-                if (status === 401) throw new UnauthorizedError({});
+                if (status === 401)
+                    throw new UnauthorizedError({ sessionEnd: true });
                 if (status !== 200 || !data) throw new InternalServerError({});
 
                 return data;
@@ -43,7 +44,7 @@ const Home: NextPage<HomeProps> = ({ playlists }) => {
         <div>
             <div>
                 <Link href="/profile">Profile</Link>
-                <button onClick={signOut}>Log Out</button>
+                <button onClick={() => signOut}>Log Out</button>
             </div>
             <div
                 style={{
