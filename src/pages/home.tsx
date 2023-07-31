@@ -9,7 +9,7 @@ import {
 import { PlaylistsList } from '../components/PlaylistsList';
 import { sessionIsActive } from '../useCases/auth';
 import { InternalServerError, UnauthorizedError } from '../errors';
-import { handleErrorResponse } from '../middlewares';
+import { handleErrorResponse } from '../middlewares/handleErrorResponse';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
