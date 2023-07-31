@@ -3,26 +3,18 @@ import { GetServerSideProps, NextPage } from 'next';
 import { useAuth } from '../contexts/AuthContext';
 import Link from 'next/link';
 import { sessionIsActive } from '../useCases/auth';
+import { UnauthorizedError } from '../errors';
+import { handleErrorResponse } from '../middlewares';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
-        if (!sessionIsActive(context)) {
-            return {
-                redirect: {
-                    destination: '/',
-                    permanent: false,
-                },
-            };
-        }
+        if (!sessionIsActive(context)) throw new UnauthorizedError({});
 
         return {
             props: {},
         };
     } catch (error) {
-        console.log(error);
-        return {
-            props: {},
-        };
+        return handleErrorResponse(error);
     }
 };
 
