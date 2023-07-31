@@ -49,5 +49,9 @@ export async function getUserProfiles(
 
     const profiles = validateUserProfilesSchema(resBody);
 
-    return { status: status as 200, data: profiles };
+    return {
+        success: status === 200 && !!profiles,
+        status: status as 200,
+        data: profiles,
+    };
 }

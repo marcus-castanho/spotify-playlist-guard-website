@@ -48,5 +48,9 @@ export async function getUserInfo(context?: GetServerSidePropsContext) {
 
     const userData = validateUserSchema(resBody);
 
-    return { status: status as 200, data: userData };
+    return {
+        success: status === 200 && !!userData,
+        status: status as 200,
+        data: userData,
+    };
 }

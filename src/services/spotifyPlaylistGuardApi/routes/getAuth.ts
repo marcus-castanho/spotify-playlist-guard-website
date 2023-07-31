@@ -11,5 +11,5 @@ export async function getAuth(code: string) {
 
     if (!token) throw new InvalidResponseDataError('Invalid token received');
 
-    return { status, data: token };
+    return { success: status === 201 && !!token, status, data: token };
 }

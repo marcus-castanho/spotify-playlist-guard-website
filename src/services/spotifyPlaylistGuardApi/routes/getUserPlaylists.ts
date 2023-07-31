@@ -51,5 +51,9 @@ export async function getUserPlaylists(context?: GetServerSidePropsContext) {
 
     const playlists = validatePlaylistsSchema(resBody);
 
-    return { status: status as 200, data: playlists };
+    return {
+        success: status === 200 && !!playlists,
+        status: status as 200,
+        data: playlists,
+    };
 }

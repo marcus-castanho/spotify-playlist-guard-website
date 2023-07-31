@@ -58,5 +58,9 @@ export async function patchPlaylistAllowedUsers(
 
     const playlist = validatePlaylistSchema(resBody);
 
-    return { status: status as 200, data: playlist };
+    return {
+        success: status === 200 && !!playlist,
+        status: status as 200,
+        data: playlist,
+    };
 }

@@ -41,5 +41,9 @@ export async function getUserProfile(
 
     const profile = validateUserProfileSchema(resBody);
 
-    return { status: status as 200, data: profile };
+    return {
+        success: status === 200 && !!profile,
+        status: status as 200,
+        data: profile,
+    };
 }

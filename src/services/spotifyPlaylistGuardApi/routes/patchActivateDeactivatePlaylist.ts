@@ -20,5 +20,8 @@ export async function patchActivateDeactivatePlaylist(
 
     if (status !== 204) return { status };
 
-    return { status: status as 204 };
+    return {
+        success: status === 204,
+        status: status as 204,
+    };
 }

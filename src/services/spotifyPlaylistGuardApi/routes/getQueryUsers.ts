@@ -60,5 +60,9 @@ export async function getQueryUsers(
 
     const users = validateQueryUsersSchema(resBody);
 
-    return { status: status as 200, data: users };
+    return {
+        success: status === 200 && !!users,
+        status: status as 200,
+        data: users,
+    };
 }
