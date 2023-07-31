@@ -44,24 +44,21 @@ export function useAllowedUsers({
             return Promise.all(
                 users
                     .filter(({ status }) => status !== 'removed')
-                    .map(({ id }) =>
-                        getUserProfile(id)
+                    .map(({ id }) => {
+                        const defaultValue = {
+                            id,
+                            name: 'Data not found.',
+                            image_url: 'Data not found.',
+                        };
+                        return getUserProfile(id)
                             .then(({ status, data }) => {
                                 if (status !== 200 || !data)
-                                    return {
-                                        id,
-                                        name: 'Data not found.',
-                                        image_url: 'Data not found.',
-                                    };
+                                    return defaultValue;
 
                                 return data;
                             })
-                            .catch(() => ({
-                                id,
-                                name: 'Data not found.',
-                                image_url: 'Data not found.',
-                            })),
-                    ),
+                            .catch(() => defaultValue);
+                    }),
             );
         },
         initialData: allowedUsers,
@@ -84,8 +81,6 @@ export function useAllowedUsers({
             usersProfilesQuery.refetch();
         },
     });
-
-    usersProfilesMutation.data;
 
     const addNewAllowedUser = (newUser: Omit<AllowedUser, 'status'>) => {
         setUsers((state) => {
