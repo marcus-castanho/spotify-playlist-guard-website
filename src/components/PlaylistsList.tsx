@@ -3,7 +3,7 @@ import { QueryKey } from '../@types';
 import { useQuery } from '@tanstack/react-query';
 import {
     Playlist,
-    activateDeactivatePlaylist,
+    patchActivateDeactivatePlaylist,
     getUserPlaylists,
 } from '../services/spotifyPlaylistGuardApi';
 import Link from 'next/link';
@@ -31,10 +31,16 @@ export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
     });
 
     const handleActivatePlaylist = async (id: string, active: boolean) => {
-        await activateDeactivatePlaylist(id, active).then(() =>
-            playlistsQuery.refetch(),
-        );
-        return;
+        await patchActivateDeactivatePlaylist(id, active)
+            .then(({ status }) => {
+                if (status === 401) signOut();
+                if (status !== 204) return;
+
+                playlistsQuery.refetch();
+            })
+            .catch(() => {
+                return;
+            });
     };
 
     return (

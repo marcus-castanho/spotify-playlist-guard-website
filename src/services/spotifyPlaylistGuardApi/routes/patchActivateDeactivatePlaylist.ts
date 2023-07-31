@@ -1,8 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { getToken } from '../auth';
-import { InvalidResponseDataError } from '../../../errors';
 
-export async function activateDeactivatePlaylist(
+export async function patchActivateDeactivatePlaylist(
     id: string,
     active: boolean,
     context?: GetServerSidePropsContext,
@@ -17,8 +16,9 @@ export async function activateDeactivatePlaylist(
         },
         body: JSON.stringify({ active }),
     });
+    const { status } = response;
 
-    if (response.status !== 204) throw new InvalidResponseDataError();
+    if (status !== 204) return { status };
 
-    return;
+    return { status: status as 204 };
 }
