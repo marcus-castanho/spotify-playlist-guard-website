@@ -15,7 +15,7 @@ export const UsersList: FC<UsersListProps> = ({ usersIds }) => {
         queryFn: () =>
             getUserProfiles(usersIds)
                 .then(({ status, data }) => {
-                    if (status === 401) signOut();
+                    if (status === 401) return signOut();
                     if (status !== 200 || !data) return [];
 
                     return data;
