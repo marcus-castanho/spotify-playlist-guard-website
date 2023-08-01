@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { AuthProvider } from './AuthContext';
 import { QueryProvider } from './QueryContext';
 import { ThemeProvider } from './ThemeContext';
+import { ToastProvider } from './ToastContext';
 
 type ComposedContextsProps = {
     components: Array<
@@ -15,8 +16,8 @@ function ComposedContexts(props: ComposedContextsProps) {
 
     return (
         <>
-            {components.reduce((acc, Context) => {
-                return <Context>{acc}</Context>;
+            {components.reduceRight((acc, CurrContext) => {
+                return <CurrContext>{acc}</CurrContext>;
             }, children)}
         </>
     );
@@ -27,7 +28,12 @@ export type AppContextProviderProps = { children: ReactNode };
 export function AppContextProvider({ children }: AppContextProviderProps) {
     return (
         <ComposedContexts
-            components={[AuthProvider, QueryProvider, ThemeProvider]}
+            components={[
+                AuthProvider,
+                QueryProvider,
+                ThemeProvider,
+                ToastProvider,
+            ]}
         >
             {children}
         </ComposedContexts>
