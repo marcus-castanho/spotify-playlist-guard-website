@@ -20,15 +20,21 @@
         "@fontsource/roboto": "^4.5.7",
         "@mui/icons-material": "^5.8.0",
         "@mui/material": "^5.8.1",
+        "@tanstack/react-query": "^4.29.23",
         "next": "12.1.6",
+        "nookies": "^2.5.2",
+        "qs": "^6.11.2",
         "react": "18.1.0",
-        "react-dom": "18.1.0"
+        "react-dom": "18.1.0",
+        "ts-pattern": "^5.0.4",
+        "zod": "^3.21.4"
     },
     "devDependencies": {
         "@commitlint/cli": "^17.0.3",
         "@commitlint/config-conventional": "^17.0.3",
         "@svgr/webpack": "^6.2.1",
         "@types/node": "^17.0.21",
+        "@types/qs": "^6.9.7",
         "@types/react": "^17.0.40",
         "@types/react-dom": "^18.0.5",
         "@typescript-eslint/eslint-plugin": "^5.15.0",
@@ -44,7 +50,7 @@
         "eslint-plugin-promise": "^6.0.0",
         "eslint-plugin-react": "^7.29.4",
         "husky": "^8.0.1",
-        "typescript": "^4.6.2"
+        "typescript": "^5.1.6"
     },
     "config": {
         "commitizen": {
