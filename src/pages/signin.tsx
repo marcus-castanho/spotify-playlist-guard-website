@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { authenticate } from '../useCases/auth';
+import Link from 'next/link';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
@@ -39,6 +40,7 @@ const SignIn: NextPage<SignInProps> = ({ authError }) => {
 
     return (
         <div>
+            <Link href="/">Index</Link>
             <button
                 onClick={() =>
                     router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`)
