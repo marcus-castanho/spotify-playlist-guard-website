@@ -3,23 +3,18 @@ import React, { FC } from 'react';
 import { getUserProfiles } from '../services/spotifyPlaylistGuardApi';
 import { QueryKey } from '../@types';
 import Image from 'next/image';
-import { useAuth } from '../contexts/AuthContext';
+import { useClientErrorHandler } from '../hooks/useClientErrorHandler';
 
 export type UsersListProps = {
     usersIds: string[];
 };
 export const UsersList: FC<UsersListProps> = ({ usersIds }) => {
-    const { signOut } = useAuth();
+    const { handleGuardApiResponse } = useClientErrorHandler();
     const usersProfilesKey: QueryKey = 'users-profiles';
     const usersProfilesQuery = useQuery([usersProfilesKey, usersIds], {
         queryFn: () =>
             getUserProfiles(usersIds)
-                .then(({ success, status, data }) => {
-                    if (status === 401) return signOut(true);
-                    if (!success) return [];
-
-                    return data;
-                })
+                .then(handleGuardApiResponse)
                 .catch(() => []),
     });
 

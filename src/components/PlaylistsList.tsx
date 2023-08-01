@@ -7,24 +7,19 @@ import {
     getUserPlaylists,
 } from '../services/spotifyPlaylistGuardApi';
 import Link from 'next/link';
-import { useAuth } from '../contexts/AuthContext';
+import { useClientErrorHandler } from '../hooks/useClientErrorHandler';
 
 export type PlaylistsListProps = {
     playlists: Playlist[];
 };
 
 export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
-    const { signOut } = useAuth();
+    const { handleGuardApiResponse } = useClientErrorHandler();
     const playlistQueryKey: QueryKey = 'playlists';
     const playlistsQuery = useQuery([playlistQueryKey], {
         queryFn: () =>
             getUserPlaylists()
-                .then(({ success, status, data }) => {
-                    if (status === 401) return signOut(true);
-                    if (!success) return [];
-
-                    return data;
-                })
+                .then(handleGuardApiResponse)
                 .catch(() => []),
         initialData: playlists,
         keepPreviousData: true,
@@ -33,9 +28,7 @@ export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
     const handleActivatePlaylist = async (id: string, active: boolean) => {
         await patchActivateDeactivatePlaylist(id, active)
             .then(({ success, status }) => {
-                if (status === 401) signOut(true);
-                if (!success) return;
-
+                handleGuardApiResponse({ success, status, data: undefined });
                 playlistsQuery.refetch();
             })
             .catch(() => {

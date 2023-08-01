@@ -8,7 +8,7 @@ import {
     patchPlaylistAllowedUsers,
 } from '../services/spotifyPlaylistGuardApi';
 import { match } from 'ts-pattern';
-import { useAuth } from '../contexts/AuthContext';
+import { useClientErrorHandler } from './useClientErrorHandler';
 
 export type AllowedUser = {
     id: string;
@@ -28,7 +28,7 @@ export function useAllowedUsers({
     allowedUsers,
     ownerSpotifyId,
 }: UseAllowedUsersParams) {
-    const { signOut } = useAuth();
+    const { handleGuardApiResponse } = useClientErrorHandler();
     const [users, setUsers] = useState<AllowedUser[]>(() =>
         allowedUsers.map(({ id, name, image_url }) => ({
             id,
@@ -51,10 +51,7 @@ export function useAllowedUsers({
                             image_url: 'Data not found.',
                         };
                         return getUserProfile(id)
-                            .then(({ success, data }) => {
-                                if (!success) return defaultValue;
-                                return data;
-                            })
+                            .then(handleGuardApiResponse)
                             .catch(() => defaultValue);
                     }),
             );
@@ -67,12 +64,7 @@ export function useAllowedUsers({
         mutationFn: async (userIds: string[]) => {
             setUpdating(true);
             return patchPlaylistAllowedUsers(playlist.id, userIds)
-                .then(({ success, status, data }) => {
-                    if (status === 401) return signOut(true);
-                    if (!success) return null;
-
-                    return data;
-                })
+                .then(handleGuardApiResponse)
                 .catch(() => null);
         },
         onSuccess: () => {
