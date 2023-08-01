@@ -3,10 +3,12 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AppContextProvider } from '../contexts';
+import ErrorBoundary from '../components/ErrorBoundary';
+import { ErrorFallback } from '../components/ErrorFallback';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     return (
-        <>
+        <ErrorBoundary fallback={<ErrorFallback />}>
             <Head>
                 <meta
                     name="viewport"
@@ -17,7 +19,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
                 <CssBaseline />
                 <Component {...pageProps} />
             </AppContextProvider>
-        </>
+        </ErrorBoundary>
     );
 };
 
