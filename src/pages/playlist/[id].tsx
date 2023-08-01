@@ -14,7 +14,7 @@ import Image from 'next/image';
 import { P, match } from 'ts-pattern';
 import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
 import { sessionIsActive } from '../../useCases/auth';
-import { handleErrorResponse } from '../../middlewares/handleErrorResponse';
+import { handleServerErrorResponse } from '../../middlewares/handleServerErrorResponse';
 import { InternalServerError, UnauthorizedError } from '../../errors';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -67,7 +67,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             },
         };
     } catch (error) {
-        return handleErrorResponse(error);
+        return handleServerErrorResponse(error);
     }
 };
 

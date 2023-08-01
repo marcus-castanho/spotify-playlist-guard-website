@@ -8,7 +8,7 @@ import {
 import { destroyCookie } from 'nookies';
 import { CookieKey } from '../@types';
 
-export function handleErrorResponse(
+export function handleServerErrorResponse(
     error,
 ): Awaited<ReturnType<GetServerSideProps>> {
     if (!(error instanceof BaseError)) {

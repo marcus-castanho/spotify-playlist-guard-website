@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import Link from 'next/link';
 import { sessionIsActive } from '../useCases/auth';
 import { UnauthorizedError } from '../errors';
-import { handleErrorResponse } from '../middlewares/handleErrorResponse';
+import { handleServerErrorResponse } from '../middlewares/handleServerErrorResponse';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
@@ -14,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             props: {},
         };
     } catch (error) {
-        return handleErrorResponse(error);
+        return handleServerErrorResponse(error);
     }
 };
 
