@@ -44,7 +44,7 @@ const Home: NextPage<HomeProps> = ({ playlists }) => {
         <div>
             <div>
                 <Link href="/profile">Profile</Link>
-                <button onClick={() => signOut}>Log Out</button>
+                <button onClick={() => signOut()}>Log Out</button>
             </div>
             <div
                 style={{

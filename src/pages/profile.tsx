@@ -25,7 +25,7 @@ const Profile: NextPage = () => {
         <>
             <div>
                 <Link href="/home">Home</Link>
-                <button onClick={() => signOut}>Log Out</button>
+                <button onClick={() => signOut()}>Log Out</button>
             </div>
             {user &&
                 Object.keys(user).map((key) => {
