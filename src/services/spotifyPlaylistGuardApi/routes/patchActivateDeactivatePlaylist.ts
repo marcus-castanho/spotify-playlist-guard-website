@@ -1,13 +1,13 @@
 import { GetServerSidePropsContext } from 'next';
-import { getToken } from '../auth';
 import { SpotifyPlaylistGuardApiReturn } from '../.';
+import { getCookie } from '../../../storage/cookies';
 
 export async function patchActivateDeactivatePlaylist(
     id: string,
     active: boolean,
     context?: GetServerSidePropsContext,
 ): Promise<SpotifyPlaylistGuardApiReturn> {
-    const token = getToken(context);
+    const token = getCookie('s-p-guard:token', context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const response = await fetch(`${apiUrl}/playlists/active/${id}`, {
         method: 'PATCH',
