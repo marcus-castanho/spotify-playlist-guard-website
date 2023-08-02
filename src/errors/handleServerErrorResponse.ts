@@ -5,7 +5,7 @@ import {
     NotFoundError,
     UnauthorizedError,
 } from '.';
-import { cleanCookie, CookieKey } from '../storage/cookies';
+import { cleanCookie } from '../storage/cookies';
 
 export function handleServerErrorResponse(
     error,
@@ -56,8 +56,7 @@ export function handleServerErrorResponse(
 
     if (error instanceof UnauthorizedError) {
         const { sessionEnd } = error;
-        const tokenCookieKey: CookieKey = 's-p-guard:token';
-        cleanCookie(tokenCookieKey);
+        cleanCookie('s-p-guard:token');
         return {
             redirect: {
                 destination: sessionEnd
