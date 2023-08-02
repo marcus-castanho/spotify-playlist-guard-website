@@ -1,8 +1,8 @@
 import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
-import { getToken } from '../auth';
 import { InvalidResponseDataError } from '../../../errors';
-import { SpotifyPlaylistGuardApiReturn } from '../../../@types';
+import { SpotifyPlaylistGuardApiReturn } from '../.';
+import { getCookie } from '../../../storage/cookies';
 
 export type User = z.infer<typeof userSchema>;
 
@@ -38,7 +38,7 @@ function validateUserSchema(payload: unknown) {
 export async function getUserInfo(
     context?: GetServerSidePropsContext,
 ): Promise<SpotifyPlaylistGuardApiReturn<z.infer<typeof userSchema>>> {
-    const token = getToken(context);
+    const token = getCookie('s-p-guard:token', context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const response = await fetch(`${apiUrl}/users/me`, {
         method: 'GET',

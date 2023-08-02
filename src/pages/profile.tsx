@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import Link from 'next/link';
 import { sessionIsActive } from '../useCases/auth';
 import { UnauthorizedError } from '../errors';
-import { handleServerErrorResponse } from '../middlewares/handleServerErrorResponse';
+import { handleServerErrorResponse } from '../errors/handleServerErrorResponse';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
@@ -25,7 +25,7 @@ const Profile: NextPage = () => {
         <>
             <div>
                 <Link href="/home">Home</Link>
-                <button onClick={() => signOut}>Log Out</button>
+                <button onClick={() => signOut()}>Log Out</button>
             </div>
             {user &&
                 Object.keys(user).map((key) => {

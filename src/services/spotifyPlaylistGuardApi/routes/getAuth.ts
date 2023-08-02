@@ -1,4 +1,4 @@
-import { SpotifyPlaylistGuardApiReturn } from '../../../@types';
+import { SpotifyPlaylistGuardApiReturn } from '../.';
 import { InvalidResponseDataError } from '../../../errors';
 
 export async function getAuth(

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Playlist from '../pages/playlist/[id]';
-import { QueryKey } from '../@types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
     UserProfile,
@@ -8,7 +7,8 @@ import {
     patchPlaylistAllowedUsers,
 } from '../services/spotifyPlaylistGuardApi';
 import { match } from 'ts-pattern';
-import { useClientErrorHandler } from './useClientErrorHandler';
+import { useClientErrorHandler } from '../errors/useClientErrorHandler';
+import { QueryKey } from '../contexts/QueryContext';
 
 export type AllowedUser = {
     id: string;

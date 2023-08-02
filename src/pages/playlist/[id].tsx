@@ -14,7 +14,7 @@ import Image from 'next/image';
 import { P, match } from 'ts-pattern';
 import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
 import { sessionIsActive } from '../../useCases/auth';
-import { handleServerErrorResponse } from '../../middlewares/handleServerErrorResponse';
+import { handleServerErrorResponse } from '../../errors/handleServerErrorResponse';
 import { InternalServerError, UnauthorizedError } from '../../errors';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

@@ -5,10 +5,9 @@ import React, {
     useState,
     useContext,
 } from 'react';
-import { destroyCookie, parseCookies } from 'nookies';
 import { User, getUserInfo } from '../services/spotifyPlaylistGuardApi';
-import { CookieKey } from '../@types';
 import { useRouter } from 'next/router';
+import { cleanCookie, getCookie } from '../storage/cookies';
 
 export type AuthContextType = {
     user: User | null;
@@ -26,11 +25,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null);
     const router = useRouter();
     const isAuthenticated = !!user;
-    const tokenCookieKey: CookieKey = 's-p-guard:token';
-    const { [tokenCookieKey]: token } = parseCookies();
+    const token = getCookie('s-p-guard:token');
 
     const signOut = async (sessionEnd?: boolean) => {
-        destroyCookie(null, tokenCookieKey);
+        cleanCookie('s-p-guard:token');
 
         if (sessionEnd) return router.push(`/signin/?sessionEnd=${true}`);
 
@@ -49,7 +47,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 setUser(userInfo);
             })
             .catch(() => {
-                destroyCookie(null, tokenCookieKey);
+                cleanCookie('s-p-guard:token');
                 if (router.isReady) router.push(`/signin/?sessionEnd=${true}`);
             });
     }, [router, token]);

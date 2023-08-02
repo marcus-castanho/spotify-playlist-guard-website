@@ -9,7 +9,7 @@ import {
 import { PlaylistsList } from '../components/PlaylistsList';
 import { sessionIsActive } from '../useCases/auth';
 import { InternalServerError, UnauthorizedError } from '../errors';
-import { handleServerErrorResponse } from '../middlewares/handleServerErrorResponse';
+import { handleServerErrorResponse } from '../errors/handleServerErrorResponse';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
@@ -44,7 +44,7 @@ const Home: NextPage<HomeProps> = ({ playlists }) => {
         <div>
             <div>
                 <Link href="/profile">Profile</Link>
-                <button onClick={() => signOut}>Log Out</button>
+                <button onClick={() => signOut()}>Log Out</button>
             </div>
             <div
                 style={{

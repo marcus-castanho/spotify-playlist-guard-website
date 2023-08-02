@@ -4,9 +4,8 @@ import {
     InvalidResponseDataError,
     NotFoundError,
     UnauthorizedError,
-} from '../errors';
-import { destroyCookie } from 'nookies';
-import { CookieKey } from '../@types';
+} from '.';
+import { cleanCookie } from '../storage/cookies';
 
 export function handleServerErrorResponse(
     error,
@@ -25,6 +24,13 @@ export function handleServerErrorResponse(
         };
     }
 
+    const { name, message, stack } = error;
+
+    console.log(name, {
+        message,
+        stack,
+    });
+
     if (error instanceof InvalidResponseDataError) {
         console.log(error.name, {
             message: error.message,
@@ -39,13 +45,7 @@ export function handleServerErrorResponse(
         };
     }
 
-    const { originalError, name, message, stack } = error;
-
-    console.log(name, {
-        message,
-        stack,
-    });
-
+    const { originalError } = error;
     if (originalError) {
         console.log('Original error', {
             message: originalError.message,
@@ -56,8 +56,7 @@ export function handleServerErrorResponse(
 
     if (error instanceof UnauthorizedError) {
         const { sessionEnd } = error;
-        const tokenCookieKey: CookieKey = 's-p-guard:token';
-        destroyCookie(null, tokenCookieKey);
+        cleanCookie('s-p-guard:token');
         return {
             redirect: {
                 destination: sessionEnd

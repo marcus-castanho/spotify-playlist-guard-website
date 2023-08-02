@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { FC } from 'react';
 import { getUserProfiles } from '../services/spotifyPlaylistGuardApi';
-import { QueryKey } from '../@types';
 import Image from 'next/image';
-import { useClientErrorHandler } from '../hooks/useClientErrorHandler';
+import { useClientErrorHandler } from '../errors/useClientErrorHandler';
+import { QueryKey } from '../contexts/QueryContext';
 
 export type UsersListProps = {
     usersIds: string[];

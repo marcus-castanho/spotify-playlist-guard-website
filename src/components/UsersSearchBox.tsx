@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { getQueryUsers } from '../services/spotifyPlaylistGuardApi';
 import { AllowedUser } from '../hooks/useAllowedUsers';
 import Image from 'next/image';
-import { useClientErrorHandler } from '../hooks/useClientErrorHandler';
+import { useClientErrorHandler } from '../errors/useClientErrorHandler';
 
 export type UsersSearchBoxProps = {
     allowedUsersIds: string[];

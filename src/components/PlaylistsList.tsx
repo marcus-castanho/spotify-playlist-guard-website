@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { QueryKey } from '../@types';
 import { useQuery } from '@tanstack/react-query';
 import {
     Playlist,
@@ -7,7 +6,8 @@ import {
     getUserPlaylists,
 } from '../services/spotifyPlaylistGuardApi';
 import Link from 'next/link';
-import { useClientErrorHandler } from '../hooks/useClientErrorHandler';
+import { useClientErrorHandler } from '../errors/useClientErrorHandler';
+import { QueryKey } from '../contexts/QueryContext';
 
 export type PlaylistsListProps = {
     playlists: Playlist[];

@@ -1,9 +1,9 @@
 import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import qs from 'qs';
-import { getToken } from '../auth';
 import { InvalidResponseDataError } from '../../../errors';
-import { SpotifyPlaylistGuardApiReturn } from '../../../@types';
+import { SpotifyPlaylistGuardApiReturn } from '../.';
+import { getCookie } from '../../../storage/cookies';
 
 export type QueryUser = z.infer<typeof queryUserSchema>[number];
 
@@ -42,7 +42,7 @@ export async function getQueryUsers(
     identifier: string,
     context?: GetServerSidePropsContext,
 ): Promise<SpotifyPlaylistGuardApiReturn<z.infer<typeof queryUserSchema>>> {
-    const token = getToken(context);
+    const token = getCookie('s-p-guard:token', context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const response = await fetch(
         `${apiUrl}/users/query?${qs.stringify({ identifier })}`,

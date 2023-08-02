@@ -1,8 +1,8 @@
 import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
-import { getToken } from '../auth';
 import { InvalidResponseDataError } from '../../../errors';
-import { SpotifyPlaylistGuardApiReturn } from '../../../@types';
+import { SpotifyPlaylistGuardApiReturn } from '../.';
+import { getCookie } from '../../../storage/cookies';
 
 export type Playlist = z.infer<typeof playlistsSchema>[number];
 
@@ -41,7 +41,7 @@ function validatePlaylistsSchema(payload: unknown) {
 export async function getUserPlaylists(
     context?: GetServerSidePropsContext,
 ): Promise<SpotifyPlaylistGuardApiReturn<z.infer<typeof playlistsSchema>>> {
-    const token = getToken(context);
+    const token = getCookie('s-p-guard:token', context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const response = await fetch(`${apiUrl}/playlists/list/1`, {
         method: 'GET',

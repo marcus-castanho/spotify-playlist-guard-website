@@ -1,5 +1,5 @@
-import { SpotifyPlaylistGuardApiReturn } from '../@types';
 import { useAuth } from '../contexts/AuthContext';
+import { SpotifyPlaylistGuardApiReturn } from '../services/spotifyPlaylistGuardApi';
 
 export function useClientErrorHandler() {
     const { signOut } = useAuth();
