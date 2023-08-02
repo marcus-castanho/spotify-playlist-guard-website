@@ -26,9 +26,7 @@ export function setCookie(
     options: Parameters<typeof defineCookie>[3],
     context?: GetServerSidePropsContext,
 ) {
-    defineCookie(context, cookieKey, cookieValue, {
-        maxAge: 60 * 60 * 1,
-    });
+    defineCookie(context, cookieKey, cookieValue, options);
 }
 
 export function cleanCookie(
