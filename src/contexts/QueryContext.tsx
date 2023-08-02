@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+export type QueryKey = 'playlists' | 'users-query' | 'users-profiles';
+
 export type QueryProviderProps = {
     children?: ReactNode;
 };

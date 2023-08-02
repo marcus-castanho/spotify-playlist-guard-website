@@ -1,5 +1,3 @@
-export type QueryKey = 'playlists' | 'users-query' | 'users-profiles';
-
 export type SpotifyPlaylistGuardApiReturn<T = never> =
     | {
           success: true;
