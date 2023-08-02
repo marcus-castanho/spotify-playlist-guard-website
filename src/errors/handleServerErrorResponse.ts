@@ -24,6 +24,13 @@ export function handleServerErrorResponse(
         };
     }
 
+    const { name, message, stack } = error;
+
+    console.log(name, {
+        message,
+        stack,
+    });
+
     if (error instanceof InvalidResponseDataError) {
         console.log(error.name, {
             message: error.message,
@@ -38,13 +45,7 @@ export function handleServerErrorResponse(
         };
     }
 
-    const { originalError, name, message, stack } = error;
-
-    console.log(name, {
-        message,
-        stack,
-    });
-
+    const { originalError } = error;
     if (originalError) {
         console.log('Original error', {
             message: originalError.message,
