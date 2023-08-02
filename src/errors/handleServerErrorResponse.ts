@@ -4,7 +4,7 @@ import {
     InvalidResponseDataError,
     NotFoundError,
     UnauthorizedError,
-} from '../errors';
+} from '.';
 import { destroyCookie } from 'nookies';
 import { CookieKey } from '../@types';
 

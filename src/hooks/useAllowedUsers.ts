@@ -8,7 +8,7 @@ import {
     patchPlaylistAllowedUsers,
 } from '../services/spotifyPlaylistGuardApi';
 import { match } from 'ts-pattern';
-import { useClientErrorHandler } from './useClientErrorHandler';
+import { useClientErrorHandler } from '../errors/useClientErrorHandler';
 
 export type AllowedUser = {
     id: string;
