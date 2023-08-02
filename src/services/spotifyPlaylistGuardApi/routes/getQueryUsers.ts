@@ -3,7 +3,7 @@ import { z } from 'zod';
 import qs from 'qs';
 import { getToken } from '../auth';
 import { InvalidResponseDataError } from '../../../errors';
-import { SpotifyPlaylistGuardApiReturn } from '../../../@types';
+import { SpotifyPlaylistGuardApiReturn } from '../.';
 
 export type QueryUser = z.infer<typeof queryUserSchema>[number];
 

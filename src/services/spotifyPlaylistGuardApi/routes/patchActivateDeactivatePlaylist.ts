@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import { getToken } from '../auth';
-import { SpotifyPlaylistGuardApiReturn } from '../../../@types';
+import { SpotifyPlaylistGuardApiReturn } from '../.';
 
 export async function patchActivateDeactivatePlaylist(
     id: string,

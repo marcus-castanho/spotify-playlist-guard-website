@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { getToken } from '../auth';
 import { InvalidResponseDataError } from '../../../errors';
-import { SpotifyPlaylistGuardApiReturn } from '../../../@types';
+import { SpotifyPlaylistGuardApiReturn } from '../.';
 
 export type User = z.infer<typeof userSchema>;
 
