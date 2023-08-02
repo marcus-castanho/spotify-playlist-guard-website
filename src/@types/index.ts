@@ -1,5 +1,3 @@
-export type CookieKey = 's-p-guard:token';
-
 export type QueryKey = 'playlists' | 'users-query' | 'users-profiles';
 
 export type SpotifyPlaylistGuardApiReturn<T = never> =
