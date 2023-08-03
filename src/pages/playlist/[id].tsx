@@ -97,7 +97,7 @@ const Playlist: NextPage<PlaylistProps> = ({
     } = useAllowedUserInput();
 
     return (
-        <div>
+        <>
             <Link href="/home">Home</Link>
             <div>
                 {playlist && (
@@ -192,7 +192,7 @@ const Playlist: NextPage<PlaylistProps> = ({
                     </>
                 )}
             </div>
-        </div>
+        </>
     );
 };
 

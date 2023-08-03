@@ -12,7 +12,7 @@ export type ToastProviderProps = {
     children?: ReactNode;
 };
 
-const ToastContext = createContext({} as ToastContextType);
+const ToastContext = createContext<ToastContextType | null>(null);
 
 export function ToastProvider({ children }: ToastProviderProps) {
     const [display, setDisplay] = useState(false);
@@ -41,6 +41,8 @@ export function ToastProvider({ children }: ToastProviderProps) {
 
 export function useToast(): ToastContextType {
     const context = useContext(ToastContext);
+
+    if (!context) throw new Error('ToastContext was not provided');
 
     return context;
 }
