@@ -3,6 +3,7 @@ import { AuthProvider } from './AuthContext';
 import { QueryProvider } from './QueryContext';
 import { ThemeProvider } from './ThemeContext';
 import { ToastProvider } from './ToastContext';
+import { ModalProvider } from './ModalContext';
 
 type ComposedContextsProps = {
     components: Array<
@@ -29,10 +30,11 @@ export function AppContextProvider({ children }: AppContextProviderProps) {
     return (
         <ComposedContexts
             components={[
-                AuthProvider,
                 QueryProvider,
+                AuthProvider,
                 ThemeProvider,
                 ToastProvider,
+                ModalProvider,
             ]}
         >
             {children}
