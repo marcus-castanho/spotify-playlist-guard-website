@@ -41,7 +41,7 @@ const Home: NextPage<HomeProps> = ({ playlists }) => {
     const { signOut } = useAuth();
 
     return (
-        <div>
+        <>
             <div>
                 <Link href="/profile">Profile</Link>
                 <button onClick={() => signOut()}>Log Out</button>
@@ -55,7 +55,7 @@ const Home: NextPage<HomeProps> = ({ playlists }) => {
             >
                 <PlaylistsList playlists={playlists} />
             </div>
-        </div>
+        </>
     );
 };
 

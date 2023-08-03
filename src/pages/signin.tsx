@@ -39,7 +39,7 @@ const SignIn: NextPage<SignInProps> = ({ authError }) => {
     }, [router, code, sessionEnd]);
 
     return (
-        <div>
+        <>
             <Link href="/">Index</Link>
             <button
                 onClick={() =>
@@ -52,7 +52,7 @@ const SignIn: NextPage<SignInProps> = ({ authError }) => {
             {sessionEnd && (
                 <p>Youre session was expired. Please sign in to continue</p>
             )}
-        </div>
+        </>
     );
 };
 
