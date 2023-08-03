@@ -41,6 +41,9 @@ export function ToastProvider({ children }: ToastProviderProps) {
 
 export function useToast(): ToastContextType {
     const context = useContext(ToastContext);
+    const contextIsProvided = Object.keys(context).length > 0;
+
+    if (!contextIsProvided) throw new Error('ToastContext was not provided');
 
     return context;
 }

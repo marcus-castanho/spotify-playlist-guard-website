@@ -8,10 +8,10 @@ export type ToastProps = {
 };
 
 export const Toast: FC<ToastProps> = ({ display, message, type }) => {
+    if (!display) return <></>;
     return (
         <div
             style={{
-                display: display ? 'block' : 'none',
                 borderColor:
                     type === 'success'
                         ? 'green'
