@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { InvalidResponseDataError } from '../../../errors';
 import { SpotifyPlaylistGuardApiReturn } from '../.';
-import { getCookie } from '../../../storage/cookies';
+import { request } from '../httpClient';
 
 const playlistSchema = z.object({
     id: z.string(),
@@ -38,11 +38,10 @@ export async function getPlaylist(
     id: string,
     context?: GetServerSidePropsContext,
 ): Promise<SpotifyPlaylistGuardApiReturn<z.infer<typeof playlistSchema>>> {
-    const token = getCookie('s-p-guard:token', context);
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
-    const response = await fetch(`${apiUrl}/playlists/find/${id}`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${token}` },
+    const response = await request({
+        path: `/playlists/find/${id}`,
+        options: { method: 'GET' },
+        context,
     });
     const { status } = response;
     const resBody = await response.json().catch(() => ({}));

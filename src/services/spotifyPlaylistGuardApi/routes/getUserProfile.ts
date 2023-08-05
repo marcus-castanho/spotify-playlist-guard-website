@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { InvalidResponseDataError } from '../../../errors';
 import { SpotifyPlaylistGuardApiReturn } from '../.';
-import { getCookie } from '../../../storage/cookies';
+import { request } from '../httpClient';
 
 const userProfileSchema = z.object({
     id: z.string(),
@@ -26,14 +26,10 @@ export async function getUserProfile(
     userId: string,
     context?: GetServerSidePropsContext,
 ): Promise<SpotifyPlaylistGuardApiReturn<z.infer<typeof userProfileSchema>>> {
-    const token = getCookie('s-p-guard:token', context);
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
-    const response = await fetch(`${apiUrl}/users/profile/${userId}`, {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
+    const response = await request({
+        path: `/users/profile/${userId}`,
+        options: { method: 'GET' },
+        context,
     });
     const { status } = response;
     const resBody = await response.json().catch(() => ({}));

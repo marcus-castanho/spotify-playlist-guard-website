@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { InvalidResponseDataError } from '../../../errors';
 import { SpotifyPlaylistGuardApiReturn } from '../.';
-import { getCookie } from '../../../storage/cookies';
+import { request } from '../httpClient';
 
 const playlistSchema = z.object({
     id: z.string(),
@@ -39,19 +39,15 @@ export async function patchPlaylistAllowedUsers(
     userIds: string[],
     context?: GetServerSidePropsContext,
 ): Promise<SpotifyPlaylistGuardApiReturn<z.infer<typeof playlistSchema>>> {
-    const token = getCookie('s-p-guard:token', context);
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
-    const response = await fetch(
-        `${apiUrl}/playlists/allowUsers/${playlistId}`,
-        {
+    const response = await request({
+        path: `/playlists/allowUsers/${playlistId}`,
+        options: {
             method: 'PATCH',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ allowed_userIds: userIds }),
         },
-    );
+        context,
+    });
     const { status } = response;
     const resBody = await response.json().catch(() => ({}));
 

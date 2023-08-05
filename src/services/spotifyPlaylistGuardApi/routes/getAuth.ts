@@ -1,11 +1,15 @@
 import { SpotifyPlaylistGuardApiReturn } from '../.';
 import { InvalidResponseDataError } from '../../../errors';
+import { request } from '../httpClient';
 
 export async function getAuth(
     code: string,
 ): Promise<SpotifyPlaylistGuardApiReturn<string>> {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
-    const response = await fetch(`${apiUrl}/auth/redirect?code=${code}`);
+    const response = await request({
+        path: `/auth/redirect?code=${code}`,
+        authenticated: false,
+    });
+
     const { status } = response;
 
     if (status !== 201) return { success: false, status, data: null };
