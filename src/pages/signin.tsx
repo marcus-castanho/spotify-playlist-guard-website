@@ -3,6 +3,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { authenticate } from '../useCases/auth';
 import Link from 'next/link';
+import { log } from '../logger';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
@@ -18,8 +19,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 permanent: false,
             },
         };
-    } catch (error) {
-        console.log(error);
+    } catch (error: any) {
+        log({
+            message: 'Uncaught error',
+            payload: error?.message,
+        });
         return { props: { authError: 'Something went wrong.' } };
     }
 };

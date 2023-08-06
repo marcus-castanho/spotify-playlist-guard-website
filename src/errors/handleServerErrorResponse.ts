@@ -6,14 +6,18 @@ import {
     UnauthorizedError,
 } from '.';
 import { cleanCookie } from '../storage/cookies';
+import { log } from '../logger';
 
 export function handleServerErrorResponse(
     error,
 ): Awaited<ReturnType<GetServerSideProps>> {
     if (!(error instanceof BaseError)) {
-        console.log('Uncaught error', {
-            message: error.message,
-            stack: error.stack,
+        log({
+            message: 'Uncaught error',
+            payload: {
+                message: error.message,
+                stack: error.stack,
+            },
         });
 
         return {
@@ -25,33 +29,30 @@ export function handleServerErrorResponse(
     }
 
     const { name, message, stack } = error;
-
-    console.log(name, {
-        message,
-        stack,
+    log({
+        message: name,
+        payload: { message, stack },
     });
 
-    if (error instanceof InvalidResponseDataError) {
-        console.log(error.name, {
-            message: error.message,
-            stack: error.stack,
+    const { originalError } = error;
+    if (originalError) {
+        log({
+            message: 'Original error',
+            payload: {
+                message: originalError.message,
+                stack: originalError.stack,
+                error,
+            },
         });
+    }
 
+    if (error instanceof InvalidResponseDataError) {
         return {
             redirect: {
                 destination: '/500',
                 permanent: false,
             },
         };
-    }
-
-    const { originalError } = error;
-    if (originalError) {
-        console.log('Original error', {
-            message: originalError.message,
-            stack: originalError.stack,
-            error,
-        });
     }
 
     if (error instanceof UnauthorizedError) {

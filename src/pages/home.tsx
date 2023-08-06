@@ -10,9 +10,15 @@ import { PlaylistsList } from '../components/PlaylistsList';
 import { sessionIsActive } from '../useCases/auth';
 import { InternalServerError, UnauthorizedError } from '../errors';
 import { handleServerErrorResponse } from '../errors/handleServerErrorResponse';
+import logger from 'pino';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
+        logger().info(
+            { teste: 'teste', teste1: 'teste' },
+            'Mensagem',
+            'argumento',
+        );
         if (!sessionIsActive(context)) throw new UnauthorizedError({});
 
         const playlists = await getUserPlaylists(context).then(

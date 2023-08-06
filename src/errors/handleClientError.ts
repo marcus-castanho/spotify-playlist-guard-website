@@ -1,5 +1,6 @@
 import { ErrorInfo } from 'react';
+import { log } from '../logger';
 
 export function handleClientError(error, errorInfo: ErrorInfo) {
-    console.log({ error, errorInfo });
+    log({ payload: { error, errorInfo } });
 }
