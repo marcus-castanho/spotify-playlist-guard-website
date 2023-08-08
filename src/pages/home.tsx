@@ -10,15 +10,12 @@ import { PlaylistsList } from '../components/PlaylistsList';
 import { sessionIsActive } from '../useCases/auth';
 import { InternalServerError, UnauthorizedError } from '../errors';
 import { handleServerErrorResponse } from '../errors/handleServerErrorResponse';
-import logger from 'pino';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
-        logger().info(
-            { teste: 'teste', teste1: 'teste' },
-            'Mensagem',
-            'argumento',
-        );
+        const locale = context.locale || '';
+
         if (!sessionIsActive(context)) throw new UnauthorizedError({});
 
         const playlists = await getUserPlaylists(context).then(
@@ -32,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         );
 
         return {
-            props: { playlists },
+            props: { playlists, ...(await serverSideTranslations(locale)) },
         };
     } catch (error) {
         return handleServerErrorResponse(error);

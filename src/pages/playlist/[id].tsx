@@ -16,10 +16,12 @@ import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
 import { sessionIsActive } from '../../useCases/auth';
 import { handleServerErrorResponse } from '../../errors/handleServerErrorResponse';
 import { InternalServerError, UnauthorizedError } from '../../errors';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
         const { id } = context.query;
+        const locale = context.locale || '';
 
         if (!sessionIsActive(context)) throw new UnauthorizedError({});
 
@@ -64,6 +66,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 playlist,
                 allowedUsers,
                 ownerSpotifyId: user.spotify_id,
+                ...(await serverSideTranslations(locale)),
             },
         };
     } catch (error) {
