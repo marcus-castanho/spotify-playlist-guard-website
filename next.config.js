@@ -1,5 +1,7 @@
+const { i18n } = require('./next-i18next.config');
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
     reactStrictMode: true,
     webpack: (config) => {
         config.module.rules.push({
@@ -10,6 +12,5 @@ const nextConfig = {
 
         return config;
     },
+    i18n,
 };
-
-export default nextConfig;
