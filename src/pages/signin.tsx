@@ -4,12 +4,15 @@ import { useRouter } from 'next/router';
 import { authenticate } from '../useCases/auth';
 import Link from 'next/link';
 import { log } from '../logger';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    const locale = context.locale || '';
     try {
         const { code } = context.query;
 
-        if (typeof code !== 'string') return { props: {} };
+        if (typeof code !== 'string')
+            return { props: { ...(await serverSideTranslations(locale)) } };
 
         await authenticate(code, context);
 
@@ -24,7 +27,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             message: 'Uncaught error',
             payload: error?.message,
         });
-        return { props: { authError: 'Something went wrong.' } };
+        return {
+            props: {
+                authError: 'Something went wrong.',
+                ...(await serverSideTranslations(locale)),
+            },
+        };
     }
 };
 

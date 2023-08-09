@@ -5,6 +5,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { AppContextProvider } from '../contexts';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { ErrorFallback } from '../components/ErrorFallback';
+import { appWithTranslation } from 'next-i18next';
+import { i18n } from '../../next-i18next.config';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     return (
@@ -23,4 +25,4 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     );
 };
 
-export default App;
+export default appWithTranslation(App, { i18n });
