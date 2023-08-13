@@ -38,7 +38,7 @@ export class UnauthorizedError extends BaseError {
 
 export class NotFoundError extends BaseError {
     constructor({ message = '', error }: { message?: string; error?: Error }) {
-        super(...['UnauthorizedError', message, 404, error]);
+        super(...['NotFoundError', message, 404, error]);
     }
 }
 
