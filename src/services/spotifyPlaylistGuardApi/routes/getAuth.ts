@@ -16,7 +16,8 @@ export async function getAuth(
 
     const token = response.headers.get('Authorization')?.split(' ')[1];
 
-    if (!token) throw new InvalidResponseDataError('Invalid token received');
+    if (!token || typeof token !== 'string')
+        throw new InvalidResponseDataError('Invalid token received');
 
     return { success: true, status, data: token };
 }
