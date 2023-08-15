@@ -12,6 +12,11 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     return (
         <ErrorBoundary fallback={<ErrorFallback />}>
             <Head>
+                <title>Spotify Playlist Guard</title>
+                <meta
+                    name="description"
+                    content="An app bot to guard your collaborative playlists"
+                />
                 <meta
                     name="viewport"
                     content="initial-scale=1, width=device-width"
