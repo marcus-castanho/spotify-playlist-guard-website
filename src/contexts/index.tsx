@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ComponentType, ReactNode, PropsWithChildren } from 'react';
 import { AuthProvider } from './AuthContext';
 import { QueryProvider } from './QueryContext';
 import { ThemeProvider } from './ThemeContext';
@@ -6,10 +6,8 @@ import { ToastProvider } from './ToastContext';
 import { ModalProvider } from './ModalContext';
 
 type ComposedContextsProps = {
-    components: Array<
-        React.JSXElementConstructor<React.PropsWithChildren<unknown>>
-    >;
-    children: React.ReactNode;
+    components: ComponentType<PropsWithChildren<unknown>>[];
+    children: ReactNode;
 };
 
 function ComposedContexts(props: ComposedContextsProps) {
