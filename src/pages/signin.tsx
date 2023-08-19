@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { authenticate } from '../useCases/auth';
+import { authenticate } from '../useCases/authenticate';
 import Link from 'next/link';
 import { log } from '../logger';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';

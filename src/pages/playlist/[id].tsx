@@ -13,17 +13,17 @@ import { useAllowedUsers } from '../../hooks/useAllowedUsers';
 import Image from 'next/image';
 import { P, match } from 'ts-pattern';
 import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
-import { sessionIsActive } from '../../useCases/auth';
 import { handleServerErrorResponse } from '../../errors/handleServerErrorResponse';
 import { InternalServerError, UnauthorizedError } from '../../errors';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { validateSession } from '../../middlewares/validateSession';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
         const { id } = context.query;
         const locale = context.locale || '';
 
-        if (!sessionIsActive(context)) throw new UnauthorizedError({});
+        validateSession(context);
 
         const playlist = await getPlaylist(id as string, context).then(
             ({ success, status, data }) => {

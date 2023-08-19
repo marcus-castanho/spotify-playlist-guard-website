@@ -7,16 +7,16 @@ import {
     getUserPlaylists,
 } from '../services/spotifyPlaylistGuardApi';
 import { PlaylistsList } from '../components/PlaylistsList';
-import { sessionIsActive } from '../useCases/auth';
 import { InternalServerError, UnauthorizedError } from '../errors';
 import { handleServerErrorResponse } from '../errors/handleServerErrorResponse';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { validateSession } from '../middlewares/validateSession';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
         const locale = context.locale || '';
 
-        if (!sessionIsActive(context)) throw new UnauthorizedError({});
+        validateSession(context);
 
         const playlists = await getUserPlaylists(context).then(
             ({ success, status, data }) => {

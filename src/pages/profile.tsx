@@ -2,16 +2,15 @@ import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useAuth } from '../contexts/AuthContext';
 import Link from 'next/link';
-import { sessionIsActive } from '../useCases/auth';
-import { UnauthorizedError } from '../errors';
 import { handleServerErrorResponse } from '../errors/handleServerErrorResponse';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { validateSession } from '../middlewares/validateSession';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
         const locale = context.locale || '';
 
-        if (!sessionIsActive(context)) throw new UnauthorizedError({});
+        validateSession(context);
 
         return {
             props: {

@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { getAuth } from '../services/spotifyPlaylistGuardApi';
 import { InternalServerError } from '../errors';
-import { getCookie, setCookie } from '../storage/cookies';
+import { setCookie } from '../storage/cookies';
 
 export async function authenticate(
     code: string,
@@ -21,9 +21,3 @@ export async function authenticate(
         context,
     );
 }
-
-export const sessionIsActive = (context: GetServerSidePropsContext) => {
-    const token = getCookie('s-p-guard:token', context);
-
-    return !!token;
-};
