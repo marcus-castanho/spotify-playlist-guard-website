@@ -6,7 +6,7 @@ import {
     NotFoundError,
     UnauthorizedError,
 } from '.';
-import { cleanCookie } from '../storage/cookies';
+import { deleteCookie } from '../storage/cookies';
 import { log } from '../logger';
 
 export function handleApiErrorResponse(
@@ -105,7 +105,7 @@ export function handleMiddlewareErrorResponse(
 
     if (error instanceof UnauthorizedError) {
         const { sessionEnd } = error;
-        cleanCookie('s-p-guard:token');
+        deleteCookie('s-p-guard:token');
 
         return {
             redirect: {
