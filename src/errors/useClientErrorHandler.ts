@@ -9,10 +9,7 @@ export function useClientErrorHandler() {
         status,
         data,
     }: SpotifyPlaylistGuardApiReturn<T>) => {
-        if (status === 401) {
-            signOut(true);
-            throw new Error('Failed');
-        }
+        if (status === 401) signOut(true);
         if (!success) throw new Error('Failed');
 
         return data;
