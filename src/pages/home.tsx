@@ -8,7 +8,7 @@ import {
 } from '../services/spotifyPlaylistGuardApi';
 import { PlaylistsList } from '../components/PlaylistsList';
 import { InternalServerError, UnauthorizedError } from '../errors';
-import { handleMiddlewareErrorResponse } from '../errors/handleServerErrors';
+import { handleMiddlewareErrorResponse } from '../errors/serverErrorHandlers';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { validateSession } from '../middlewares/validateSession';
 

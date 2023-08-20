@@ -2,7 +2,7 @@ import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useAuth } from '../contexts/AuthContext';
 import Link from 'next/link';
-import { handleMiddlewareErrorResponse } from '../errors/handleServerErrors';
+import { handleMiddlewareErrorResponse } from '../errors/serverErrorHandlers';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { validateSession } from '../middlewares/validateSession';
 

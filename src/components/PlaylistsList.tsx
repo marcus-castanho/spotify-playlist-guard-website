@@ -6,7 +6,7 @@ import {
     getUserPlaylists,
 } from '../services/spotifyPlaylistGuardApi';
 import Link from 'next/link';
-import { useClientErrorHandler } from '../errors/useClientErrorHandler';
+import { useClientErrorHandler } from '../errors/clientErrorHandlers';
 import { QueryKey } from '../contexts/QueryContext';
 
 export type PlaylistsListProps = {

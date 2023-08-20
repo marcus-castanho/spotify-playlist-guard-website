@@ -1,5 +1,5 @@
 import React, { ErrorInfo, ReactNode } from 'react';
-import { handleClientError } from '../errors/handleClientError';
+import { handleClientError } from '../errors/clientErrorHandlers';
 
 export type ErrorBoundaryProps = {
     fallback: ReactNode;

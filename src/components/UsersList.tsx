@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { FC } from 'react';
 import { getUserProfiles } from '../services/spotifyPlaylistGuardApi';
 import Image from 'next/image';
-import { useClientErrorHandler } from '../errors/useClientErrorHandler';
+import { useClientErrorHandler } from '../errors/clientErrorHandlers';
 import { QueryKey } from '../contexts/QueryContext';
 
 export type UsersListProps = {
