@@ -1,6 +1,7 @@
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, NextApiResponse } from 'next';
 import {
-    BaseError,
+    HTTPException,
+    InternalServerError,
     InvalidResponseDataError,
     NotFoundError,
     UnauthorizedError,
@@ -8,10 +9,58 @@ import {
 import { cleanCookie } from '../storage/cookies';
 import { log } from '../logger';
 
-export function handleServerErrorResponse(
+export function handleApiErrorResponse(
+    error,
+    res: NextApiResponse,
+): NextApiResponse | void {
+    if (
+        error instanceof InternalServerError ||
+        !(error instanceof HTTPException)
+    ) {
+        log({
+            message: 'Uncaught error',
+            payload: {
+                message: error.message,
+                stack: error.stack,
+            },
+        });
+
+        return res.status(500).json({
+            status: 500,
+            message: 'Internal Server Error',
+        });
+    }
+
+    const { name, message, stack, statusCode, originalError } = error;
+    log({
+        message: name,
+        payload: { message, stack },
+    });
+
+    if (originalError) {
+        log({
+            message: 'Original error',
+            payload: {
+                message: originalError.message,
+                stack: originalError.stack,
+                error,
+            },
+        });
+    }
+
+    return res.status(statusCode).json({
+        status: statusCode,
+        message,
+    });
+}
+
+export function handleMiddlewareErrorResponse(
     error,
 ): Awaited<ReturnType<GetServerSideProps>> {
-    if (!(error instanceof BaseError)) {
+    if (
+        error instanceof InternalServerError ||
+        !(error instanceof HTTPException)
+    ) {
         log({
             message: 'Uncaught error',
             payload: {
@@ -28,13 +77,12 @@ export function handleServerErrorResponse(
         };
     }
 
-    const { name, message, stack } = error;
+    const { name, message, stack, originalError } = error;
     log({
         message: name,
         payload: { message, stack },
     });
 
-    const { originalError } = error;
     if (originalError) {
         log({
             message: 'Original error',
@@ -58,6 +106,7 @@ export function handleServerErrorResponse(
     if (error instanceof UnauthorizedError) {
         const { sessionEnd } = error;
         cleanCookie('s-p-guard:token');
+
         return {
             redirect: {
                 destination: sessionEnd

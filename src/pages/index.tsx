@@ -2,7 +2,7 @@ import React from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { handleServerErrorResponse } from '../errors/handleServerErrorResponse';
+import { handleMiddlewareErrorResponse } from '../errors/handleServerErrors';
 
 export async function getStaticProps({ locale }) {
     try {
@@ -12,7 +12,7 @@ export async function getStaticProps({ locale }) {
             },
         };
     } catch (error) {
-        return handleServerErrorResponse(error);
+        return handleMiddlewareErrorResponse(error);
     }
 }
 

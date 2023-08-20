@@ -1,6 +1,6 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
-import { handleServerErrorResponse } from '../errors/handleServerErrorResponse';
+import { handleMiddlewareErrorResponse } from '../errors/handleServerErrors';
 
 export async function getStaticProps({ locale }) {
     try {
@@ -10,7 +10,7 @@ export async function getStaticProps({ locale }) {
             },
         };
     } catch (error) {
-        return handleServerErrorResponse(error);
+        return handleMiddlewareErrorResponse(error);
     }
 }
 

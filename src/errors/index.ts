@@ -8,11 +8,11 @@ export class InvalidResponseDataError extends Error {
     }
 }
 
-export class BaseError extends Error {
+export class HTTPException extends Error {
     constructor(
-        readonly errorName = 'BaseError',
-        readonly errorMessage?: string,
+        readonly errorMessage: string = '',
         readonly statusCode = 500,
+        readonly errorName = 'HTTPException',
         readonly originalError?: Error,
     ) {
         super(errorMessage);
@@ -20,10 +20,10 @@ export class BaseError extends Error {
     }
 }
 
-export class UnauthorizedError extends BaseError {
+export class UnauthorizedError extends HTTPException {
     readonly sessionEnd?: boolean;
     constructor({
-        message = '',
+        message = 'Unauthorized',
         sessionEnd = false,
         error,
     }: {
@@ -31,19 +31,31 @@ export class UnauthorizedError extends BaseError {
         sessionEnd?: boolean;
         error?: Error;
     }) {
-        super(...['UnauthorizedError', message, 401, error]);
+        super(...[message, 401, 'UnauthorizedError', error]);
         this.sessionEnd = sessionEnd;
     }
 }
 
-export class NotFoundError extends BaseError {
-    constructor({ message = '', error }: { message?: string; error?: Error }) {
-        super(...['NotFoundError', message, 404, error]);
+export class NotFoundError extends HTTPException {
+    constructor({
+        message = 'Not Found',
+        error,
+    }: {
+        message?: string;
+        error?: Error;
+    }) {
+        super(...[message, 404, 'NotFoundError', error]);
     }
 }
 
-export class InternalServerError extends BaseError {
-    constructor({ message = '', error }: { message?: string; error?: Error }) {
-        super(...['InternalServerError', message, 500, error]);
+export class InternalServerError extends HTTPException {
+    constructor({
+        message = 'Internal Server Error',
+        error,
+    }: {
+        message?: string;
+        error?: Error;
+    }) {
+        super(...[message, 500, 'InternalServerError', error]);
     }
 }

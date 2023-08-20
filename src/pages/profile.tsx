@@ -2,7 +2,7 @@ import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { useAuth } from '../contexts/AuthContext';
 import Link from 'next/link';
-import { handleServerErrorResponse } from '../errors/handleServerErrorResponse';
+import { handleMiddlewareErrorResponse } from '../errors/handleServerErrors';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { validateSession } from '../middlewares/validateSession';
 
@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             },
         };
     } catch (error) {
-        return handleServerErrorResponse(error);
+        return handleMiddlewareErrorResponse(error);
     }
 };
 
