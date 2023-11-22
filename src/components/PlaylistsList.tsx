@@ -26,9 +26,9 @@ export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
     });
 
     const handleActivatePlaylist = async (id: string, active: boolean) => {
-        await patchActivateDeactivatePlaylist(id, active)
-            .then(({ success, status }) => {
-                handleGuardApiResponse({ success, status, data: undefined });
+        await patchActivateDeactivatePlaylist({ id, active })
+            .then(({ success, status, data }) => {
+                handleGuardApiResponse({ success, status, data });
                 playlistsQuery.refetch();
             })
             .catch(() => {
