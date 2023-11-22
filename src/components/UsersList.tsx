@@ -13,7 +13,7 @@ export const UsersList: FC<UsersListProps> = ({ usersIds }) => {
     const usersProfilesKey: QueryKey = 'users-profiles';
     const usersProfilesQuery = useQuery([usersProfilesKey, usersIds], {
         queryFn: () =>
-            getUserProfiles(usersIds)
+            getUserProfiles({ usersIds })
                 .then(handleGuardApiResponse)
                 .catch(() => []),
     });

@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import qs from 'qs';
 import { InvalidResponseDataError } from '../../../errors';
-import { ReturnValue } from '../.';
+import { Fetch } from '../.';
 import { request } from '../httpClient';
 
 export type UserProfile = z.infer<typeof userProfileSchema>;
@@ -27,12 +27,17 @@ function validateUserProfilesSchema(payload: unknown) {
     return validation.data;
 }
 
-export async function getUserProfiles(
-    userIds: string[],
-    context?: GetServerSidePropsContext,
-): Promise<ReturnValue<z.infer<typeof usersProfilesSchema>>> {
+type GetUserProfilesPayload = {
+    usersIds: string[];
+    context?: GetServerSidePropsContext;
+};
+
+export const getUserProfiles: Fetch<
+    UserProfile[],
+    GetUserProfilesPayload
+> = async ({ usersIds, context }) => {
     const response = await request({
-        path: `/users/profile?${qs.stringify({ spotify_id: userIds })}`,
+        path: `/users/profile?${qs.stringify({ spotify_id: usersIds })}`,
         options: { method: 'GET' },
         context,
     });
@@ -48,4 +53,4 @@ export async function getUserProfiles(
         status: status as 200,
         data: profiles,
     };
-}
+};
