@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import qs from 'qs';
 import { InvalidResponseDataError } from '../../../errors';
-import { SpotifyPlaylistGuardApiReturn } from '../.';
+import { ReturnValue } from '../.';
 import { request } from '../httpClient';
 
 export type QueryUser = z.infer<typeof queryUserSchema>[number];
@@ -41,7 +41,7 @@ function validateQueryUsersSchema(payload: unknown) {
 export async function getQueryUsers(
     identifier: string,
     context?: GetServerSidePropsContext,
-): Promise<SpotifyPlaylistGuardApiReturn<z.infer<typeof queryUserSchema>>> {
+): Promise<ReturnValue<z.infer<typeof queryUserSchema>>> {
     const response = await request({
         path: `/users/query?${qs.stringify({ identifier })}`,
         options: { method: 'GET' },

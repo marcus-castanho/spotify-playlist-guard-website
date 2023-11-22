@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { SpotifyPlaylistGuardApiReturn } from '../.';
+import { ReturnValue } from '../.';
 import { InvalidResponseDataError } from '../../../errors';
 import { request } from '../httpClient';
 
@@ -19,9 +19,7 @@ function validateAuthSchema(payload: unknown) {
     return validation.data;
 }
 
-export async function getAuth(
-    code: string,
-): Promise<SpotifyPlaylistGuardApiReturn<string>> {
+export async function getAuth(code: string): Promise<ReturnValue<string>> {
     const response = await request({
         path: `/auth/redirect?code=${code}`,
         authenticated: false,

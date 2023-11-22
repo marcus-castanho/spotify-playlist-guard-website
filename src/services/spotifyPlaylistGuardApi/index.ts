@@ -1,6 +1,6 @@
 export * from './routes';
 
-export type SpotifyPlaylistGuardApiReturn<T = never> =
+export type ReturnValue<T = never> =
     | {
           success: true;
           status: number;

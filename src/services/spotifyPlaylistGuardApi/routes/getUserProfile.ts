@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { InvalidResponseDataError } from '../../../errors';
-import { SpotifyPlaylistGuardApiReturn } from '../.';
+import { ReturnValue } from '../.';
 import { request } from '../httpClient';
 
 const userProfileSchema = z.object({
@@ -25,7 +25,7 @@ function validateUserProfileSchema(payload: unknown) {
 export async function getUserProfile(
     userId: string,
     context?: GetServerSidePropsContext,
-): Promise<SpotifyPlaylistGuardApiReturn<z.infer<typeof userProfileSchema>>> {
+): Promise<ReturnValue<z.infer<typeof userProfileSchema>>> {
     const response = await request({
         path: `/users/profile/${userId}`,
         options: { method: 'GET' },

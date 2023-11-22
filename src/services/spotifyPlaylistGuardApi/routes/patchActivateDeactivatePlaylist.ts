@@ -1,12 +1,12 @@
 import { GetServerSidePropsContext } from 'next';
-import { SpotifyPlaylistGuardApiReturn } from '../.';
+import { ReturnValue } from '../.';
 import { request } from '../httpClient';
 
 export async function patchActivateDeactivatePlaylist(
     id: string,
     active: boolean,
     context?: GetServerSidePropsContext,
-): Promise<SpotifyPlaylistGuardApiReturn> {
+): Promise<ReturnValue> {
     const response = await request({
         path: `/playlists/active/${id}`,
         options: {
