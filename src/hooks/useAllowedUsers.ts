@@ -63,7 +63,10 @@ export function useAllowedUsers({
     const usersProfilesMutation = useMutation({
         mutationFn: async (userIds: string[]) => {
             setUpdating(true);
-            return patchPlaylistAllowedUsers(playlist.id, userIds)
+            return patchPlaylistAllowedUsers({
+                playlistId: playlist.id,
+                userIds,
+            })
                 .then(handleGuardApiResponse)
                 .catch(() => null);
         },

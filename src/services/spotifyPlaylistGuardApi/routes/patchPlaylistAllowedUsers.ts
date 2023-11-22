@@ -1,8 +1,10 @@
 import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { InvalidResponseDataError } from '../../../errors';
-import { ReturnValue } from '../.';
+import { Fetch } from '../.';
 import { request } from '../httpClient';
+
+type Playlist = z.infer<typeof playlistSchema>;
 
 const playlistSchema = z.object({
     id: z.string(),
@@ -34,11 +36,16 @@ function validatePlaylistSchema(payload: unknown) {
     return validation.data;
 }
 
-export async function patchPlaylistAllowedUsers(
-    playlistId: string,
-    userIds: string[],
-    context?: GetServerSidePropsContext,
-): Promise<ReturnValue<z.infer<typeof playlistSchema>>> {
+type PatchPlaylistAllowedUsers = {
+    playlistId: string;
+    userIds: string[];
+    context?: GetServerSidePropsContext;
+};
+
+export const patchPlaylistAllowedUsers: Fetch<
+    Playlist,
+    PatchPlaylistAllowedUsers
+> = async ({ playlistId, userIds, context }) => {
     const response = await request({
         path: `/playlists/allowUsers/${playlistId}`,
         options: {
@@ -60,4 +67,4 @@ export async function patchPlaylistAllowedUsers(
         status,
         data: playlist,
     };
-}
+};
