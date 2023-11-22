@@ -11,3 +11,7 @@ export type ReturnValue<T = never> =
           status: number;
           data?: null;
       };
+
+export type Fetch<R, T = never> = [T] extends [never]
+    ? () => Promise<ReturnValue<R>>
+    : (payload: T) => Promise<ReturnValue<R>>;
