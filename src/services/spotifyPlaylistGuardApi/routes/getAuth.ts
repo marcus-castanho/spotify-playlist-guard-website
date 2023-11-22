@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ReturnValue } from '../.';
+import { Fetch } from '../.';
 import { InvalidResponseDataError } from '../../../errors';
 import { request } from '../httpClient';
 
@@ -19,7 +19,7 @@ function validateAuthSchema(payload: unknown) {
     return validation.data;
 }
 
-export async function getAuth(code: string): Promise<ReturnValue<string>> {
+export const getAuth: Fetch<string, string> = async (code: string) => {
     const response = await request({
         path: `/auth/redirect?code=${code}`,
         authenticated: false,
@@ -32,4 +32,4 @@ export async function getAuth(code: string): Promise<ReturnValue<string>> {
     const { token } = validateAuthSchema(resBody);
 
     return { success: true, status, data: token };
-}
+};
