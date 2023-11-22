@@ -50,7 +50,7 @@ export function useAllowedUsers({
                             name: 'Data not found.',
                             image_url: 'Data not found.',
                         };
-                        return getUserProfile(id)
+                        return getUserProfile({ userId: id })
                             .then(handleGuardApiResponse)
                             .catch(() => defaultValue);
                     }),

@@ -1,8 +1,10 @@
 import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { InvalidResponseDataError } from '../../../errors';
-import { ReturnValue } from '../.';
+import { Fetch } from '../.';
 import { request } from '../httpClient';
+
+type UserProfile = z.infer<typeof userProfileSchema>;
 
 const userProfileSchema = z.object({
     id: z.string(),
@@ -22,10 +24,15 @@ function validateUserProfileSchema(payload: unknown) {
     return validation.data;
 }
 
-export async function getUserProfile(
-    userId: string,
-    context?: GetServerSidePropsContext,
-): Promise<ReturnValue<z.infer<typeof userProfileSchema>>> {
+type GetUserProfilePayload = {
+    userId: string;
+    context?: GetServerSidePropsContext;
+};
+
+export const getUserProfile: Fetch<
+    UserProfile,
+    GetUserProfilePayload
+> = async ({ userId, context }) => {
     const response = await request({
         path: `/users/profile/${userId}`,
         options: { method: 'GET' },
@@ -43,4 +50,4 @@ export async function getUserProfile(
         status: status as 200,
         data: profile,
     };
-}
+};

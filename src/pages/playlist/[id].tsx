@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                     name: 'Data not found.',
                     image_url: 'Data not found.',
                 };
-                return getUserProfile(userId, context)
+                return getUserProfile({ userId, context })
                     .then(({ success, data }) => {
                         if (!success) return defaultValue;
                         return data;
