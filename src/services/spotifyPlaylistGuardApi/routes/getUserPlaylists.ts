@@ -4,7 +4,7 @@ import { InvalidResponseDataError } from '../../../errors';
 import { Fetch } from '../.';
 import { request } from '../httpClient';
 
-export type Playlist = z.infer<typeof playlistsSchema>[number];
+type Playlist = z.infer<typeof playlistsSchema>[number];
 
 const playlistSchema = z.object({
     id: z.string(),
