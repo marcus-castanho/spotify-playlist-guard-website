@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { InvalidResponseDataError } from '../../../errors';
-import { ReturnValue } from '../.';
+import { Fetch } from '../.';
 import { request } from '../httpClient';
 
 export type User = z.infer<typeof userSchema>;
@@ -35,9 +35,13 @@ function validateUserSchema(payload: unknown) {
     return validation.data;
 }
 
-export async function getUserInfo(
-    context?: GetServerSidePropsContext,
-): Promise<ReturnValue<z.infer<typeof userSchema>>> {
+type GetUserInfoPayload = {
+    context?: GetServerSidePropsContext;
+};
+
+export const getUserInfo: Fetch<User, GetUserInfoPayload> = async ({
+    context,
+}) => {
     const response = await request({
         path: `/users/me`,
         options: { method: 'GET' },
@@ -55,4 +59,4 @@ export async function getUserInfo(
         status: status as 200,
         data: userData,
     };
-}
+};

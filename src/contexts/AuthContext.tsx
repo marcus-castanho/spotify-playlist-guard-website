@@ -38,7 +38,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     useEffect(() => {
         if (!token) return;
 
-        getUserInfo()
+        getUserInfo({})
             .then(({ success, data }) => {
                 if (!success) throw new Error('Unauthorized');
                 return data;

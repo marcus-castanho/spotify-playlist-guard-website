@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             }),
         );
 
-        const user = await getUserInfo(context).then(
+        const user = await getUserInfo({ context }).then(
             ({ success, status, data }) => {
                 if (status === 401)
                     throw new UnauthorizedError({ sessionEnd: true });
