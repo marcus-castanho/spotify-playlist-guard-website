@@ -22,7 +22,7 @@ export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
     const [userIdentifer, setUserIdentifier] = useState('');
     const usersQuery = useMutation({
         mutationFn: async (identifier: typeof userIdentifer) => {
-            return getQueryUsers(identifier)
+            return getQueryUsers({ identifier })
                 .then(handleGuardApiResponse)
                 .catch(() => []);
         },

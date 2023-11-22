@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import qs from 'qs';
 import { InvalidResponseDataError } from '../../../errors';
-import { ReturnValue } from '../.';
+import { Fetch } from '../.';
 import { request } from '../httpClient';
 
 export type QueryUser = z.infer<typeof queryUserSchema>[number];
@@ -38,10 +38,15 @@ function validateQueryUsersSchema(payload: unknown) {
     return validation.data;
 }
 
-export async function getQueryUsers(
-    identifier: string,
-    context?: GetServerSidePropsContext,
-): Promise<ReturnValue<z.infer<typeof queryUserSchema>>> {
+type GetQueryUsersPayload = {
+    identifier: string;
+    context?: GetServerSidePropsContext;
+};
+
+export const getQueryUsers: Fetch<QueryUser[], GetQueryUsersPayload> = async ({
+    identifier,
+    context,
+}) => {
     const response = await request({
         path: `/users/query?${qs.stringify({ identifier })}`,
         options: { method: 'GET' },
@@ -59,4 +64,4 @@ export async function getQueryUsers(
         status: status as 200,
         data: users,
     };
-}
+};
