@@ -18,7 +18,7 @@ export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
     const playlistQueryKey: QueryKey = 'playlists';
     const playlistsQuery = useQuery([playlistQueryKey], {
         queryFn: () =>
-            getUserPlaylists()
+            getUserPlaylists({})
                 .then(handleGuardApiResponse)
                 .catch(() => []),
         initialData: playlists,

@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
         validateSession(context);
 
-        const playlists = await getUserPlaylists(context).then(
+        const playlists = await getUserPlaylists({ context }).then(
             ({ success, status, data }) => {
                 if (status === 401)
                     throw new UnauthorizedError({ sessionEnd: true });

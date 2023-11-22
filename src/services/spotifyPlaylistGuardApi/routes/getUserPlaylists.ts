@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { InvalidResponseDataError } from '../../../errors';
-import { ReturnValue } from '../.';
+import { Fetch } from '../.';
 import { request } from '../httpClient';
 
 export type Playlist = z.infer<typeof playlistsSchema>[number];
@@ -38,9 +38,14 @@ function validatePlaylistsSchema(payload: unknown) {
     return validation.data;
 }
 
-export async function getUserPlaylists(
-    context?: GetServerSidePropsContext,
-): Promise<ReturnValue<z.infer<typeof playlistsSchema>>> {
+type GetUserPlaylistsPayload = {
+    context?: GetServerSidePropsContext;
+};
+
+export const getUserPlaylists: Fetch<
+    Playlist[],
+    GetUserPlaylistsPayload
+> = async ({ context }) => {
     const response = await request({
         path: `/playlists/list/1`,
         options: { method: 'GET' },
@@ -58,4 +63,4 @@ export async function getUserPlaylists(
         status: status as 200,
         data: playlists,
     };
-}
+};
