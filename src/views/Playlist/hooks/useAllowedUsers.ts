@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import Playlist from '../../../pages/playlist/[id]';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
     UserProfile,
     getUserProfile,
     patchPlaylistAllowedUsers,
-} from '../../../services/spotifyPlaylistGuardApi';
+    Playlist,
+} from '@/services/spotifyPlaylistGuardApi';
 import { match } from 'ts-pattern';
-import { useClientErrorHandler } from '../../../errors/clientErrorHandlers';
-import { QueryKey } from '../../../contexts/QueryContext';
+import { useClientErrorHandler } from '@/errors/clientErrorHandlers';
+import { QueryKey } from '@/contexts/QueryContext';
 import { getCookie } from '@/storage/cookies/client';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
