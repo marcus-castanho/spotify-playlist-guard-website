@@ -6,18 +6,13 @@ import {
     getPlaylist,
     getUserInfo,
     getUserProfile,
-} from '../../services/spotifyPlaylistGuardApi';
-import { UsersSearchBox } from '../../components/UsersSearchBox';
-import Link from 'next/link';
-import { useAllowedUsers } from '../../hooks/useAllowedUsers';
-import Image from 'next/image';
-import { P, match } from 'ts-pattern';
-import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
-import { handlePageReqErrorResponse } from '../../errors/serverErrorHandlers';
-import { InternalServerError, Unauthorized } from '../../errors';
+} from '@/services/spotifyPlaylistGuardApi';
+import { handlePageReqErrorResponse } from '@/errors/serverErrorHandlers';
+import { InternalServerError, Unauthorized } from '@/errors';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getPageReqCookie } from '@/storage/cookies/server';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
+import { Playlist as PlaylistPage } from '@/views/Playlist';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
@@ -85,117 +80,12 @@ const Playlist: NextPage<PlaylistProps> = ({
     allowedUsers,
     ownerSpotifyId,
 }) => {
-    const {
-        users,
-        addNewAllowedUser,
-        handleAllowedUsers,
-        handleSubmit,
-        isUpdating,
-    } = useAllowedUsers({ playlist, allowedUsers, ownerSpotifyId });
-    const {
-        handleUserIdInput,
-        userIdInput,
-        isValid,
-        ['handleSubmit']: handleSubmitUserId,
-    } = useAllowedUserInput();
-
     return (
-        <>
-            <Link href="/home">Home</Link>
-            <div>
-                {playlist && (
-                    <>
-                        <div>
-                            {users.map((allowedUser) => {
-                                const { imageURL, name, id, status } =
-                                    allowedUser;
-                                const imageSrc = imageURL || '/notDefined';
-
-                                return (
-                                    <div
-                                        key={id}
-                                        style={{ border: 'solid white' }}
-                                    >
-                                        <Image
-                                            src={imageSrc}
-                                            alt="logo"
-                                            width="64"
-                                            height="64"
-                                            loader={() => imageSrc}
-                                        />
-                                        {`${id} | ${name} | `}
-                                        {status &&
-                                            status !== 'permanent' &&
-                                            `${match(status)
-                                                .with('added', () => 'Added')
-                                                .with(
-                                                    'removed',
-                                                    () => 'Removed',
-                                                )
-                                                .with('idle', () => 'Editable')
-                                                .otherwise(() => '')}`}
-                                        {status !== 'permanent' && (
-                                            <button
-                                                onClick={() =>
-                                                    handleAllowedUsers(
-                                                        id,
-                                                        status,
-                                                    )
-                                                }
-                                            >
-                                                {match(status)
-                                                    .with(
-                                                        P.union(
-                                                            'added',
-                                                            'idle',
-                                                        ),
-                                                        () => 'Remove',
-                                                    )
-                                                    .with(
-                                                        'removed',
-                                                        () => 'Add',
-                                                    )
-                                                    .otherwise(() => '')}
-                                            </button>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                            <button onClick={() => handleSubmit()}>Save</button>
-                            {isUpdating && 'Saving'}
-                        </div>
-                        <div>
-                            <input
-                                onChange={(event) =>
-                                    handleUserIdInput(event.target.value)
-                                }
-                                value={userIdInput}
-                                style={{
-                                    borderColor: isValid ? 'black' : 'red',
-                                }}
-                            />
-                            <button
-                                onClick={() =>
-                                    handleSubmitUserId(() =>
-                                        addNewAllowedUser({
-                                            id: userIdInput,
-                                            name: 'Data not found.',
-                                            imageURL: 'Data not found.',
-                                        }),
-                                    )
-                                }
-                            >
-                                Insert ID
-                            </button>
-                        </div>
-                        <UsersSearchBox
-                            allowedUsersIds={users.map(({ id }) => id)}
-                            addNewAllowedUser={addNewAllowedUser}
-                        />
-                    </>
-                )}
-            </div>
-        </>
+        <PlaylistPage
+            playlist={playlist}
+            allowedUsers={allowedUsers}
+            ownerSpotifyId={ownerSpotifyId}
+        />
     );
 };
 
