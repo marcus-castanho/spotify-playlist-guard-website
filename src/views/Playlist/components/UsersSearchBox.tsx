@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { getQueryUsers } from '../services/spotifyPlaylistGuardApi';
-import { AllowedUser } from '../hooks/useAllowedUsers';
+import { getQueryUsers } from '@/services/spotifyPlaylistGuardApi';
+import { AllowedUser } from '@/hooks/useAllowedUsers';
 import Image from 'next/image';
-import { useClientErrorHandler } from '../errors/clientErrorHandlers';
+import { useClientErrorHandler } from '@/errors/clientErrorHandlers';
 import { getCookie } from '@/storage/cookies/client';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 

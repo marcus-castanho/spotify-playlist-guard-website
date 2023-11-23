@@ -8,7 +8,7 @@ import { useAllowedUserInput } from '@/hooks/useAllowedUserInput';
 import Link from 'next/link';
 import Image from 'next/image';
 import { P, match } from 'ts-pattern';
-import { UsersSearchBox } from '@/components/UsersSearchBox';
+import { UsersSearchBox } from './components/UsersSearchBox';
 
 type PlaylistProps = {
     playlist: PlaylistType;
