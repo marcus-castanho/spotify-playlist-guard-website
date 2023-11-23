@@ -4,8 +4,7 @@ import {
     destroyCookie,
 } from 'nookies';
 import { GetServerSidePropsContext } from 'next';
-
-export type CookieKey = 's-p-guard:token';
+import { CookieKey } from '.';
 
 /**
  * Get a cookie with a particular name. To use this function on the server side, pass a request context as parameter, otherwise, it will be considered a client side use.
