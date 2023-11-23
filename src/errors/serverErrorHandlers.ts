@@ -3,7 +3,7 @@ import {
     HTTPException,
     InternalServerError,
     InvalidResponseDataError,
-    NotFoundError,
+    NotFound,
     Unauthorized,
 } from '.';
 import { deleteCookie } from '../storage/cookies/client';
@@ -120,7 +120,7 @@ export function handlePageReqErrorResponse(
         };
     }
 
-    if (error instanceof NotFoundError) {
+    if (error instanceof NotFound) {
         return {
             notFound: true,
         };
@@ -186,7 +186,7 @@ export function handleMiddlewareErrorResponse(
         return NextResponse.redirect(signInPath);
     }
 
-    if (error instanceof NotFoundError) {
+    if (error instanceof NotFound) {
         // Default undefined page to redirect when NotFound is thrown in middleware
         return NextResponse.redirect(new URL('/_', req.url));
     }

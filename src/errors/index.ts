@@ -46,7 +46,7 @@ export class Unauthorized extends HTTPException {
     }
 }
 
-export class NotFoundError extends HTTPException {
+export class NotFound extends HTTPException {
     constructor({
         message = 'Not Found',
         error,
@@ -54,7 +54,7 @@ export class NotFoundError extends HTTPException {
         message?: string;
         error?: Error;
     }) {
-        super(...[message, 404, 'NotFoundError', error]);
+        super(...[message, 404, 'NotFound', error]);
     }
 }
 
