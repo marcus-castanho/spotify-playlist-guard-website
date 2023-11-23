@@ -1,10 +1,10 @@
 import { ErrorInfo } from 'react';
-import { log } from '../logger';
 import { useAuth } from '../contexts/AuthContext';
+import { log } from '../logger';
 import { ReturnValue } from '../services/spotifyPlaylistGuardApi';
 
 export function handleClientError(error, errorInfo: ErrorInfo) {
-    log({ payload: { error, errorInfo } });
+    log({ message: 'Uncaught error', payload: { error, errorInfo } });
 }
 
 export function useClientErrorHandler() {
