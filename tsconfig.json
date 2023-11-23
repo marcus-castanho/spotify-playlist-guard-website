@@ -15,6 +15,9 @@
         "isolatedModules": true,
         "jsx": "preserve",
         "jsxImportSource": "@emotion/react",
+        "paths": {
+            "@/*": ["./src/*"]
+        },
         "noImplicitAny": false
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
