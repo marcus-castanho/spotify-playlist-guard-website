@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import { getCookie } from '../../storage/cookies';
+import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
 export function request({
     path,
@@ -12,7 +13,7 @@ export function request({
     options?: RequestInit;
     context?: GetServerSidePropsContext;
 }) {
-    const token = getCookie('s-p-guard:token', context);
+    const token = getCookie(TOKEN_COOKIE_KEY, context);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
     const headers = options?.headers;
 

@@ -8,6 +8,7 @@ import {
 } from '.';
 import { deleteCookie } from '../storage/cookies';
 import { log } from '../logger';
+import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
 export function handleApiErrorResponse(
     error,
@@ -105,7 +106,7 @@ export function handleMiddlewareErrorResponse(
 
     if (error instanceof UnauthorizedError) {
         const { sessionEnd } = error;
-        deleteCookie('s-p-guard:token');
+        deleteCookie(TOKEN_COOKIE_KEY);
 
         return {
             redirect: {

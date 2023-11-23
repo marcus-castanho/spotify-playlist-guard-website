@@ -2,6 +2,7 @@ import { GetServerSidePropsContext } from 'next';
 import { getAuth } from '../services/spotifyPlaylistGuardApi';
 import { InternalServerError } from '../errors';
 import { setCookie } from '../storage/cookies';
+import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
 export async function authenticate(
     code: string,
@@ -13,7 +14,7 @@ export async function authenticate(
     });
 
     setCookie(
-        's-p-guard:token',
+        TOKEN_COOKIE_KEY,
         token,
         {
             maxAge: 60 * 60 * 1,
