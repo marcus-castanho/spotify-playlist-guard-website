@@ -10,15 +10,12 @@ import { PlaylistsList } from '../components/PlaylistsList';
 import { InternalServerError, UnauthorizedError } from '../errors';
 import { handlePageReqErrorResponse } from '../errors/serverErrorHandlers';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { validateSession } from '../middlewares/validateSession';
 import { getPageReqCookie } from '@/storage/cookies/server';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
         const locale = context.locale || '';
         const authToken = getPageReqCookie(TOKEN_COOKIE_KEY, context.req) || '';
-
-        validateSession(context);
 
         const playlists = await getUserPlaylists({ authToken }).then(
             ({ success, status, data }) => {

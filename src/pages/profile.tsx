@@ -4,13 +4,10 @@ import { useAuth } from '../contexts/AuthContext';
 import Link from 'next/link';
 import { handlePageReqErrorResponse } from '../errors/serverErrorHandlers';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { validateSession } from '../middlewares/validateSession';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
         const locale = context.locale || '';
-
-        validateSession(context);
 
         return {
             props: {

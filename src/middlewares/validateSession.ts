@@ -1,10 +1,10 @@
-import { GetServerSidePropsContext } from 'next';
-import { getCookie } from '../storage/cookies';
+import { getRequestCookie } from '../storage/cookies/server';
 import { UnauthorizedError } from '../errors';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
+import { NextRequest } from 'next/server';
 
-export const validateSession = (context: GetServerSidePropsContext) => {
-    const token = getCookie(TOKEN_COOKIE_KEY, context);
+export const validateSession = (req: NextRequest) => {
+    const token = getRequestCookie(TOKEN_COOKIE_KEY, req);
 
     if (!token) throw new UnauthorizedError({});
 };

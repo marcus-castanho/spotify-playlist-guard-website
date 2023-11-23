@@ -16,7 +16,6 @@ import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
 import { handlePageReqErrorResponse } from '../../errors/serverErrorHandlers';
 import { InternalServerError, UnauthorizedError } from '../../errors';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { validateSession } from '../../middlewares/validateSession';
 import { getPageReqCookie } from '@/storage/cookies/server';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
@@ -25,8 +24,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         const { id } = context.query;
         const locale = context.locale || '';
         const authToken = getPageReqCookie(TOKEN_COOKIE_KEY, context.req) || '';
-
-        validateSession(context);
 
         const playlist = await getPlaylist({
             id: id as string,
