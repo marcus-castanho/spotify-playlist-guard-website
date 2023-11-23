@@ -19,16 +19,18 @@ export type AuthProviderProps = {
     children?: ReactNode;
 };
 
+export const TOKEN_COOKIE_KEY = 's-p-guard:token' as const;
+
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null);
     const router = useRouter();
     const isAuthenticated = !!user;
-    const token = getCookie('s-p-guard:token');
+    const token = getCookie(TOKEN_COOKIE_KEY);
 
     const signOut = async (sessionEnd?: boolean) => {
-        deleteCookie('s-p-guard:token');
+        deleteCookie(TOKEN_COOKIE_KEY);
 
         if (sessionEnd) return router.push(`/signin/?sessionEnd=${true}`);
 
@@ -47,7 +49,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 setUser(userInfo);
             })
             .catch(() => {
-                deleteCookie('s-p-guard:token');
+                deleteCookie(TOKEN_COOKIE_KEY);
                 if (router.isReady) router.push(`/signin/?sessionEnd=${true}`);
             });
     }, [router, token]);
