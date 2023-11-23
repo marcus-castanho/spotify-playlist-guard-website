@@ -8,7 +8,7 @@ import {
 } from '../services/spotifyPlaylistGuardApi';
 import { PlaylistsList } from '../components/PlaylistsList';
 import { InternalServerError, UnauthorizedError } from '../errors';
-import { handleMiddlewareErrorResponse } from '../errors/serverErrorHandlers';
+import { handlePageReqErrorResponse } from '../errors/serverErrorHandlers';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { validateSession } from '../middlewares/validateSession';
 import { getPageReqCookie } from '@/storage/cookies/server';
@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             props: { playlists, ...(await serverSideTranslations(locale)) },
         };
     } catch (error) {
-        return handleMiddlewareErrorResponse(error);
+        return handlePageReqErrorResponse(error);
     }
 };
 

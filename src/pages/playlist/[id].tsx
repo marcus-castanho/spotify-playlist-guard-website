@@ -13,7 +13,7 @@ import { useAllowedUsers } from '../../hooks/useAllowedUsers';
 import Image from 'next/image';
 import { P, match } from 'ts-pattern';
 import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
-import { handleMiddlewareErrorResponse } from '../../errors/serverErrorHandlers';
+import { handlePageReqErrorResponse } from '../../errors/serverErrorHandlers';
 import { InternalServerError, UnauthorizedError } from '../../errors';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { validateSession } from '../../middlewares/validateSession';
@@ -74,7 +74,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             },
         };
     } catch (error) {
-        return handleMiddlewareErrorResponse(error);
+        return handlePageReqErrorResponse(error);
     }
 };
 
