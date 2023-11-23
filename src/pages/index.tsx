@@ -1,8 +1,8 @@
 import React from 'react';
 import { NextPage } from 'next';
-import Link from 'next/link';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handlePageReqErrorResponse } from '../errors/serverErrorHandlers';
+import { Index as IndexPage } from '@/views/Index';
 
 export async function getStaticProps({ locale }) {
     try {
@@ -17,11 +17,7 @@ export async function getStaticProps({ locale }) {
 }
 
 const Index: NextPage = () => {
-    return (
-        <>
-            <Link href="/signin">Sign in</Link>
-        </>
-    );
+    return <IndexPage />;
 };
 
 export default Index;
