@@ -1,6 +1,7 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 import { handlePageReqErrorResponse } from '../errors/serverErrorHandlers';
+import { InternalServerError } from '@/views/InternalServerError';
 
 export async function getStaticProps({ locale }) {
     try {
@@ -15,5 +16,5 @@ export async function getStaticProps({ locale }) {
 }
 
 export default function Custom500() {
-    return <h1>500 - Server-side error occurred</h1>;
+    return <InternalServerError />;
 }
