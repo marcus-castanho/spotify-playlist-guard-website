@@ -3,7 +3,7 @@ import {
     Playlist as PlaylistType,
     UserProfile,
 } from '@/services/spotifyPlaylistGuardApi';
-import { useAllowedUsers } from '@/hooks/useAllowedUsers';
+import { useAllowedUsers } from './hooks/useAllowedUsers';
 import { useAllowedUserInput } from '@/hooks/useAllowedUserInput';
 import Link from 'next/link';
 import Image from 'next/image';
