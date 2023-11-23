@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { authenticate } from '../useCases/authenticate';
-import Link from 'next/link';
 import { log } from '../logger';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { SignIn as SignInPage } from '@/views/SignIn';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const locale = context.locale || '';
@@ -36,36 +35,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 };
 
-export type SignInProps = {
+type SignInProps = {
     authError?: string;
 };
 
 const SignIn: NextPage<SignInProps> = ({ authError }) => {
-    const router = useRouter();
-    const { code, sessionEnd } = router.query;
-
-    useEffect(() => {
-        if (router.isReady && (code || sessionEnd)) {
-            router.replace(router.route);
-        }
-    }, [router, code, sessionEnd]);
-
-    return (
-        <>
-            <Link href="/">Index</Link>
-            <button
-                onClick={() =>
-                    router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`)
-                }
-            >
-                Sign in with Spotify
-            </button>
-            {authError && <p>{authError}</p>}
-            {sessionEnd && (
-                <p>Youre session was expired. Please sign in to continue</p>
-            )}
-        </>
-    );
+    return <SignInPage authError={authError} />;
 };
 
 export default SignIn;
