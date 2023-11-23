@@ -1,4 +1,4 @@
-export class InvalidResponseDataError extends Error {
+export class CustomError extends Error {
     constructor(
         readonly errorName = 'InvalidResponseDataError',
         readonly errorMessage?: string,
@@ -8,7 +8,17 @@ export class InvalidResponseDataError extends Error {
     }
 }
 
-export class HTTPException extends Error {
+export class InvalidResponseDataError extends CustomError {
+    constructor(
+        readonly errorName = 'InvalidResponseDataError',
+        readonly errorMessage?: string,
+    ) {
+        super(errorMessage);
+        this.name = errorName;
+    }
+}
+
+export class HTTPException extends CustomError {
     constructor(
         readonly errorMessage: string = '',
         readonly statusCode = 500,
@@ -20,7 +30,7 @@ export class HTTPException extends Error {
     }
 }
 
-export class UnauthorizedError extends HTTPException {
+export class Unauthorized extends HTTPException {
     readonly sessionEnd?: boolean;
     constructor({
         message = 'Unauthorized',
@@ -31,7 +41,7 @@ export class UnauthorizedError extends HTTPException {
         sessionEnd?: boolean;
         error?: Error;
     }) {
-        super(...[message, 401, 'UnauthorizedError', error]);
+        super(...[message, 401, 'Unauthorized', error]);
         this.sessionEnd = sessionEnd;
     }
 }

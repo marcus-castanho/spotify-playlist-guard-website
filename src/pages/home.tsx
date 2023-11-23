@@ -7,7 +7,7 @@ import {
     getUserPlaylists,
 } from '../services/spotifyPlaylistGuardApi';
 import { PlaylistsList } from '../components/PlaylistsList';
-import { InternalServerError, UnauthorizedError } from '../errors';
+import { InternalServerError, Unauthorized } from '../errors';
 import { handlePageReqErrorResponse } from '../errors/serverErrorHandlers';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getPageReqCookie } from '@/storage/cookies/server';
@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         const playlists = await getUserPlaylists({ authToken }).then(
             ({ success, status, data }) => {
                 if (status === 401)
-                    throw new UnauthorizedError({ sessionEnd: true });
+                    throw new Unauthorized({ sessionEnd: true });
                 if (!success) throw new InternalServerError({});
 
                 return data;

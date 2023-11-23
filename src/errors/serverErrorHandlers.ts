@@ -4,7 +4,7 @@ import {
     InternalServerError,
     InvalidResponseDataError,
     NotFoundError,
-    UnauthorizedError,
+    Unauthorized,
 } from '.';
 import { deleteCookie } from '../storage/cookies/client';
 import { log } from '../logger';
@@ -106,7 +106,7 @@ export function handlePageReqErrorResponse(
         };
     }
 
-    if (error instanceof UnauthorizedError) {
+    if (error instanceof Unauthorized) {
         const { sessionEnd } = error;
         deleteCookie(TOKEN_COOKIE_KEY);
 
@@ -175,7 +175,7 @@ export function handleMiddlewareErrorResponse(
         return NextResponse.redirect(new URL('/500', req.url));
     }
 
-    if (error instanceof UnauthorizedError) {
+    if (error instanceof Unauthorized) {
         const { sessionEnd } = error;
         deleteResponseCookie(TOKEN_COOKIE_KEY, res);
 

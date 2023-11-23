@@ -14,7 +14,7 @@ import Image from 'next/image';
 import { P, match } from 'ts-pattern';
 import { useAllowedUserInput } from '../../hooks/useAllowedUserInput';
 import { handlePageReqErrorResponse } from '../../errors/serverErrorHandlers';
-import { InternalServerError, UnauthorizedError } from '../../errors';
+import { InternalServerError, Unauthorized } from '../../errors';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getPageReqCookie } from '@/storage/cookies/server';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
@@ -29,8 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             id: id as string,
             authToken,
         }).then(({ success, status, data }) => {
-            if (status === 401)
-                throw new UnauthorizedError({ sessionEnd: true });
+            if (status === 401) throw new Unauthorized({ sessionEnd: true });
             if (!success) throw new InternalServerError({});
 
             return data;
@@ -55,7 +54,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         const user = await getUserInfo({ authToken }).then(
             ({ success, status, data }) => {
                 if (status === 401)
-                    throw new UnauthorizedError({ sessionEnd: true });
+                    throw new Unauthorized({ sessionEnd: true });
                 if (!success) throw new InternalServerError({});
 
                 return data;
