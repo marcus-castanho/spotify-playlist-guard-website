@@ -9,6 +9,8 @@ import {
 import { deleteCookie } from '../storage/cookies/client';
 import { log } from '../logger';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
+import { NextRequest, NextResponse } from 'next/server';
+import { deleteResponseCookie } from '@/storage/cookies/server';
 
 export function handleApiErrorResponse(
     error,
@@ -55,7 +57,7 @@ export function handleApiErrorResponse(
     });
 }
 
-export function handleMiddlewareErrorResponse(
+export function handlePageReqErrorResponse(
     error,
 ): Awaited<ReturnType<GetServerSideProps>> {
     if (
@@ -130,4 +132,64 @@ export function handleMiddlewareErrorResponse(
             permanent: false,
         },
     };
+}
+
+export function handleMiddlewareErrorResponse(
+    error,
+    req: NextRequest,
+    res: NextResponse,
+) {
+    if (
+        error instanceof InternalServerError ||
+        !(error instanceof HTTPException)
+    ) {
+        log({
+            message: 'Internal Server Error',
+            payload: {
+                message: error.message,
+                stack: error.stack,
+            },
+        });
+
+        return NextResponse.redirect(new URL('/500', req.url));
+    }
+
+    const { name, message, stack, originalError } = error;
+    log({
+        message: name,
+        payload: { message, stack },
+    });
+
+    if (originalError) {
+        log({
+            message: 'Original error',
+            payload: {
+                message: originalError.message,
+                stack: originalError.stack,
+                error,
+            },
+        });
+    }
+
+    if (error instanceof InvalidResponseDataError) {
+        return NextResponse.redirect(new URL('/500', req.url));
+    }
+
+    if (error instanceof UnauthorizedError) {
+        const { sessionEnd } = error;
+        deleteResponseCookie(TOKEN_COOKIE_KEY, res);
+
+        const signInPath = sessionEnd
+            ? new URL(`/signin/?sessionEnd=${sessionEnd}`, req.url)
+            : new URL('/signin', req.url);
+
+        return NextResponse.redirect(signInPath);
+    }
+
+    if (error instanceof NotFoundError) {
+        // Default undefined page to redirect when NotFound is thrown in middleware
+        return NextResponse.redirect(new URL('/_', req.url));
+    }
+
+    return NextResponse.redirect(new URL('/500', req.url));
 }
