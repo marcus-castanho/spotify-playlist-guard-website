@@ -8,6 +8,8 @@ import {
 import Link from 'next/link';
 import { useClientErrorHandler } from '../errors/clientErrorHandlers';
 import { QueryKey } from '../contexts/QueryContext';
+import { getCookie } from '@/storage/cookies/client';
+import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
 export type PlaylistsListProps = {
     playlists: Playlist[];
@@ -16,9 +18,10 @@ export type PlaylistsListProps = {
 export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
     const { handleGuardApiResponse } = useClientErrorHandler();
     const playlistQueryKey: QueryKey = 'playlists';
+    const authToken = getCookie(TOKEN_COOKIE_KEY) || '';
     const playlistsQuery = useQuery([playlistQueryKey], {
         queryFn: () =>
-            getUserPlaylists({})
+            getUserPlaylists({ authToken })
                 .then(handleGuardApiResponse)
                 .catch(() => []),
         initialData: playlists,
@@ -26,7 +29,7 @@ export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
     });
 
     const handleActivatePlaylist = async (id: string, active: boolean) => {
-        await patchActivateDeactivatePlaylist({ id, active })
+        await patchActivateDeactivatePlaylist({ id, active, authToken })
             .then(({ success, status, data }) => {
                 handleGuardApiResponse({ success, status, data });
                 playlistsQuery.refetch();

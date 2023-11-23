@@ -1,4 +1,3 @@
-import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import qs from 'qs';
 import { InvalidResponseDataError } from '../../../errors';
@@ -29,17 +28,17 @@ function validateUserProfilesSchema(payload: unknown) {
 
 type GetUserProfilesPayload = {
     usersIds: string[];
-    context?: GetServerSidePropsContext;
+    authToken: string;
 };
 
 export const getUserProfiles: Fetch<
     UserProfile[],
     GetUserProfilesPayload
-> = async ({ usersIds, context }) => {
+> = async ({ usersIds, authToken }) => {
     const response = await request({
         path: `/users/profile?${qs.stringify({ spotify_id: usersIds })}`,
         options: { method: 'GET' },
-        context,
+        authToken,
     });
     const { status } = response;
     const resBody = await response.json().catch(() => ({}));

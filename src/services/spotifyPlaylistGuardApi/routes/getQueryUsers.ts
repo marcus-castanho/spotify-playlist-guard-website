@@ -1,4 +1,3 @@
-import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import qs from 'qs';
 import { InvalidResponseDataError } from '../../../errors';
@@ -40,17 +39,17 @@ function validateQueryUsersSchema(payload: unknown) {
 
 type GetQueryUsersPayload = {
     identifier: string;
-    context?: GetServerSidePropsContext;
+    authToken: string;
 };
 
 export const getQueryUsers: Fetch<QueryUser[], GetQueryUsersPayload> = async ({
     identifier,
-    context,
+    authToken,
 }) => {
     const response = await request({
         path: `/users/query?${qs.stringify({ identifier })}`,
         options: { method: 'GET' },
-        context,
+        authToken,
     });
     const { status } = response;
     const resBody = await response.json().catch(() => ({}));

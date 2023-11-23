@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import { useAuth } from '../contexts/AuthContext';
+import { TOKEN_COOKIE_KEY, useAuth } from '../contexts/AuthContext';
 import Link from 'next/link';
 import {
     Playlist,
@@ -11,14 +11,16 @@ import { InternalServerError, UnauthorizedError } from '../errors';
 import { handleMiddlewareErrorResponse } from '../errors/serverErrorHandlers';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { validateSession } from '../middlewares/validateSession';
+import { getPageReqCookie } from '@/storage/cookies/server';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
         const locale = context.locale || '';
+        const authToken = getPageReqCookie(TOKEN_COOKIE_KEY, context.req) || '';
 
         validateSession(context);
 
-        const playlists = await getUserPlaylists({ context }).then(
+        const playlists = await getUserPlaylists({ authToken }).then(
             ({ success, status, data }) => {
                 if (status === 401)
                     throw new UnauthorizedError({ sessionEnd: true });

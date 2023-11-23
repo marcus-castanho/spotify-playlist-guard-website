@@ -22,7 +22,6 @@ function validateAuthSchema(payload: unknown) {
 export const getAuth: Fetch<string, string> = async (code: string) => {
     const response = await request({
         path: `/auth/redirect?code=${code}`,
-        authenticated: false,
     });
     const { status } = response;
     const resBody = await response.json().catch(() => ({}));

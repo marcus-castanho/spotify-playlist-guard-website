@@ -17,23 +17,27 @@ import { handleMiddlewareErrorResponse } from '../../errors/serverErrorHandlers'
 import { InternalServerError, UnauthorizedError } from '../../errors';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { validateSession } from '../../middlewares/validateSession';
+import { getPageReqCookie } from '@/storage/cookies/server';
+import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
         const { id } = context.query;
         const locale = context.locale || '';
+        const authToken = getPageReqCookie(TOKEN_COOKIE_KEY, context.req) || '';
 
         validateSession(context);
 
-        const playlist = await getPlaylist({ id: id as string, context }).then(
-            ({ success, status, data }) => {
-                if (status === 401)
-                    throw new UnauthorizedError({ sessionEnd: true });
-                if (!success) throw new InternalServerError({});
+        const playlist = await getPlaylist({
+            id: id as string,
+            authToken,
+        }).then(({ success, status, data }) => {
+            if (status === 401)
+                throw new UnauthorizedError({ sessionEnd: true });
+            if (!success) throw new InternalServerError({});
 
-                return data;
-            },
-        );
+            return data;
+        });
 
         const allowedUsers = await Promise.all(
             playlist.allowed_userIds.map((userId) => {
@@ -42,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                     name: 'Data not found.',
                     image_url: 'Data not found.',
                 };
-                return getUserProfile({ userId, context })
+                return getUserProfile({ userId, authToken })
                     .then(({ success, data }) => {
                         if (!success) return defaultValue;
                         return data;
@@ -51,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             }),
         );
 
-        const user = await getUserInfo({ context }).then(
+        const user = await getUserInfo({ authToken }).then(
             ({ success, status, data }) => {
                 if (status === 401)
                     throw new UnauthorizedError({ sessionEnd: true });

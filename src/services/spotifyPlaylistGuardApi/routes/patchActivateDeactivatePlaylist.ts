@@ -1,17 +1,16 @@
-import { GetServerSidePropsContext } from 'next';
 import { Fetch } from '../.';
 import { request } from '../httpClient';
 
 type PatchActivateDeactivatePlaylist = {
     id: string;
     active: boolean;
-    context?: GetServerSidePropsContext;
+    authToken: string;
 };
 
 export const patchActivateDeactivatePlaylist: Fetch<
     null,
     PatchActivateDeactivatePlaylist
-> = async ({ id, active, context }) => {
+> = async ({ id, active, authToken }) => {
     const response = await request({
         path: `/playlists/active/${id}`,
         options: {
@@ -19,7 +18,7 @@ export const patchActivateDeactivatePlaylist: Fetch<
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ active }),
         },
-        context,
+        authToken,
     });
     const { status } = response;
 

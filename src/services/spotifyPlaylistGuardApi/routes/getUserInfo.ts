@@ -1,4 +1,3 @@
-import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { InvalidResponseDataError } from '../../../errors';
 import { Fetch } from '../.';
@@ -36,16 +35,16 @@ function validateUserSchema(payload: unknown) {
 }
 
 type GetUserInfoPayload = {
-    context?: GetServerSidePropsContext;
+    authToken: string;
 };
 
 export const getUserInfo: Fetch<User, GetUserInfoPayload> = async ({
-    context,
+    authToken,
 }) => {
     const response = await request({
         path: `/users/me`,
         options: { method: 'GET' },
-        context,
+        authToken,
     });
     const { status } = response;
     const resBody = await response.json().catch(() => ({}));

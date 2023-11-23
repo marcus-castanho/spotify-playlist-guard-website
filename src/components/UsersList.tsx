@@ -4,6 +4,8 @@ import { getUserProfiles } from '../services/spotifyPlaylistGuardApi';
 import Image from 'next/image';
 import { useClientErrorHandler } from '../errors/clientErrorHandlers';
 import { QueryKey } from '../contexts/QueryContext';
+import { getCookie } from '@/storage/cookies/client';
+import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
 export type UsersListProps = {
     usersIds: string[];
@@ -11,9 +13,10 @@ export type UsersListProps = {
 export const UsersList: FC<UsersListProps> = ({ usersIds }) => {
     const { handleGuardApiResponse } = useClientErrorHandler();
     const usersProfilesKey: QueryKey = 'users-profiles';
+    const authToken = getCookie(TOKEN_COOKIE_KEY) || '';
     const usersProfilesQuery = useQuery([usersProfilesKey, usersIds], {
         queryFn: () =>
-            getUserProfiles({ usersIds })
+            getUserProfiles({ usersIds, authToken })
                 .then(handleGuardApiResponse)
                 .catch(() => []),
     });

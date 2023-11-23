@@ -1,4 +1,3 @@
-import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { InvalidResponseDataError } from '../../../errors';
 import { Fetch } from '../.';
@@ -39,13 +38,13 @@ function validatePlaylistSchema(payload: unknown) {
 type PatchPlaylistAllowedUsers = {
     playlistId: string;
     userIds: string[];
-    context?: GetServerSidePropsContext;
+    authToken: string;
 };
 
 export const patchPlaylistAllowedUsers: Fetch<
     Playlist,
     PatchPlaylistAllowedUsers
-> = async ({ playlistId, userIds, context }) => {
+> = async ({ playlistId, userIds, authToken }) => {
     const response = await request({
         path: `/playlists/allowUsers/${playlistId}`,
         options: {
@@ -53,7 +52,7 @@ export const patchPlaylistAllowedUsers: Fetch<
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ allowed_userIds: userIds }),
         },
-        context,
+        authToken,
     });
     const { status } = response;
     const resBody = await response.json().catch(() => ({}));

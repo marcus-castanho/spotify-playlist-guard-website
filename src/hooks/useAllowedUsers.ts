@@ -9,6 +9,8 @@ import {
 import { match } from 'ts-pattern';
 import { useClientErrorHandler } from '../errors/clientErrorHandlers';
 import { QueryKey } from '../contexts/QueryContext';
+import { getCookie } from '@/storage/cookies/client';
+import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
 export type AllowedUser = {
     id: string;
@@ -39,6 +41,7 @@ export function useAllowedUsers({
     );
     const [updating, setUpdating] = useState(false);
     const usersProfilesKey: QueryKey = 'users-profiles';
+    const authToken = getCookie(TOKEN_COOKIE_KEY) || '';
     const usersProfilesQuery = useQuery([usersProfilesKey], {
         queryFn: () => {
             return Promise.all(
@@ -50,7 +53,7 @@ export function useAllowedUsers({
                             name: 'Data not found.',
                             image_url: 'Data not found.',
                         };
-                        return getUserProfile({ userId: id })
+                        return getUserProfile({ userId: id, authToken })
                             .then(handleGuardApiResponse)
                             .catch(() => defaultValue);
                     }),
@@ -66,6 +69,7 @@ export function useAllowedUsers({
             return patchPlaylistAllowedUsers({
                 playlistId: playlist.id,
                 userIds,
+                authToken,
             })
                 .then(handleGuardApiResponse)
                 .catch(() => null);

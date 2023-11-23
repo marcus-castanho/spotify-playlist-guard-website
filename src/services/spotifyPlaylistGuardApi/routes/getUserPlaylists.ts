@@ -1,4 +1,3 @@
-import { GetServerSidePropsContext } from 'next';
 import { z } from 'zod';
 import { InvalidResponseDataError } from '../../../errors';
 import { Fetch } from '../.';
@@ -39,17 +38,17 @@ function validatePlaylistsSchema(payload: unknown) {
 }
 
 type GetUserPlaylistsPayload = {
-    context?: GetServerSidePropsContext;
+    authToken: string;
 };
 
 export const getUserPlaylists: Fetch<
     Playlist[],
     GetUserPlaylistsPayload
-> = async ({ context }) => {
+> = async ({ authToken }) => {
     const response = await request({
         path: `/playlists/list/1`,
         options: { method: 'GET' },
-        context,
+        authToken,
     });
     const { status } = response;
     const resBody = await response.json().catch(() => ({}));
