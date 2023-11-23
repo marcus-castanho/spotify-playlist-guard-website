@@ -2,9 +2,9 @@ import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import CssBaseline from '@mui/material/CssBaseline';
-import { AppContextProvider } from '../contexts';
-import ErrorBoundary from '../components/ErrorBoundary';
-import { ErrorFallback } from '../components/ErrorFallback';
+import { AppContextProvider } from '@/contexts';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import { ErrorFallback } from '@/components/ErrorFallback';
 import { appWithTranslation } from 'next-i18next';
 import { i18n } from '../../next-i18next.config';
 

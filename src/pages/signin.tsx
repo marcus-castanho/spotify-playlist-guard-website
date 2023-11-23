@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import { authenticate } from '../useCases/authenticate';
+import { authenticate } from '@/useCases/authenticate';
 import { log } from '../logger';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { SignIn as SignInPage } from '@/views/SignIn';

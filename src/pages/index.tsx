@@ -1,7 +1,7 @@
 import React from 'react';
 import { NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { handlePageReqErrorResponse } from '../errors/serverErrorHandlers';
+import { handlePageReqErrorResponse } from '@/errors/serverErrorHandlers';
 import { Index as IndexPage } from '@/views/Index';
 
 export async function getStaticProps({ locale }) {

@@ -1,12 +1,9 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import { TOKEN_COOKIE_KEY } from '../contexts/AuthContext';
-import {
-    Playlist,
-    getUserPlaylists,
-} from '../services/spotifyPlaylistGuardApi';
-import { InternalServerError, Unauthorized } from '../errors';
-import { handlePageReqErrorResponse } from '../errors/serverErrorHandlers';
+import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
+import { Playlist, getUserPlaylists } from '@/services/spotifyPlaylistGuardApi';
+import { InternalServerError, Unauthorized } from '@/errors';
+import { handlePageReqErrorResponse } from '@/errors/serverErrorHandlers';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getPageReqCookie } from '@/storage/cookies/server';
 import { Home as HomePage } from '@/views/Home';

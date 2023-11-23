@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 
-export const Profile: FC = () => {
+export const Profile = () => {
     const { signOut, user } = useAuth();
 
     return (

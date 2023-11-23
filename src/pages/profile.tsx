@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import { handlePageReqErrorResponse } from '../errors/serverErrorHandlers';
+import { handlePageReqErrorResponse } from '@/errors/serverErrorHandlers';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Profile as ProfilePage } from '@/views/Profile';
 
