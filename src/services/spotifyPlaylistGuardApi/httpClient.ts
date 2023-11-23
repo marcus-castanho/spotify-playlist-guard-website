@@ -1,3 +1,5 @@
+import { PROXY_URL } from './proxy';
+
 export function request({
     path,
     authToken,
@@ -7,7 +9,7 @@ export function request({
     authToken?: string;
     options?: RequestInit;
 }) {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const apiUrl = PROXY_URL;
     const headers = options?.headers;
 
     if (!authToken) {
