@@ -6,7 +6,7 @@ import {
     NotFoundError,
     UnauthorizedError,
 } from '.';
-import { deleteCookie } from '../storage/cookies';
+import { deleteCookie } from '../storage/cookies/client';
 import { log } from '../logger';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 

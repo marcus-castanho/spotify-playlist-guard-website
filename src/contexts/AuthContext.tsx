@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { User, getUserInfo } from '../services/spotifyPlaylistGuardApi';
 import { useRouter } from 'next/router';
-import { deleteCookie, getCookie } from '../storage/cookies';
+import { deleteCookie, getCookie } from '../storage/cookies/client';
 
 export type AuthContextType = {
     user: User | null;
@@ -19,7 +19,7 @@ export type AuthProviderProps = {
     children?: ReactNode;
 };
 
-export const TOKEN_COOKIE_KEY = 's-p-guard:token' as const;
+export const TOKEN_COOKIE_KEY = 's-p-guard_token' as const;
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
