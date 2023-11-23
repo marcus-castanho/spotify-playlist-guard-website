@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { handleMiddlewareErrorResponse } from './errors/serverErrorHandlers';
 
 export const config = {
@@ -12,10 +12,11 @@ export const config = {
     matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
 
-export async function middleware() {
+export async function middleware(request: NextRequest) {
     try {
         return NextResponse.next();
     } catch (error) {
-        return handleMiddlewareErrorResponse(error);
+        const response = NextResponse.next();
+        return handleMiddlewareErrorResponse(error, request, response);
     }
 }
