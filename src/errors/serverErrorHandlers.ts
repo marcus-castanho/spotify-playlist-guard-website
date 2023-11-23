@@ -12,26 +12,34 @@ import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 import { NextRequest, NextResponse } from 'next/server';
 import { deleteResponseCookie } from '@/storage/cookies/server';
 
-export function handleApiErrorResponse(
-    error,
-    res: NextApiResponse,
-): NextApiResponse | void {
+/**
+ * Api error handler for API handler routes.
+ *
+ * @param error
+ * @param res NextApiResponse instance when using pages/api route handlers
+ */
+export function handleApiErrorResponse(error, res?: NextApiResponse) {
     if (
         error instanceof InternalServerError ||
         !(error instanceof HTTPException)
     ) {
         log({
-            message: 'Uncaught error',
+            message: 'Internal Server Error',
             payload: {
                 message: error.message,
                 stack: error.stack,
             },
         });
 
-        return res.status(500).json({
-            status: 500,
-            message: 'Internal Server Error',
-        });
+        return res
+            ? res.status(500).json({
+                  status: 500,
+                  message: 'Internal Server Error',
+              })
+            : NextResponse.json(
+                  { status: 500, message: 'Internal Server Error' },
+                  { status: 500 },
+              );
     }
 
     const { name, message, stack, statusCode, originalError } = error;
@@ -51,10 +59,15 @@ export function handleApiErrorResponse(
         });
     }
 
-    return res.status(statusCode).json({
-        status: statusCode,
-        message,
-    });
+    return res
+        ? res.status(statusCode).json({
+              status: statusCode,
+              message,
+          })
+        : NextResponse.json(
+              { status: statusCode, message: 'Internal Server Error' },
+              { status: statusCode },
+          );
 }
 
 export function handlePageReqErrorResponse(
