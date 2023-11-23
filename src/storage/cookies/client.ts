@@ -51,7 +51,6 @@ export function setCookie(
  * @param key Cookie key.
  */
 export function deleteCookie(key: CookieKey) {
-    console.log({ isServerSide });
     if (isServerSide) return;
 
     Cookies.remove(key);
