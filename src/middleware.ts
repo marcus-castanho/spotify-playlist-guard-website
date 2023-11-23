@@ -1,5 +1,8 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { handleMiddlewareErrorResponse } from './errors/serverErrorHandlers';
+import { validateSession } from './middlewares/validateSession';
+import { isPrivatePage } from './config/pages';
+import { shouldRunMiddlewares } from './middlewares/shouldRunMiddlewares';
 
 export const config = {
     /*
@@ -14,6 +17,11 @@ export const config = {
 
 export async function middleware(request: NextRequest) {
     try {
+        const { pathname } = request.nextUrl;
+
+        if (!shouldRunMiddlewares(request)) return NextResponse.next();
+        if (isPrivatePage(pathname)) return validateSession(request);
+
         return NextResponse.next();
     } catch (error) {
         const response = NextResponse.next();
