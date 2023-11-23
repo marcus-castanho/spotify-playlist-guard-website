@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { CookieKey } from '.';
 import { GetServerSidePropsContext } from 'next';
+import {
+    parseCookies,
+    setCookie as defineCookie,
+    destroyCookie,
+} from 'nookies';
+
+export type CookieOptions = Parameters<typeof defineCookie>[3];
 
 /**
  * Get a cookie with a particular name on the server side of the app. This function can be used in:
  * - getServerSideProps function
  *
  * @param key Cookie key.
+ * @param req Request instance.
  */
 export function getPageReqCookie(
     key: CookieKey,
@@ -18,9 +26,60 @@ export function getPageReqCookie(
 /**
  * Get cookies on the server side of the app. This function can be used in:
  * - getServerSideProps function
+ *
+ * @param req Request instance.
  */
 export function getPageReqCookies(req: GetServerSidePropsContext['req']) {
     return req.cookies;
+}
+
+/**
+ * Get a cookie with a particular name on the server side of the app. This function can be used in:
+ * - getServerSideProps function
+ *
+ * @param key Cookie key.
+ * @param res Response instance.
+ */
+export function getPageResCookie(
+    key: CookieKey,
+    context: GetServerSidePropsContext,
+) {
+    const { [key]: value } = parseCookies(context);
+    return value;
+}
+
+/**
+ * Set cookie on the server side of the app. This function can be used in:
+ * - getServerSideProps function
+ *
+ * @param context Request context.
+ * @param key Cookie key.
+ * @param value Cookie value.
+ * @param options Options that are passed down to `cookie` library.
+ */
+export function setPageResCookies(
+    context: GetServerSidePropsContext,
+    key: string,
+    value: string,
+    options: CookieOptions,
+) {
+    defineCookie(context, key, value, options);
+}
+
+/**
+ * Delete cookie on the server side of the app. This function can be used in:
+ * - getServerSideProps function
+ *
+ * @param context Request context.
+ * @param key Cookie key.
+ * @param value Cookie value.
+ */
+export function deletePageResCookies(
+    context: GetServerSidePropsContext,
+    key: string,
+    value: string,
+) {
+    destroyCookie(context, key, value);
 }
 
 /**
