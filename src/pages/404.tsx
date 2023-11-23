@@ -1,6 +1,7 @@
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handlePageReqErrorResponse } from '../errors/serverErrorHandlers';
+import { NotFound } from '@/views/NotFound';
 
 export async function getStaticProps({ locale }) {
     try {
@@ -15,5 +16,5 @@ export async function getStaticProps({ locale }) {
 }
 
 export default function Custom404() {
-    return <h1>404 - Page Not Found</h1>;
+    return <NotFound />;
 }
