@@ -1,16 +1,15 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import { TOKEN_COOKIE_KEY, useAuth } from '../contexts/AuthContext';
-import Link from 'next/link';
+import { TOKEN_COOKIE_KEY } from '../contexts/AuthContext';
 import {
     Playlist,
     getUserPlaylists,
 } from '../services/spotifyPlaylistGuardApi';
-import { PlaylistsList } from '../components/PlaylistsList';
 import { InternalServerError, Unauthorized } from '../errors';
 import { handlePageReqErrorResponse } from '../errors/serverErrorHandlers';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getPageReqCookie } from '@/storage/cookies/server';
+import { Home as HomePage } from '@/views/Home';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
@@ -40,25 +39,7 @@ export type HomeProps = {
 };
 
 const Home: NextPage<HomeProps> = ({ playlists }) => {
-    const { signOut } = useAuth();
-
-    return (
-        <>
-            <div>
-                <Link href="/profile">Profile</Link>
-                <button onClick={() => signOut()}>Log Out</button>
-            </div>
-            <div
-                style={{
-                    display: 'inline-block',
-                    width: '50%',
-                    overflow: 'hidden',
-                }}
-            >
-                <PlaylistsList playlists={playlists} />
-            </div>
-        </>
-    );
+    return <HomePage playlists={playlists} />;
 };
 
 export default Home;
