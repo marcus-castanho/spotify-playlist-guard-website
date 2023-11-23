@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Playlist } from '@/services/spotifyPlaylistGuardApi';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
-import { PlaylistsList } from '@/components/PlaylistsList';
+import { PlaylistsList } from './components/PlaylistsList';
 
 type HomeProps = {
     playlists: Playlist[];

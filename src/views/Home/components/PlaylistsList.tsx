@@ -4,10 +4,10 @@ import {
     Playlist,
     patchActivateDeactivatePlaylist,
     getUserPlaylists,
-} from '../services/spotifyPlaylistGuardApi';
+} from '@/services/spotifyPlaylistGuardApi';
 import Link from 'next/link';
-import { useClientErrorHandler } from '../errors/clientErrorHandlers';
-import { QueryKey } from '../contexts/QueryContext';
+import { useClientErrorHandler } from '@/errors/clientErrorHandlers';
+import { QueryKey } from '@/contexts/QueryContext';
 import { getCookie } from '@/storage/cookies/client';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
