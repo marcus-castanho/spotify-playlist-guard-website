@@ -4,7 +4,7 @@ import {
     UserProfile,
     Playlist,
     getPlaylist,
-    getUserInfo,
+    getMe,
     getUserProfile,
 } from '@/services/spotifyPlaylistGuardApi';
 import { handlePageReqErrorResponse } from '@/errors/serverErrorHandlers';
@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             }),
         );
 
-        const user = await getUserInfo({ authToken }).then(
+        const user = await getMe({ authToken }).then(
             ({ success, status, data }) => {
                 if (status === 401)
                     throw new Unauthorized({ sessionEnd: true });

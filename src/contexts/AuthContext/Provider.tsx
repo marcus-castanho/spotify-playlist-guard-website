@@ -5,7 +5,7 @@ import React, {
     useState,
     useContext,
 } from 'react';
-import { User, getUserInfo } from '@/services/spotifyPlaylistGuardApi';
+import { User, getMe } from '@/services/spotifyPlaylistGuardApi';
 import { useRouter } from 'next/router';
 import { deleteCookie, getCookie } from '@/storage/cookies/client';
 import { TOKEN_COOKIE_KEY } from '.';
@@ -39,7 +39,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     useEffect(() => {
         if (!token) return;
 
-        getUserInfo({ authToken: token })
+        getMe({ authToken: token })
             .then(({ success, data }) => {
                 if (!success) throw new Error('Unauthorized');
                 return data;

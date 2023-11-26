@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { InvalidResponseDataError } from '../../../errors';
-import { Fetch } from '../.';
+import { Fetch } from '..';
 import { request } from '../httpClient';
 
 export type User = z.infer<typeof userSchema>;
@@ -34,13 +34,11 @@ function validateUserSchema(payload: unknown) {
     return validation.data;
 }
 
-type GetUserInfoPayload = {
+type GetMeInfoPayload = {
     authToken: string;
 };
 
-export const getUserInfo: Fetch<User, GetUserInfoPayload> = async ({
-    authToken,
-}) => {
+export const getMe: Fetch<User, GetMeInfoPayload> = async ({ authToken }) => {
     const response = await request({
         path: `/users/me`,
         options: { method: 'GET' },
