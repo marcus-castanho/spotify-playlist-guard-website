@@ -39,7 +39,7 @@ export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
             <button onClick={() => usersQuery.mutate(userIdentifer)}>
                 Search
             </button>
-            {usersQuery.isLoading
+            {usersQuery.isPending
                 ? 'Loading'
                 : usersQuery.data?.map((user) => {
                       const { avatar, displayName, id } = user;

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import {
     Playlist,
     patchActivateDeactivatePlaylist,
@@ -19,13 +19,14 @@ export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
     const { handleGuardApiResponse } = useClientErrorHandler();
     const playlistQueryKey: QueryKey = 'playlists';
     const authToken = getCookie(TOKEN_COOKIE_KEY) || '';
-    const playlistsQuery = useQuery([playlistQueryKey], {
+    const playlistsQuery = useQuery({
         queryFn: () =>
             getUserPlaylists({ authToken })
                 .then(handleGuardApiResponse)
                 .catch(() => []),
         initialData: playlists,
-        keepPreviousData: true,
+        placeholderData: keepPreviousData,
+        queryKey: [playlistQueryKey],
     });
 
     const handleActivatePlaylist = async (id: string, active: boolean) => {

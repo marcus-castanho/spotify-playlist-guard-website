@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import {
     UserProfile,
     getUserProfile,
@@ -42,7 +42,7 @@ export function useAllowedUsers({
     const [updating, setUpdating] = useState(false);
     const usersProfilesKey: QueryKey = 'users-profiles';
     const authToken = getCookie(TOKEN_COOKIE_KEY) || '';
-    const usersProfilesQuery = useQuery([usersProfilesKey], {
+    const usersProfilesQuery = useQuery({
         queryFn: () => {
             return Promise.all(
                 users
@@ -60,8 +60,9 @@ export function useAllowedUsers({
             );
         },
         initialData: allowedUsers,
-        keepPreviousData: true,
+        placeholderData: keepPreviousData,
         staleTime: Infinity,
+        queryKey: [usersProfilesKey],
     });
     const usersProfilesMutation = useMutation({
         mutationFn: async (userIds: string[]) => {
