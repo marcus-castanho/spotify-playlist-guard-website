@@ -5,7 +5,6 @@ import { getCookie } from '@/storage/cookies/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
 import { TOKEN_COOKIE_KEY } from '..';
-import { useRouter } from 'next/router';
 
 type UseUserMeParams = {
     signOut: (sessionEnd?: boolean) => void;
@@ -16,7 +15,6 @@ export function useUserMe({ signOut, defaultUser }: UseUserMeParams) {
     const userMeQueryKey: QueryKey = 'user-me';
     const pathname = usePathname();
     const queryClient = useQueryClient();
-    const router = useRouter();
 
     const userMeQuery = useQuery({
         queryFn: () =>
@@ -30,7 +28,7 @@ export function useUserMe({ signOut, defaultUser }: UseUserMeParams) {
                 .catch(() => null),
         initialData: defaultUser || null,
         enabled: isPrivatePage(pathname || ''),
-        queryKey: [userMeQueryKey, defaultUser, router],
+        queryKey: [userMeQueryKey, defaultUser, pathname],
     });
 
     return {
