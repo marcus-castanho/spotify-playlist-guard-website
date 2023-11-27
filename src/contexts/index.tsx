@@ -1,5 +1,5 @@
 import React, { ComponentType, ReactNode, PropsWithChildren } from 'react';
-import { AuthProvider } from './AuthContext';
+import { AuthProvider, withDefaultUser } from './AuthContext';
 import { ModalProvider } from './ModalContext';
 import { ToastProvider } from './ToastContext';
 import { QueryProvider } from './QueryContext';
@@ -23,21 +23,25 @@ function ComposedContexts(props: ComposedContextsProps) {
     );
 }
 
-export type AppContextProviderProps = { children: ReactNode };
+export type AppContextProviderProps = {
+    children: ReactNode;
+    defaultUser?: Parameters<typeof withDefaultUser>[1]['defaultUser'];
+    providers?: ComposedContextsProps['components'];
+};
 
-export function AppContextProvider({ children }: AppContextProviderProps) {
+export function AppContextProvider({
+    children,
+    defaultUser,
+    providers = [
+        CookiesProvider,
+        QueryProvider,
+        withDefaultUser(AuthProvider, { defaultUser }),
+        ThemeProvider,
+        ToastProvider,
+        ModalProvider,
+    ],
+}: AppContextProviderProps) {
     return (
-        <ComposedContexts
-            components={[
-                CookiesProvider,
-                QueryProvider,
-                AuthProvider,
-                ThemeProvider,
-                ToastProvider,
-                ModalProvider,
-            ]}
-        >
-            {children}
-        </ComposedContexts>
+        <ComposedContexts components={providers}>{children}</ComposedContexts>
     );
 }
