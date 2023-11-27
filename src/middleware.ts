@@ -20,8 +20,10 @@ export const config = {
 
 export async function middleware(request: NextRequest) {
     try {
-        const { pathname } = request.nextUrl;
-        const isAuthenticated = !!getRequestCookie(TOKEN_COOKIE_KEY, request);
+        const { pathname, searchParams } = request.nextUrl;
+        const isSessionEnd = searchParams.get('sessionEnd');
+        const isAuthenticated =
+            !!getRequestCookie(TOKEN_COOKIE_KEY, request) && !isSessionEnd;
 
         if (!shouldRunMiddlewares(request)) return NextResponse.next();
         if (isPrivatePage(pathname)) return validateSession(request);
