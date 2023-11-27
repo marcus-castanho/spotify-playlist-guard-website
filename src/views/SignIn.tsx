@@ -42,9 +42,6 @@ export const SignIn: FC<SignInProps> = ({ authError }) => {
                 Sign in with Spotify
             </button>
             {authError && <p>{authError}</p>}
-            {sessionEnd && (
-                <p>Youre session was expired. Please sign in to continue</p>
-            )}
         </>
     );
 };
