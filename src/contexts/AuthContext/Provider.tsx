@@ -1,4 +1,9 @@
-import React, { ReactNode, createContext, useContext } from 'react';
+import React, {
+    ComponentProps,
+    ReactNode,
+    createContext,
+    useContext,
+} from 'react';
 import { User } from '@/services/spotifyPlaylistGuardApi';
 import { useRouter } from 'next/router';
 import { deleteCookie } from '@/storage/cookies/client';
@@ -58,4 +63,15 @@ export function useAuth() {
     if (!context) throw new Error('AuthContext was not provided');
 
     return context;
+}
+
+export function withDefaultUser(
+    Component: typeof AuthProvider,
+    { defaultUser }: ComponentProps<typeof AuthProvider>,
+) {
+    const ComponentWrapper = ({ children }: { children?: ReactNode }) => {
+        return <Component defaultUser={defaultUser}>{children}</Component>;
+    };
+
+    return ComponentWrapper;
 }
