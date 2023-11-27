@@ -5,7 +5,7 @@ import React, {
     ReactNode,
     useEffect,
 } from 'react';
-import { ModalFragment } from '../components/ModalFragment';
+import { ModalFragment } from '@/components/ModalFragment';
 import { usePathname } from 'next/navigation';
 
 export type ModalContextType = {
