@@ -26,6 +26,8 @@ export function ToastProvider({ children }: ToastProviderProps) {
 
         setTimeout(() => {
             setDisplay(false);
+            setMessage('');
+            setType('info');
         }, 3000);
     };
 
