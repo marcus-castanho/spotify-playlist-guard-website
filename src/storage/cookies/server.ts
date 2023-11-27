@@ -77,9 +77,8 @@ export function setPageResCookies(
 export function deletePageResCookies(
     context: GetServerSidePropsContext,
     key: string,
-    value: string,
 ) {
-    destroyCookie(context, key, value);
+    destroyCookie(context, key);
 }
 
 /**
