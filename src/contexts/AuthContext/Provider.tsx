@@ -5,7 +5,7 @@ import React, {
     useContext,
 } from 'react';
 import { User } from '@/services/spotifyPlaylistGuardApi';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { deleteCookie } from '@/storage/cookies/client';
 import { useUserMe } from './hooks/useUserMe';
 import { TOKEN_COOKIE_KEY } from '.';
@@ -37,8 +37,7 @@ export function AuthProvider({ children, defaultUser }: AuthProviderProps) {
         invalidate();
         deleteCookie(TOKEN_COOKIE_KEY);
 
-        if (sessionEnd && router.isReady)
-            return router.push(`/signin/?sessionEnd=${true}`);
+        if (sessionEnd) return router.push(`/signin/?sessionEnd=${true}`);
 
         router.push('/signin');
     }

@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useToast } from '@/contexts/ToastContext';
 import { deleteCookie } from '@/storage/cookies/client';
@@ -11,7 +11,10 @@ type SignInProps = {
 
 export const SignIn: FC<SignInProps> = ({ authError }) => {
     const router = useRouter();
-    const { code, sessionEnd } = router.query;
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const code = searchParams.get('code');
+    const sessionEnd = searchParams.get('sessionEnd');
     const { toast } = useToast();
 
     useEffect(() => {
@@ -22,8 +25,8 @@ export const SignIn: FC<SignInProps> = ({ authError }) => {
                 'error',
             );
         }
-        if (router.isReady && !!(code || sessionEnd)) {
-            router.replace(router.route);
+        if (!!(code || sessionEnd)) {
+            router.push(pathname);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router, code, sessionEnd]);
