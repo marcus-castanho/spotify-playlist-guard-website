@@ -1,60 +1,52 @@
-import React, {
-    ReactNode,
-    createContext,
-    useEffect,
-    useState,
-    useContext,
-} from 'react';
-import { User, getMe } from '@/services/spotifyPlaylistGuardApi';
+import React, { ReactNode, createContext, useContext } from 'react';
+import { User } from '@/services/spotifyPlaylistGuardApi';
 import { useRouter } from 'next/router';
-import { deleteCookie, getCookie } from '@/storage/cookies/client';
+import { deleteCookie } from '@/storage/cookies/client';
+import { useUserMe } from './hooks/useUserMe';
 import { TOKEN_COOKIE_KEY } from '.';
 
 export type AuthContextType = {
     user: User | null;
+    refetchUser: () => void;
     isAuthenticated: boolean;
     signOut: (sessionEnd?: boolean) => void;
 };
 
 export type AuthProviderProps = {
     children?: ReactNode;
+    defaultUser?: User | null;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider({ children }: AuthProviderProps) {
-    const [user, setUser] = useState<User | null>(null);
+export function AuthProvider({ children, defaultUser }: AuthProviderProps) {
+    const {
+        me: user,
+        refetch,
+        invalidate,
+    } = useUserMe({ signOut, defaultUser });
     const router = useRouter();
     const isAuthenticated = !!user;
-    const token = getCookie(TOKEN_COOKIE_KEY);
 
-    const signOut = async (sessionEnd?: boolean) => {
+    function signOut(sessionEnd?: boolean) {
+        invalidate();
         deleteCookie(TOKEN_COOKIE_KEY);
 
-        if (sessionEnd) return router.push(`/signin/?sessionEnd=${true}`);
+        if (sessionEnd && router.isReady)
+            return router.push(`/signin/?sessionEnd=${true}`);
 
         router.push('/signin');
-    };
-
-    useEffect(() => {
-        if (!token) return;
-
-        getMe({ authToken: token })
-            .then(({ success, data }) => {
-                if (!success) throw new Error('Unauthorized');
-                return data;
-            })
-            .then((userInfo) => {
-                setUser(userInfo);
-            })
-            .catch(() => {
-                deleteCookie(TOKEN_COOKIE_KEY);
-                if (router.isReady) router.push(`/signin/?sessionEnd=${true}`);
-            });
-    }, [router, token]);
+    }
 
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, signOut }}>
+        <AuthContext.Provider
+            value={{
+                user,
+                refetchUser: () => refetch(),
+                isAuthenticated,
+                signOut,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );
