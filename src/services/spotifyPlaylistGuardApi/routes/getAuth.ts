@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { Fetch } from '../.';
-import { InvalidResponseDataError } from '../../../errors';
+import { InvalidResponseDataError } from '@/errors';
 import { request } from '../httpClient';
 
 const authSchema = z.object({

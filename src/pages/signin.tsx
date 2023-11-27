@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
-import { log } from '../logger';
+import { log } from '@/logger';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { SignIn as SignInPage } from '@/views/SignIn';
 import { getAuth } from '@/services/spotifyPlaylistGuardApi';

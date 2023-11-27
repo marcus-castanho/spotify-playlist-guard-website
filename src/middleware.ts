@@ -1,11 +1,11 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { handleMiddlewareErrorResponse } from './errors/serverErrorHandlers';
 import { validateSession } from './middlewares/validateSession';
-import { isPrivatePage } from './config/pages';
-import { shouldRunMiddlewares } from './middlewares/shouldRunMiddlewares';
-import { redirectToPath } from './middlewares/redirectToPath';
-import { getRequestCookie } from './storage/cookies/server';
-import { TOKEN_COOKIE_KEY } from './contexts/AuthContext';
+import { isPrivatePage } from '@/config/pages';
+import { shouldRunMiddlewares } from '@/middlewares/shouldRunMiddlewares';
+import { redirectToPath } from '@/middlewares/redirectToPath';
+import { getRequestCookie } from '@/storage/cookies/server';
+import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
 export const config = {
     /*

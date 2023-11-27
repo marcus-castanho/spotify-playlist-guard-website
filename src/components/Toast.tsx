@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ToastType } from '../contexts/ToastContext';
+import { ToastType } from '@/contexts/ToastContext';
 import { match } from 'ts-pattern';
 
 export type ToastProps = {

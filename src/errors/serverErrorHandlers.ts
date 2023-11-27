@@ -6,8 +6,8 @@ import {
     NotFound,
     Unauthorized,
 } from '.';
-import { deleteCookie } from '../storage/cookies/client';
-import { log } from '../logger';
+import { deleteCookie } from '@/storage/cookies/client';
+import { log } from '@/logger';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 import { NextRequest, NextResponse } from 'next/server';
 import { deleteResponseCookie } from '@/storage/cookies/server';

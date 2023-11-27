@@ -1,5 +1,5 @@
-import { getRequestCookie } from '../storage/cookies/server';
-import { Unauthorized } from '../errors';
+import { getRequestCookie } from '@/storage/cookies/server';
+import { Unauthorized } from '@/errors';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 import { NextRequest } from 'next/server';
 

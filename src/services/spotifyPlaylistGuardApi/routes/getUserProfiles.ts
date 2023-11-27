@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import qs from 'qs';
-import { InvalidResponseDataError } from '../../../errors';
+import { InvalidResponseDataError } from '@/errors';
 import { Fetch } from '../.';
 import { request } from '../httpClient';
 
