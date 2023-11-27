@@ -4,7 +4,7 @@ import { getQueryUsers } from '@/services/spotifyPlaylistGuardApi';
 import { AllowedUser } from '../hooks/useAllowedUsers';
 import Image from 'next/image';
 import { useClientErrorHandler } from '@/errors/clientErrorHandlers';
-import { getCookie } from '@/storage/cookies/client';
+import { useCookies } from '@/contexts/CookiesContext';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
 export type UsersSearchBoxProps = {
@@ -20,6 +20,7 @@ export const UsersSearchBox: FC<UsersSearchBoxProps> = ({
     allowedUsersIds,
     addNewAllowedUser,
 }) => {
+    const { getCookie } = useCookies();
     const { handleGuardApiResponse } = useClientErrorHandler();
     const [userIdentifer, setUserIdentifier] = useState('');
     const authToken = getCookie(TOKEN_COOKIE_KEY) || '';

@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useToast } from '@/contexts/ToastContext';
-import { deleteCookie } from '@/storage/cookies/client';
+import { useCookies } from '@/contexts/CookiesContext';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
 type SignInProps = {
@@ -10,6 +10,7 @@ type SignInProps = {
 };
 
 export const SignIn: FC<SignInProps> = ({ authError }) => {
+    const { deleteCookie } = useCookies();
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();

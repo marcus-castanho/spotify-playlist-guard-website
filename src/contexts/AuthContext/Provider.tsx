@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { User } from '@/services/spotifyPlaylistGuardApi';
 import { useRouter } from 'next/navigation';
-import { deleteCookie } from '@/storage/cookies/client';
+import { useCookies } from '../CookiesContext';
 import { useUserMe } from './hooks/useUserMe';
 import { TOKEN_COOKIE_KEY } from '.';
 
@@ -25,6 +25,7 @@ export type AuthProviderProps = {
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children, defaultUser }: AuthProviderProps) {
+    const { deleteCookie } = useCookies();
     const {
         me: user,
         refetch,

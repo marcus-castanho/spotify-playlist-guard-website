@@ -8,7 +8,7 @@ import {
 import Link from 'next/link';
 import { useClientErrorHandler } from '@/errors/clientErrorHandlers';
 import { QueryKey } from '@/contexts/QueryContext';
-import { getCookie } from '@/storage/cookies/client';
+import { useCookies } from '@/contexts/CookiesContext';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
 export type PlaylistsListProps = {
@@ -16,6 +16,7 @@ export type PlaylistsListProps = {
 };
 
 export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
+    const { getCookie } = useCookies();
     const { handleGuardApiResponse } = useClientErrorHandler();
     const playlistQueryKey: QueryKey = 'playlists';
     const authToken = getCookie(TOKEN_COOKIE_KEY) || '';

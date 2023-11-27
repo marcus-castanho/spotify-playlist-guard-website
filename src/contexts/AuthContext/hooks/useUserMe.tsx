@@ -1,7 +1,7 @@
 import { isPrivatePage } from '@/config/pages';
 import { QueryKey } from '@/contexts/QueryContext';
 import { User, getMe } from '@/services/spotifyPlaylistGuardApi';
-import { getCookie } from '@/storage/cookies/client';
+import { useCookies } from '@/contexts/CookiesContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
 import { TOKEN_COOKIE_KEY } from '..';
@@ -11,6 +11,7 @@ type UseUserMeParams = {
     defaultUser?: User | null;
 };
 export function useUserMe({ signOut, defaultUser }: UseUserMeParams) {
+    const { getCookie } = useCookies();
     const token = getCookie(TOKEN_COOKIE_KEY) || '';
     const userMeQueryKey: QueryKey = 'user-me';
     const pathname = usePathname();

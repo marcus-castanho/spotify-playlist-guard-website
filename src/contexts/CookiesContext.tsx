@@ -7,13 +7,11 @@ import React, {
 } from 'react';
 import Cookies from 'js-cookie';
 import {
-    CookiesOptions,
     getCookie,
     getCookies,
     setCookie,
     deleteCookie,
 } from '@/storage/cookies/client';
-import { CookieKey } from '@/storage/cookies';
 
 type Cookies = {
     [key: string]: string;
@@ -21,13 +19,9 @@ type Cookies = {
 
 export type CookiesContextType = {
     cookies: Cookies;
-    getCookie: (key: CookieKey) => string | undefined;
-    setCookie: (
-        key: CookieKey,
-        value: string,
-        options?: CookiesOptions,
-    ) => void;
-    deleteCookie: (key: CookieKey) => void;
+    getCookie: typeof getCookie;
+    setCookie: typeof setCookie;
+    deleteCookie: typeof deleteCookie;
 };
 
 export type CookiesProviderProps = {

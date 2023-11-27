@@ -9,7 +9,7 @@ import {
 import { match } from 'ts-pattern';
 import { useClientErrorHandler } from '@/errors/clientErrorHandlers';
 import { QueryKey } from '@/contexts/QueryContext';
-import { getCookie } from '@/storage/cookies/client';
+import { useCookies } from '@/contexts/CookiesContext';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
 export type AllowedUser = {
@@ -30,6 +30,7 @@ export function useAllowedUsers({
     allowedUsers,
     ownerSpotifyId,
 }: UseAllowedUsersParams) {
+    const { getCookie } = useCookies();
     const { handleGuardApiResponse } = useClientErrorHandler();
     const [users, setUsers] = useState<AllowedUser[]>(() =>
         allowedUsers.map(({ id, name, image_url }) => ({
