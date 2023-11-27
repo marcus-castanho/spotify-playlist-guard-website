@@ -6,6 +6,7 @@ import React, {
     useEffect,
 } from 'react';
 import { ModalFragment } from '../components/ModalFragment';
+import { usePathname } from 'next/navigation';
 
 export type ModalContextType = {
     openModal: (modalContent: ReactNode) => void;
@@ -21,6 +22,7 @@ const ModalContext = createContext<ModalContextType | null>(null);
 export function ModalProvider({ children }: ModalProviderProps) {
     const [display, setDisplay] = useState(false);
     const [content, setContent] = useState<ReactNode>(null);
+    const pathname = usePathname();
 
     const openModal = (modalContent: ReactNode) => {
         setDisplay(true);
@@ -40,9 +42,17 @@ export function ModalProvider({ children }: ModalProviderProps) {
         };
     }, [display]);
 
+    useEffect(() => {
+        closeModal();
+    }, [pathname]);
+
     return (
         <ModalContext.Provider value={{ openModal, closeModal }}>
-            <ModalFragment display={display} content={content} />
+            <ModalFragment
+                display={display}
+                content={content}
+                closeModal={closeModal}
+            />
             {children}
         </ModalContext.Provider>
     );

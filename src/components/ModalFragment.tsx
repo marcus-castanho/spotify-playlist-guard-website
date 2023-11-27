@@ -3,9 +3,14 @@ import React, { ReactNode, FC } from 'react';
 export type ModalFragmentProps = {
     display: boolean;
     content: ReactNode;
+    closeModal: () => void;
 };
 
-export const ModalFragment: FC<ModalFragmentProps> = ({ display, content }) => {
+export const ModalFragment: FC<ModalFragmentProps> = ({
+    display,
+    content,
+    closeModal,
+}) => {
     if (!display) return <></>;
     return (
         <>
@@ -26,6 +31,7 @@ export const ModalFragment: FC<ModalFragmentProps> = ({ display, content }) => {
                     transform: 'translate(0%, -50%)',
                 }}
             >
+                <button onClick={() => closeModal()}>x</button>
                 {content}
             </dialog>
         </>
