@@ -1,4 +1,6 @@
 import type { Preview } from '@storybook/react';
+import '../src/styles/globals.css';
+import '../src/stories/styles/globals.css';
 
 const preview: Preview = {
     parameters: {
@@ -6,8 +8,24 @@ const preview: Preview = {
         controls: {
             matchers: {
                 color: /(background|color)$/i,
-                date: /Date$/i,
+                date: /Date$/,
             },
+        },
+        backgrounds: {
+            default: 'light',
+            values: [
+                {
+                    name: 'light',
+                    value: 'white',
+                },
+                {
+                    name: 'dark',
+                    value: 'black',
+                },
+            ],
+        },
+        nextjs: {
+            appDirectory: true,
         },
     },
 };
