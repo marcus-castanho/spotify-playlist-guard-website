@@ -8,7 +8,9 @@
         "start": "next start",
         "lint": "next lint",
         "enable-hooks": "husky install",
-        "disable-hooks": "husky uninstall"
+        "disable-hooks": "husky uninstall",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build"
     },
     "engines": {
         "node": "18.*"
@@ -31,6 +33,14 @@
     "devDependencies": {
         "@commitlint/cli": "^17.0.3",
         "@commitlint/config-conventional": "^17.0.3",
+        "@storybook/addon-essentials": "^7.6.0",
+        "@storybook/addon-interactions": "^7.6.0",
+        "@storybook/addon-links": "^7.6.0",
+        "@storybook/addon-onboarding": "^1.0.8",
+        "@storybook/blocks": "^7.6.0",
+        "@storybook/nextjs": "^7.6.0",
+        "@storybook/react": "^7.6.0",
+        "@storybook/test": "^7.6.0",
         "@types/js-cookie": "^3.0.6",
         "@types/node": "^17.0.21",
         "@types/qs": "^6.9.7",
@@ -49,9 +59,11 @@
         "eslint-plugin-prettier": "^4.0.0",
         "eslint-plugin-promise": "^6.0.0",
         "eslint-plugin-react": "^7.29.4",
+        "eslint-plugin-storybook": "^0.6.15",
         "husky": "^8.0.1",
         "postcss": "^8.4.31",
         "prettier-plugin-tailwindcss": "^0.5.7",
+        "storybook": "^7.6.0",
         "tailwindcss": "^3.3.5",
         "typescript": "^5.1.6"
     },
