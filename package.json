@@ -5,7 +5,7 @@
     "scripts": {
         "start": "next start",
         "dev": "next dev -p 8080",
-        "build": "next build",
+        "build": "npm run build:app ",
         "build:app": "next build",
         "build:docs": "storybook build -o ./public/docs",
         "storybook": "storybook dev -p 6006",
