@@ -3,14 +3,15 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
+        "start": "next start",
         "dev": "next dev -p 8080",
         "build": "next build",
-        "start": "next start",
+        "build:app": "next build",
+        "build:docs": "storybook build -o ./public/docs",
+        "storybook": "storybook dev -p 6006",
         "lint": "next lint",
         "enable-hooks": "husky install",
-        "disable-hooks": "husky uninstall",
-        "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build"
+        "disable-hooks": "husky uninstall"
     },
     "engines": {
         "node": "18.*"
