@@ -7,8 +7,12 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import { ErrorFallback } from '@/components/ErrorFallback';
 import { appWithTranslation } from 'next-i18next';
 import { i18n } from '../../next-i18next.config';
+import { getCookie } from '@/storage/cookies/client';
+import { THEME_COOKIE_KEY } from '@/contexts/ThemeContext';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+    const initialTheme =
+        getCookie(THEME_COOKIE_KEY) === 'dark' ? 'dark' : 'light';
     return (
         <ErrorBoundary fallback={<ErrorFallback />}>
             <Head>
@@ -22,7 +26,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
                     content="initial-scale=1, width=device-width"
                 />
             </Head>
-            <AppContextProvider>
+            <AppContextProvider initialTheme={initialTheme}>
                 <Component {...pageProps} />
             </AppContextProvider>
         </ErrorBoundary>
