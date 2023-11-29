@@ -13,7 +13,9 @@
         "enable-hooks": "husky install",
         "disable-hooks": "husky uninstall",
         "test": "jest",
-        "test:watch": "jest --watch"
+        "test:watch": "jest --watch",
+        "test:e2e": "cypress run --config-file ./cypress/cypress.config.ts",
+        "test:cy:open": "cypress open --config-file ./cypress/cypress.config.ts"
     },
     "engines": {
         "node": "18.*"
