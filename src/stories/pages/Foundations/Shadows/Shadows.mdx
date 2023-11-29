@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/blocks';
+import { Story } from '@/stories/components/Story.tsx';
+import { ShadowsTable } from './components/ShadowsTable.tsx';
+import { BoxesList } from './components/BoxesList.tsx';
+import { shadows } from '@/styles/theme';
+
+<Meta title="Foundations/Shadows" />
+
+<Story title={'Shadows'}>
+    <ShadowsTable />
+    <div style={{ paddingTop: '1.5rem' }}>
+        <h2>Examples</h2>
+        <BoxesList />
+    </div>
+</Story>

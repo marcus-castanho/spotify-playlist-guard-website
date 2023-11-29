@@ -1,0 +1,16 @@
+import { Meta } from '@storybook/blocks';
+import { Story } from '@/stories/components/Story.tsx';
+import { ColorPalette } from './components/ColorPalette.tsx';
+import { colors } from '@/styles/theme';
+import { Fragment } from 'react';
+
+<Meta title="Foundations/Colors" />
+
+<Story title={'Colors'}>
+    {Object.keys(colors).map((color) => (
+        <Fragment key={color}>
+            <h2>{color}</h2>
+            <ColorPalette color={color} />
+        </Fragment>
+    ))}
+</Story>
