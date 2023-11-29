@@ -4,6 +4,18 @@ const { i18n } = require('./next-i18next.config');
 module.exports = {
     reactStrictMode: true,
     i18n,
+    async redirects() {
+        return [
+            /**
+             * Use redirection to access storybook documentation via /docs route
+             */
+            {
+                source: '/docs',
+                destination: '/docs/index.html',
+                permanent: true,
+            },
+        ];
+    },
     async rewrites() {
         return [
             /**
