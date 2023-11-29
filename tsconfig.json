@@ -24,6 +24,13 @@
         },
         "noImplicitAny": false
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+    "include": [
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".next/types/**/*.ts",
+        "jest.config.js",
+        ".jest/jest.setup.ts"
+    ],
     "exclude": ["node_modules"]
 }

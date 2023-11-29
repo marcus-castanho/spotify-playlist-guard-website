@@ -11,7 +11,9 @@
         "storybook": "storybook dev -p 6006",
         "lint": "next lint",
         "enable-hooks": "husky install",
-        "disable-hooks": "husky uninstall"
+        "disable-hooks": "husky uninstall",
+        "test": "jest",
+        "test:watch": "jest --watch"
     },
     "engines": {
         "node": "18.*"
