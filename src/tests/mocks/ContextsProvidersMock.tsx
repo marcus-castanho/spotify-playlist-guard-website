@@ -1,6 +1,7 @@
 import React, { ComponentProps, ReactNode } from 'react';
 import { AppContextProvider } from '@/contexts';
 import './windowMock';
+import { AppRouterContextProviderMock } from './AppRouterContextProviderMock';
 
 export const INITIAL_THEME: ComponentProps<
     typeof AppContextProvider
@@ -35,12 +36,16 @@ export function ContextsProvidersMock({
     initialTheme = INITIAL_THEME,
     defaultUser = DEFAULT_USER,
 }: ContextsProvidersMockProps) {
+    const push = jest.fn();
+
     return (
-        <AppContextProvider
-            initialTheme={initialTheme}
-            defaultUser={defaultUser}
-        >
-            {children}
-        </AppContextProvider>
+        <AppRouterContextProviderMock router={{ push }}>
+            <AppContextProvider
+                initialTheme={initialTheme}
+                defaultUser={defaultUser}
+            >
+                {children}
+            </AppContextProvider>
+        </AppRouterContextProviderMock>
     );
 }
