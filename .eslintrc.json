@@ -1,10 +1,4 @@
 {
-    "env": {
-        "browser": true,
-        "es2020": true,
-        "node": true,
-        "jest": true
-    },
     "extends": [
         "next/core-web-vitals",
         "plugin:react/recommended",
@@ -13,19 +7,19 @@
         "plugin:storybook/recommended",
         "plugin:cypress/recommended"
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 12,
-        "sourceType": "module"
-    },
     "plugins": ["react", "@typescript-eslint", "prettier", "cypress"],
     "rules": {
         "prettier/prettier": "error",
-        "space-before-function-paren": "off",
         "react/prop-types": "off",
-        "@typescript-eslint/ban-ts-comment": "warn"
+        "react/no-unknown-property": [
+            2,
+            {
+                "ignore": ["jsx"]
+            }
+        ],
+        "@typescript-eslint/ban-ts-comment": "warn",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-empty-function": "off"
     }
 }
