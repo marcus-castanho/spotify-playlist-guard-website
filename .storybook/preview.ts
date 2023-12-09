@@ -29,6 +29,7 @@ const preview: Preview = {
             appDirectory: true,
         },
     },
+    decorators: [useWithContexts],
 };
 
 export default preview;
