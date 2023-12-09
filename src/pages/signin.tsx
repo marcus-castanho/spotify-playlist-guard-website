@@ -35,10 +35,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 permanent: false,
             },
         };
-    } catch (error: any) {
+    } catch (error: unknown) {
         log({
             message: 'Uncaught error',
-            payload: error?.message,
+            payload: error instanceof Error ? error.message : undefined,
         });
         return {
             props: {

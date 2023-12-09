@@ -1,3 +1,4 @@
+import React from 'react';
 import { THEME_COOKIE_KEY } from '@/contexts/ThemeContext';
 import Document, {
     Html,
