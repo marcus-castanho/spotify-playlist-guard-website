@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/blocks';
+import { Story } from '@/stories/components/Story.tsx';
+import { Color, colors } from '@/styles/theme';
+import { GuardIcon } from '@/components/icons/GuardIcon.tsx';
+import { IconViewer } from '../components/IconViewer.tsx';
+import { ExportButtons } from '../components/ExportButtons.tsx';
+import { IconInfo } from '../components/IconInfo.tsx';
+import { renderToString } from 'react-dom/server';
+
+<Meta title="Foundations/Icons/guard" />
+
+<Story title={'guard'}>
+    <IconViewer>
+        <GuardIcon size={12} />
+    </IconViewer>
+    <ExportButtons
+        iconName={'guard'}
+        componentCode={renderToString(<GuardIcon size={12} />)}
+    />
+    <IconInfo>
+        ```js
+        <GuardIcon size={12} fillColor="black" />
+        ```
+    </IconInfo>
+</Story>
