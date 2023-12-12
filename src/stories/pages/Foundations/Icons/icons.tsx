@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { MoonIcon } from '@/components/icons/MoonIcon';
 import { SunIcon } from '@/components/icons/SunIcon';
 import { GuardIcon } from '@/components/icons/GuardIcon';
+import { DefaultAvatarIcon } from '@/components/icons/DefaultAvatarIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -15,5 +16,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'guard',
         component: <GuardIcon size={24} key={GuardIcon.name} />,
+    },
+    {
+        title: 'default-avatar',
+        component: <DefaultAvatarIcon size={24} key={DefaultAvatarIcon.name} />,
     },
 ];
