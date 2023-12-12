@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/blocks';
+import { Story } from '@/stories/components/Story.tsx';
+import { Color, colors } from '@/styles/theme';
+import { ArrowLeftIcon } from '@/components/icons/ArrowLeftIcon.tsx';
+import { IconViewer } from '../components/IconViewer.tsx';
+import { ExportButtons } from '../components/ExportButtons.tsx';
+import { IconInfo } from '../components/IconInfo.tsx';
+import { renderToString } from 'react-dom/server';
+
+<Meta title="Foundations/Icons/arrow-left" />
+
+<Story title={'arrow-left'}>
+    <IconViewer>
+        <ArrowLeftIcon size={12} />
+    </IconViewer>
+    <ExportButtons
+        iconName={'arrow-left'}
+        componentCode={renderToString(<ArrowLeftIcon size={12} />)}
+    />
+    <IconInfo>
+        ```js
+        <ArrowLeftIcon size={12} fillColor="black" />
+        ```
+    </IconInfo>
+</Story>

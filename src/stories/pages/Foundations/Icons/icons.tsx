@@ -3,6 +3,7 @@ import { MoonIcon } from '@/components/icons/MoonIcon';
 import { SunIcon } from '@/components/icons/SunIcon';
 import { GuardIcon } from '@/components/icons/GuardIcon';
 import { DefaultAvatarIcon } from '@/components/icons/DefaultAvatarIcon';
+import { ArrowLeftIcon } from '@/components/icons/ArrowLeftIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -20,5 +21,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'default-avatar',
         component: <DefaultAvatarIcon size={24} key={DefaultAvatarIcon.name} />,
+    },
+    {
+        title: 'arrow-left',
+        component: <ArrowLeftIcon size={24} key={ArrowLeftIcon.name} />,
     },
 ];
