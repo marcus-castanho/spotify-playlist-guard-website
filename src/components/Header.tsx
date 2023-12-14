@@ -15,7 +15,6 @@ export const Header = () => {
                 aria-label="home-link"
             >
                 <GuardBotLogo />
-                <div>for Admin</div>
             </Link>
             <div className="flex gap-4">
                 <ThemeSwitcher />
