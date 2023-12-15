@@ -12,14 +12,14 @@ type UseUserMeParams = {
 };
 export function useUserMe({ signOut, defaultUser }: UseUserMeParams) {
     const { getCookie } = useCookies();
-    const token = getCookie(TOKEN_COOKIE_KEY) || '';
+    const token = getCookie(TOKEN_COOKIE_KEY);
     const userMeQueryKey: QueryKey = 'user-me';
     const pathname = usePathname();
     const queryClient = useQueryClient();
 
     const userMeQuery = useQuery({
         queryFn: () =>
-            getMe({ authToken: token })
+            getMe({ authToken: token || '' })
                 .then(({ data, status, success }) => {
                     if (status === 401) signOut(true);
                     if (!success) throw new Error('Failed');
@@ -28,7 +28,7 @@ export function useUserMe({ signOut, defaultUser }: UseUserMeParams) {
                 })
                 .catch(() => null),
         initialData: defaultUser || null,
-        enabled: isPrivatePage(pathname || ''),
+        enabled: isPrivatePage(pathname || '') && !!token,
         queryKey: [userMeQueryKey, defaultUser, pathname],
     });
 
