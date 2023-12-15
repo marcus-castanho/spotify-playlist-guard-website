@@ -1,9 +1,10 @@
 import React, { FC, useEffect } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import Link from 'next/link';
 import { useToast } from '@/contexts/ToastContext';
 import { useCookies } from '@/contexts/CookiesContext';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
+import { PageContainer } from '@/components/PageContainer';
+import { Header } from '@/components/Header';
 
 type SignInProps = {
     authError?: string;
@@ -33,8 +34,8 @@ export const SignIn: FC<SignInProps> = ({ authError }) => {
     }, [router, code, sessionEnd]);
 
     return (
-        <>
-            <Link href="/">Index</Link>
+        <PageContainer>
+            <Header />
             <button
                 onClick={() =>
                     router.push(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`)
@@ -43,6 +44,6 @@ export const SignIn: FC<SignInProps> = ({ authError }) => {
                 Sign in with Spotify
             </button>
             {authError && <p>{authError}</p>}
-        </>
+        </PageContainer>
     );
 };

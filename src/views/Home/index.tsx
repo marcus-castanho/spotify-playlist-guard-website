@@ -1,22 +1,17 @@
 import React, { FC } from 'react';
 import { Playlist } from '@/services/spotifyPlaylistGuardApi';
-import { useAuth } from '@/contexts/AuthContext';
-import Link from 'next/link';
 import { PlaylistsList } from './components/PlaylistsList';
+import { PageContainer } from '@/components/PageContainer';
+import { Header } from '@/components/Header';
 
 type HomeProps = {
     playlists: Playlist[];
 };
 
 export const Home: FC<HomeProps> = ({ playlists }) => {
-    const { signOut } = useAuth();
-
     return (
-        <>
-            <div>
-                <Link href="/profile">Profile</Link>
-                <button onClick={() => signOut()}>Log Out</button>
-            </div>
+        <PageContainer>
+            <Header />
             <div
                 style={{
                     display: 'inline-block',
@@ -26,6 +21,6 @@ export const Home: FC<HomeProps> = ({ playlists }) => {
             >
                 <PlaylistsList playlists={playlists} />
             </div>
-        </>
+        </PageContainer>
     );
 };

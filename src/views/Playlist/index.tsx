@@ -5,10 +5,11 @@ import {
 } from '@/services/spotifyPlaylistGuardApi';
 import { useAllowedUsers } from './hooks/useAllowedUsers';
 import { useAllowedUserInput } from './hooks/useAllowedUserInput';
-import Link from 'next/link';
 import Image from 'next/image';
 import { P, match } from 'ts-pattern';
 import { UsersSearchBox } from './components/UsersSearchBox';
+import { PageContainer } from '@/components/PageContainer';
+import { Header } from '@/components/Header';
 
 type PlaylistProps = {
     playlist: PlaylistType;
@@ -36,8 +37,8 @@ export const Playlist: FC<PlaylistProps> = ({
     } = useAllowedUserInput();
 
     return (
-        <>
-            <Link href="/home">Home</Link>
+        <PageContainer>
+            <Header />
             <div>
                 {playlist && (
                     <>
@@ -131,6 +132,6 @@ export const Playlist: FC<PlaylistProps> = ({
                     </>
                 )}
             </div>
-        </>
+        </PageContainer>
     );
 };

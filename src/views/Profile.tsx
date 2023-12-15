@@ -1,16 +1,14 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import Link from 'next/link';
+import { PageContainer } from '@/components/PageContainer';
+import { Header } from '@/components/Header';
 
 export const Profile = () => {
-    const { signOut, user } = useAuth();
+    const { user } = useAuth();
 
     return (
-        <>
-            <div>
-                <Link href="/home">Home</Link>
-                <button onClick={() => signOut()}>Log Out</button>
-            </div>
+        <PageContainer>
+            <Header />
             {user &&
                 Object.keys(user).map((key) => {
                     return (
@@ -19,6 +17,6 @@ export const Profile = () => {
                         }`}</div>
                     );
                 })}
-        </>
+        </PageContainer>
     );
 };
