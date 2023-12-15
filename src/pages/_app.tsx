@@ -1,18 +1,18 @@
 import React from 'react';
 import '@/styles/globals.css';
-import { AppProps } from 'next/app';
+import NextApp, { AppContext, AppInitialProps, AppProps } from 'next/app';
 import Head from 'next/head';
 import { AppContextProvider } from '@/contexts';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { ErrorFallback } from '@/components/ErrorFallback';
 import { appWithTranslation } from 'next-i18next';
 import { i18n } from '../../next-i18next.config';
-import { getCookie } from '@/storage/cookies/client';
-import { THEME_COOKIE_KEY } from '@/contexts/ThemeContext';
+import { THEME_COOKIE_KEY, Theme } from '@/contexts/ThemeContext';
+import { getPageResCookie } from '@/storage/cookies/server';
 
-const App: React.FC<AppProps> = ({ Component, pageProps }) => {
-    const initialTheme =
-        getCookie(THEME_COOKIE_KEY) === 'dark' ? 'dark' : 'light';
+type AppOwnProps = { initialTheme: Theme };
+
+function App({ Component, pageProps, initialTheme }: AppProps & AppOwnProps) {
     return (
         <ErrorBoundary fallback={<ErrorFallback />}>
             <Head>
@@ -31,6 +31,17 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
             </AppContextProvider>
         </ErrorBoundary>
     );
+}
+
+App.getInitialProps = async (
+    context: AppContext,
+): Promise<AppOwnProps & AppInitialProps> => {
+    const ctx = await NextApp.getInitialProps(context);
+    const reqCtx = context.ctx;
+    const themeCookie = getPageResCookie(THEME_COOKIE_KEY, reqCtx);
+    const theme = themeCookie === 'dark' ? 'dark' : 'light';
+
+    return { ...ctx, initialTheme: theme };
 };
 
 export default appWithTranslation(App, { i18n });
