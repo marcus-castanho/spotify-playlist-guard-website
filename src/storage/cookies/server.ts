@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { CookieKey } from '.';
-import { GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext, NextPageContext } from 'next';
 import {
     parseCookies,
     setCookie as defineCookie,
@@ -42,7 +42,7 @@ export function getPageReqCookies(req: GetServerSidePropsContext['req']) {
  */
 export function getPageResCookie(
     key: CookieKey,
-    context: GetServerSidePropsContext,
+    context: GetServerSidePropsContext | NextPageContext,
 ) {
     const { [key]: value } = parseCookies(context);
     return value;
