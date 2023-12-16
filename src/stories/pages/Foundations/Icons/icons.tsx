@@ -4,6 +4,7 @@ import { SunIcon } from '@/components/icons/SunIcon';
 import { GuardIcon } from '@/components/icons/GuardIcon';
 import { DefaultAvatarIcon } from '@/components/icons/DefaultAvatarIcon';
 import { ArrowLeftIcon } from '@/components/icons/ArrowLeftIcon';
+import { EyeIcon } from '@/components/icons/EyeIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -25,5 +26,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'arrow-left',
         component: <ArrowLeftIcon size={24} key={ArrowLeftIcon.name} />,
+    },
+    {
+        title: 'eye',
+        component: <EyeIcon size={24} key={EyeIcon.name} />,
     },
 ];
