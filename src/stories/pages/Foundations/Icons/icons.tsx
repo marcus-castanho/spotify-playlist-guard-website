@@ -5,6 +5,7 @@ import { GuardIcon } from '@/components/icons/GuardIcon';
 import { DefaultAvatarIcon } from '@/components/icons/DefaultAvatarIcon';
 import { ArrowLeftIcon } from '@/components/icons/ArrowLeftIcon';
 import { EyeIcon } from '@/components/icons/EyeIcon';
+import { EyeSlashIcon } from '@/components/icons/EyeSlashIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -30,5 +31,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'eye',
         component: <EyeIcon size={24} key={EyeIcon.name} />,
+    },
+    {
+        title: 'eye-slash',
+        component: <EyeSlashIcon size={24} key={EyeIcon.name} />,
     },
 ];
