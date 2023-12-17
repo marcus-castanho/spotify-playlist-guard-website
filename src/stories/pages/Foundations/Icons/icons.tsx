@@ -10,6 +10,7 @@ import { GitHubIcon } from '@/components/icons/GitHubIcon';
 import { ExternalLinkIcon } from '@/components/icons/ExternalLinkIcon';
 import { SpotifyIcon } from '@/components/icons/SpotifyIcon';
 import { CheckIcon } from '@/components/icons/CheckIcon';
+import { WarningFilledIcon } from '@/components/icons/WarningFilledIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -55,5 +56,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'check',
         component: <CheckIcon size={24} key={CheckIcon.name} />,
+    },
+    {
+        title: 'warning-filled',
+        component: <WarningFilledIcon size={24} key={WarningFilledIcon.name} />,
     },
 ];
