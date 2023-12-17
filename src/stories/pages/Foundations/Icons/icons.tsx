@@ -6,6 +6,7 @@ import { DefaultAvatarIcon } from '@/components/icons/DefaultAvatarIcon';
 import { ArrowLeftIcon } from '@/components/icons/ArrowLeftIcon';
 import { EyeIcon } from '@/components/icons/EyeIcon';
 import { EyeSlashIcon } from '@/components/icons/EyeSlashIcon';
+import { GitHubIcon } from '@/components/icons/GitHubIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -35,5 +36,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'eye-slash',
         component: <EyeSlashIcon size={24} key={EyeIcon.name} />,
+    },
+    {
+        title: 'github',
+        component: <GitHubIcon size={24} key={GitHubIcon.name} />,
     },
 ];
