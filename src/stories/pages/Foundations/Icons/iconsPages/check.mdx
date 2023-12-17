@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/blocks';
+import { Story } from '@/stories/components/Story.tsx';
+import { Color, colors } from '@/styles/theme';
+import { CheckIcon } from '@/components/icons/CheckIcon.tsx';
+import { IconViewer } from '../components/IconViewer.tsx';
+import { ExportButtons } from '../components/ExportButtons.tsx';
+import { IconInfo } from '../components/IconInfo.tsx';
+import { renderToString } from 'react-dom/server';
+
+<Meta title="Foundations/Icons/check" />
+
+<Story title={'check'}>
+    <IconViewer>
+        <CheckIcon size={12} />
+    </IconViewer>
+    <ExportButtons
+        iconName={'check'}
+        componentCode={renderToString(<CheckIcon size={12} />)}
+    />
+    <IconInfo>
+        ```js
+        <CheckIcon size={12} fillColor="black" />
+        ```
+    </IconInfo>
+</Story>

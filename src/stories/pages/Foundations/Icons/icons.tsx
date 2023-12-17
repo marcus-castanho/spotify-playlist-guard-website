@@ -9,6 +9,7 @@ import { EyeSlashIcon } from '@/components/icons/EyeSlashIcon';
 import { GitHubIcon } from '@/components/icons/GitHubIcon';
 import { ExternalLinkIcon } from '@/components/icons/ExternalLinkIcon';
 import { SpotifyIcon } from '@/components/icons/SpotifyIcon';
+import { CheckIcon } from '@/components/icons/CheckIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -50,5 +51,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'spotify',
         component: <SpotifyIcon size={24} key={SpotifyIcon.name} />,
+    },
+    {
+        title: 'check',
+        component: <CheckIcon size={24} key={CheckIcon.name} />,
     },
 ];
