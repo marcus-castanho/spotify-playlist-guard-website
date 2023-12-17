@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/blocks';
+import { Story } from '@/stories/components/Story.tsx';
+import { Color, colors } from '@/styles/theme';
+import { SpotifyIcon } from '@/components/icons/SpotifyIcon.tsx';
+import { IconViewer } from '../components/IconViewer.tsx';
+import { ExportButtons } from '../components/ExportButtons.tsx';
+import { IconInfo } from '../components/IconInfo.tsx';
+import { renderToString } from 'react-dom/server';
+
+<Meta title="Foundations/Icons/spotify" />
+
+<Story title={'spotify'}>
+    <IconViewer>
+        <SpotifyIcon size={12} />
+    </IconViewer>
+    <ExportButtons
+        iconName={'spotify'}
+        componentCode={renderToString(<SpotifyIcon size={12} />)}
+    />
+    <IconInfo>
+        ```js
+        <SpotifyIcon size={12} />
+        ```
+    </IconInfo>
+</Story>
