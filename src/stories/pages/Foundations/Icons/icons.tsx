@@ -7,6 +7,7 @@ import { ArrowLeftIcon } from '@/components/icons/ArrowLeftIcon';
 import { EyeIcon } from '@/components/icons/EyeIcon';
 import { EyeSlashIcon } from '@/components/icons/EyeSlashIcon';
 import { GitHubIcon } from '@/components/icons/GitHubIcon';
+import { ExternalLinkIcon } from '@/components/icons/ExternalLinkIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -40,5 +41,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'github',
         component: <GitHubIcon size={24} key={GitHubIcon.name} />,
+    },
+    {
+        title: 'external-link',
+        component: <ExternalLinkIcon size={24} key={ExternalLinkIcon.name} />,
     },
 ];

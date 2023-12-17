@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/blocks';
+import { Story } from '@/stories/components/Story.tsx';
+import { Color, colors } from '@/styles/theme';
+import { ExternalLinkIcon } from '@/components/icons/ExternalLinkIcon.tsx';
+import { IconViewer } from '../components/IconViewer.tsx';
+import { ExportButtons } from '../components/ExportButtons.tsx';
+import { IconInfo } from '../components/IconInfo.tsx';
+import { renderToString } from 'react-dom/server';
+
+<Meta title="Foundations/Icons/external-link" />
+
+<Story title={'external-link'}>
+    <IconViewer>
+        <ExternalLinkIcon size={12} />
+    </IconViewer>
+    <ExportButtons
+        iconName={'external-link'}
+        componentCode={renderToString(<ExternalLinkIcon size={12} />)}
+    />
+    <IconInfo>
+        ```js
+        <ExternalLinkIcon size={12} fillColor="black" />
+        ```
+    </IconInfo>
+</Story>
