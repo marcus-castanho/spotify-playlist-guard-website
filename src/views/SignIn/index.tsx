@@ -1,30 +1,36 @@
-import React, { FC } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { FC, useEffect } from 'react';
 import { PageContainer } from '@/components/PageContainer';
 import { Header } from '@/components/Header';
 import { SessionEndWrapper } from './components/SessionEndWrapper';
+import { useToast } from '@/contexts/ToastContext';
+import { SignInOptionsContainer } from './components/SignInOptionsContainer';
+import { Main } from '@/components/Main';
+import { Footer } from '@/components/Footer';
 
 type SignInProps = {
     authError?: string;
 };
 
 export const SignIn: FC<SignInProps> = ({ authError }) => {
-    const router = useRouter();
+    const { toast } = useToast();
+
+    useEffect(() => {
+        if (authError) toast('Error while performing this operation', 'error');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <SessionEndWrapper>
             <PageContainer>
                 <Header />
-                <button
-                    onClick={() =>
-                        router.push(
-                            `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-                        )
-                    }
-                >
-                    Sign in with Spotify
-                </button>
-                {authError && <p>{authError}</p>}
+                <Main>
+                    <div className="flex w-full items-center justify-center">
+                        <div>
+                            <SignInOptionsContainer />
+                        </div>
+                    </div>
+                </Main>
+                <Footer />
             </PageContainer>
         </SessionEndWrapper>
     );
