@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/blocks';
+import { Story } from '@/stories/components/Story.tsx';
+import { Color, colors } from '@/styles/theme';
+import { InfoIcon } from '@/components/icons/InfoIcon.tsx';
+import { IconViewer } from '../components/IconViewer.tsx';
+import { ExportButtons } from '../components/ExportButtons.tsx';
+import { IconInfo } from '../components/IconInfo.tsx';
+import { renderToString } from 'react-dom/server';
+
+<Meta title="Foundations/Icons/info" />
+
+<Story title={'info'}>
+    <IconViewer>
+        <InfoIcon size={12} />
+    </IconViewer>
+    <ExportButtons
+        iconName={'info'}
+        componentCode={renderToString(<InfoIcon size={12} />)}
+    />
+    <IconInfo>
+        ```js
+        <InfoIcon size={12} fillColor="black" />
+        ```
+    </IconInfo>
+</Story>

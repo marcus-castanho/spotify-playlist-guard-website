@@ -11,6 +11,7 @@ import { ExternalLinkIcon } from '@/components/icons/ExternalLinkIcon';
 import { SpotifyIcon } from '@/components/icons/SpotifyIcon';
 import { CheckIcon } from '@/components/icons/CheckIcon';
 import { WarningFilledIcon } from '@/components/icons/WarningFilledIcon';
+import { InfoIcon } from '@/components/icons/InfoIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -60,5 +61,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'warning-filled',
         component: <WarningFilledIcon size={24} key={WarningFilledIcon.name} />,
+    },
+    {
+        title: 'info',
+        component: <InfoIcon size={24} key={InfoIcon.name} />,
     },
 ];
