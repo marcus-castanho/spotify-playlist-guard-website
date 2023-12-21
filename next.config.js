@@ -27,4 +27,15 @@ module.exports = {
             },
         ];
     },
+    images: {
+        remotePatterns: [
+            /**Spotify's CDN host */
+            {
+                protocol: 'https',
+                hostname: 'i.scdn.co',
+                port: '',
+                pathname: '/**',
+            },
+        ],
+    },
 };
