@@ -11,11 +11,13 @@ import { QueryKey } from '@/contexts/QueryContext';
 import { useCookies } from '@/contexts/CookiesContext';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
 
-export type PlaylistsListProps = {
+type PlaylistsLegacyListProps = {
     playlists: Playlist[];
 };
 
-export const PlaylistsList: FC<PlaylistsListProps> = ({ playlists }) => {
+export const PlaylistsListLegacy: FC<PlaylistsLegacyListProps> = ({
+    playlists,
+}) => {
     const { getCookie } = useCookies();
     const { handleGuardApiResponse } = useClientErrorHandler();
     const playlistQueryKey: QueryKey = 'playlists';

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Playlist } from '@/services/spotifyPlaylistGuardApi';
-import { PlaylistsList } from './components/PlaylistsList';
+import { PlaylistsListLegacy } from './components/PlaylistsListLegacy';
 import { PageContainer } from '@/components/PageContainer';
 import { Header } from '@/components/Header';
 
@@ -19,7 +19,7 @@ export const Home: FC<HomeProps> = ({ playlists }) => {
                     overflow: 'hidden',
                 }}
             >
-                <PlaylistsList playlists={playlists} />
+                <PlaylistsListLegacy playlists={playlists} />
             </div>
         </PageContainer>
     );
