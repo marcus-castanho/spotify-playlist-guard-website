@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/blocks';
+import { Story } from '@/stories/components/Story.tsx';
+import { Color, colors } from '@/styles/theme';
+import { PencilIcon } from '@/components/icons/PencilIcon.tsx';
+import { IconViewer } from '../components/IconViewer.tsx';
+import { ExportButtons } from '../components/ExportButtons.tsx';
+import { IconInfo } from '../components/IconInfo.tsx';
+import { renderToString } from 'react-dom/server';
+
+<Meta title="Foundations/Icons/pencil" />
+
+<Story title={'pencil'}>
+    <IconViewer>
+        <PencilIcon size={12} />
+    </IconViewer>
+    <ExportButtons
+        iconName={'pencil'}
+        componentCode={renderToString(<PencilIcon size={12} />)}
+    />
+    <IconInfo>
+        ```js
+        <PencilIcon size={12} fillColor="black" />
+        ```
+    </IconInfo>
+</Story>

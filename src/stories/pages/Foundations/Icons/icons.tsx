@@ -16,6 +16,7 @@ import { ErrorIcon } from '@/components/icons/ErrorIcon';
 import { ServerWarningIcon } from '@/components/icons/ServerWarningIcon';
 import { ChevronLeftIcon } from '@/components/icons/ChevronLeftIcon';
 import { ChevronRightIcon } from '@/components/icons/ChevronRightIcon';
+import { PencilIcon } from '@/components/icons/PencilIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -85,5 +86,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'chevron-right',
         component: <ChevronRightIcon size={24} key={ChevronRightIcon.name} />,
+    },
+    {
+        title: 'pencil',
+        component: <PencilIcon size={24} key={PencilIcon.name} />,
     },
 ];
