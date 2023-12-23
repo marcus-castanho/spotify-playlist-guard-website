@@ -1,6 +1,9 @@
 import React, { ReactNode, FC } from 'react';
+import { CrossMarkIcon } from './icons/CrossMarkIcon';
+import { colors } from '@/styles/theme';
+import { useTheme } from '@/contexts/ThemeContext';
 
-export type ModalFragmentProps = {
+type ModalFragmentProps = {
     display: boolean;
     content: ReactNode;
     closeModal: () => void;
@@ -11,28 +14,35 @@ export const ModalFragment: FC<ModalFragmentProps> = ({
     content,
     closeModal,
 }) => {
+    const { theme } = useTheme();
+
     if (!display) return <></>;
     return (
         <>
-            <div
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100vw',
-                    height: '100vh',
-                    background: 'rgba(0, 0, 0, 0.5)',
-                }}
-            />
+            <div className="fixed left-0 top-0 h-screen w-screen bg-black opacity-50" />
             <dialog
+                aria-label="modal-dialog"
                 open={display}
-                style={{
-                    top: '50%',
-                    transform: 'translate(0%, -50%)',
-                }}
+                className="fixed top-1/2 translate-y-[-50%] bg-transparent p-2 text-inherit"
             >
-                <button onClick={() => closeModal()}>x</button>
-                {content}
+                <div className="rounded-lg border-[1px] bg-white dark:border-gray-100 dark:bg-black">
+                    <div className="flex justify-end p-4">
+                        <button
+                            aria-label="close-modal-button"
+                            onClick={() => closeModal()}
+                        >
+                            <CrossMarkIcon
+                                size={14}
+                                fillColor={
+                                    theme === 'dark'
+                                        ? colors.gray[50]
+                                        : colors.gray[100]
+                                }
+                            />
+                        </button>
+                    </div>
+                    {content}
+                </div>
             </dialog>
         </>
     );
