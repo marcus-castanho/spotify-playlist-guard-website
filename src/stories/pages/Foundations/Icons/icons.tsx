@@ -14,6 +14,7 @@ import { WarningFilledIcon } from '@/components/icons/WarningFilledIcon';
 import { InfoIcon } from '@/components/icons/InfoIcon';
 import { ErrorIcon } from '@/components/icons/ErrorIcon';
 import { ServerWarningIcon } from '@/components/icons/ServerWarningIcon';
+import { ChevronLeftIcon } from '@/components/icons/ChevronLeftIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -75,5 +76,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'server-warning',
         component: <ServerWarningIcon size={24} key={ServerWarningIcon.name} />,
+    },
+    {
+        title: 'chevron-left',
+        component: <ChevronLeftIcon size={24} key={ChevronLeftIcon.name} />,
     },
 ];
