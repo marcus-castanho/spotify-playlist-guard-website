@@ -2,7 +2,6 @@ import React from 'react';
 import { UserProfile } from './components/UserProfile';
 import { Header } from '@/components/Header';
 import { PageContainer } from '@/components/PageContainer';
-import { Footer } from '@/components/Footer';
 import { Main } from '@/components/Main';
 
 export const Profile = () => {
@@ -14,7 +13,6 @@ export const Profile = () => {
                     <UserProfile />
                 </div>
             </Main>
-            <Footer />
         </PageContainer>
     );
 };
