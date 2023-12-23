@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/blocks';
+import { Story } from '@/stories/components/Story.tsx';
+import { Color, colors } from '@/styles/theme';
+import { CrossMarkIcon } from '@/components/icons/CrossMarkIcon.tsx';
+import { IconViewer } from '../components/IconViewer.tsx';
+import { ExportButtons } from '../components/ExportButtons.tsx';
+import { IconInfo } from '../components/IconInfo.tsx';
+import { renderToString } from 'react-dom/server';
+
+<Meta title="Foundations/Icons/cross-mark" />
+
+<Story title={'cross-mark'}>
+    <IconViewer>
+        <CrossMarkIcon size={12} />
+    </IconViewer>
+    <ExportButtons
+        iconName={'cross-mark'}
+        componentCode={renderToString(<CrossMarkIcon size={12} />)}
+    />
+    <IconInfo>
+        ```js
+        <CrossMarkIcon size={12} fillColor="black" />
+        ```
+    </IconInfo>
+</Story>
