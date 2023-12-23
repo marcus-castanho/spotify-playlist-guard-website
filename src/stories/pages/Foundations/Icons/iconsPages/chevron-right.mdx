@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/blocks';
+import { Story } from '@/stories/components/Story.tsx';
+import { Color, colors } from '@/styles/theme';
+import { ChevronRightIcon } from '@/components/icons/ChevronRightIcon.tsx';
+import { IconViewer } from '../components/IconViewer.tsx';
+import { ExportButtons } from '../components/ExportButtons.tsx';
+import { IconInfo } from '../components/IconInfo.tsx';
+import { renderToString } from 'react-dom/server';
+
+<Meta title="Foundations/Icons/chevron-right" />
+
+<Story title={'chevron-right'}>
+    <IconViewer>
+        <ChevronRightIcon size={12} />
+    </IconViewer>
+    <ExportButtons
+        iconName={'chevron-right'}
+        componentCode={renderToString(<ChevronRightIcon size={12} />)}
+    />
+    <IconInfo>
+        ```js
+        <ChevronRightIcon size={12} fillColor="black" />
+        ```
+    </IconInfo>
+</Story>
