@@ -19,6 +19,7 @@ const playlistSchema = z.object({
     uri: z.string(),
     active: z.boolean(),
     allowed_userIds: z.array(z.string()),
+    images: z.array(z.string()),
     createdAt: z.string(),
     updatedAt: z.string(),
 });
