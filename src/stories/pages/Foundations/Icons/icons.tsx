@@ -18,6 +18,7 @@ import { ChevronLeftIcon } from '@/components/icons/ChevronLeftIcon';
 import { ChevronRightIcon } from '@/components/icons/ChevronRightIcon';
 import { PencilIcon } from '@/components/icons/PencilIcon';
 import { CrossMarkIcon } from '@/components/icons/CrossMarkIcon';
+import { MusicalNoteIcon } from '@/components/icons/MusicalNoteIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -95,5 +96,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'cross-mark',
         component: <CrossMarkIcon size={24} key={CrossMarkIcon.name} />,
+    },
+    {
+        title: 'musical-note',
+        component: <MusicalNoteIcon size={24} key={MusicalNoteIcon.name} />,
     },
 ];
