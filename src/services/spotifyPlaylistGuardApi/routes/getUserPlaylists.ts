@@ -3,7 +3,7 @@ import { InvalidResponseDataError } from '@/errors';
 import { Fetch } from '../.';
 import { request } from '../httpClient';
 
-type Playlist = z.infer<typeof playlistsSchema>[number];
+type Playlist = z.infer<typeof playlistSchema>;
 
 const playlistSchema = z.object({
     id: z.string(),
@@ -24,7 +24,10 @@ const playlistSchema = z.object({
     updatedAt: z.string(),
 });
 
-const playlistsSchema = z.array(playlistSchema);
+const playlistsSchema = z.object({
+    pages: z.number(),
+    items: z.array(playlistSchema),
+});
 
 function validatePlaylistsSchema(payload: unknown) {
     const validation = playlistsSchema.safeParse(payload);
@@ -40,14 +43,15 @@ function validatePlaylistsSchema(payload: unknown) {
 
 type GetUserPlaylistsPayload = {
     authToken: string;
+    page: number;
 };
 
 export const getUserPlaylists: Fetch<
-    Playlist[],
+    { pages: number; items: Playlist[] },
     GetUserPlaylistsPayload
-> = async ({ authToken }) => {
+> = async ({ authToken, page }) => {
     const response = await request({
-        path: `/playlists/list/1`,
+        path: `/playlists/list/${page}`,
         options: { method: 'GET' },
         authToken,
     });
@@ -56,11 +60,11 @@ export const getUserPlaylists: Fetch<
 
     if (status !== 200) return { success: false, status, data: null };
 
-    const playlists = validatePlaylistsSchema(resBody);
+    const body = validatePlaylistsSchema(resBody);
 
     return {
         success: true,
         status: status as 200,
-        data: playlists,
+        data: body,
     };
 };
