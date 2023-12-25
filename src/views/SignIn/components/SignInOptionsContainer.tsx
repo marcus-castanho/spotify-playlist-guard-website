@@ -8,7 +8,7 @@ export const SignInOptionsContainer = () => {
     const router = useRouter();
 
     return (
-        <div className="top-1/2 max-w-sm rounded-lg border-gray-100 bg-white p-5 dark:bg-black sm:border-[1px]">
+        <div className="top-1/2 max-w-sm rounded-lg border-gray-100 bg-white p-5 sm:border-[1px] dark:bg-black">
             <div className="flex flex-col gap-6">
                 <h1 className="flex justify-center px-4 text-4xl sm:py-4">
                     Sign in

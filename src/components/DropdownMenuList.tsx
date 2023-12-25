@@ -41,7 +41,7 @@ export const DropdownMenuList: FC<DropdownMenuListProps> = ({
 }) => {
     const { theme } = useTheme();
     return (
-        <div className="rounded-lg bg-white p-1 shadow-md dark:bg-gray-700  max-sm:h-full sm:w-[200px]">
+        <div className="rounded-lg bg-white p-1 shadow-md max-sm:h-full  sm:w-[200px] dark:bg-gray-700">
             <Header>
                 <button
                     aria-label="dropdown-menu-list-button"
