@@ -1,26 +1,29 @@
 import React, { FC } from 'react';
 import { Playlist } from '@/services/spotifyPlaylistGuardApi';
-import { PlaylistsListLegacy } from './components/PlaylistsListLegacy';
 import { PageContainer } from '@/components/PageContainer';
 import { Header } from '@/components/Header';
+import { SessionStartWrapper } from './components/SessionStartWrapper';
+import { PlaylistsList } from './components/PlaylistList';
+import { Main } from '@/components/Main';
 
 type HomeProps = {
-    playlists: Playlist[];
+    playlistsQuery: { pages: number; items: Playlist[] };
 };
 
-export const Home: FC<HomeProps> = ({ playlists }) => {
+export const Home: FC<HomeProps> = ({ playlistsQuery }) => {
     return (
-        <PageContainer>
-            <Header />
-            <div
-                style={{
-                    display: 'inline-block',
-                    width: '50%',
-                    overflow: 'hidden',
-                }}
-            >
-                <PlaylistsListLegacy playlists={playlists} />
-            </div>
-        </PageContainer>
+        <SessionStartWrapper>
+            <PageContainer>
+                <Header />
+                <Main>
+                    <div className="flex w-full justify-center">
+                        <PlaylistsList
+                            pages={playlistsQuery.pages}
+                            playlists={playlistsQuery.items}
+                        />
+                    </div>
+                </Main>
+            </PageContainer>
+        </SessionStartWrapper>
     );
 };

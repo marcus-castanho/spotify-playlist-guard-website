@@ -13,18 +13,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         const locale = context.locale || '';
         const authToken = getPageReqCookie(TOKEN_COOKIE_KEY, context.req) || '';
 
-        const playlists = await getUserPlaylists({ authToken }).then(
-            ({ success, status, data }) => {
-                if (status === 401)
-                    throw new Unauthorized({ sessionEnd: true });
-                if (!success) throw new InternalServerError({});
+        const playlistsQuery = await getUserPlaylists({
+            authToken,
+            page: 1,
+        }).then(({ success, status, data }) => {
+            if (status === 401) throw new Unauthorized({ sessionEnd: true });
+            if (!success) throw new InternalServerError({});
 
-                return data;
-            },
-        );
+            return data;
+        });
 
         return {
-            props: { playlists, ...(await serverSideTranslations(locale)) },
+            props: {
+                playlistsQuery,
+                ...(await serverSideTranslations(locale)),
+            },
         };
     } catch (error) {
         return handlePageReqErrorResponse(error);
@@ -32,11 +35,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export type HomeProps = {
-    playlists: Playlist[];
+    playlistsQuery: { pages: number; items: Playlist[] };
 };
 
-const Home: NextPage<HomeProps> = ({ playlists }) => {
-    return <HomePage playlists={playlists} />;
+const Home: NextPage<HomeProps> = ({ playlistsQuery }) => {
+    return <HomePage playlistsQuery={playlistsQuery} />;
 };
 
 export default Home;
