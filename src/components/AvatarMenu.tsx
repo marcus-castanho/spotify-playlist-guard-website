@@ -48,7 +48,7 @@ export const AvatarMenu: FC<AvatarMenuProps> = ({
             {isVisible && (
                 <div
                     className={
-                        'fixed max-sm:left-0 max-sm:top-0 max-sm:h-screen max-sm:w-screen max-sm:p-2 sm:absolute sm:bottom-0 sm:right-0 sm:translate-y-[100%]'
+                        'fixed z-10 max-sm:left-0 max-sm:top-0 max-sm:h-screen max-sm:w-screen max-sm:p-2 sm:absolute sm:bottom-0 sm:right-0 sm:translate-y-[100%]'
                     }
                 >
                     <DropdownMenuList

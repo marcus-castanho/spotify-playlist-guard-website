@@ -56,7 +56,7 @@ export const PlaylistCard: FC<PlaylistCardProps> = ({
                             Users: {playlist.allowed_userIds.length}
                         </div>
                         <div className="">
-                            Status:{' '}
+                            {'Status: '}
                             {playlist.collaborative
                                 ? 'Collaborative'
                                 : 'Not collaborative'}
