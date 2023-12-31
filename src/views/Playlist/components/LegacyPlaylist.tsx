@@ -1,13 +1,11 @@
 import React, { FC } from 'react';
-import {
-    Playlist as PlaylistType,
-    UserProfile,
-} from '@/services/spotifyPlaylistGuardApi';
+import { Playlist as PlaylistType } from '@/services/spotifyPlaylistGuardApi';
 import { useAllowedUsers } from '../hooks/useAllowedUsers';
 import { useAllowedUserInput } from '../hooks/useAllowedUserInput';
 import Image from 'next/image';
 import { P, match } from 'ts-pattern';
 import { UsersSearchBox } from './UsersSearchBox';
+import { UserProfile } from '..';
 
 type LegacyPlaylistProps = {
     playlist: PlaylistType;
