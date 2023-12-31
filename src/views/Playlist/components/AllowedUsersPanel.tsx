@@ -111,10 +111,10 @@ const ActionButton: FC<ActionButtonProps> = ({ onClick, status }) => {
     );
 };
 
-type AllowedUsersPanel = {
+type AllowedUsersPanelProps = {
     users: AllowedUser[];
 };
-export const AllowedUsersPanel: FC<AllowedUsersPanel> = ({ users }) => {
+export const AllowedUsersPanel: FC<AllowedUsersPanelProps> = ({ users }) => {
     return (
         <div className="w-full rounded-lg bg-white p-5 shadow-md dark:bg-gray-950 dark:shadow-none">
             <ul>
