@@ -22,6 +22,7 @@ import { MusicalNoteIcon } from '@/components/icons/MusicalNoteIcon';
 import { ArrowRestoreIcon } from '@/components/icons/ArrowRestoreIcon';
 import { TrashIcon } from '@/components/icons/TrashIcon';
 import { AvatarFilledIcon } from '@/components/icons/AvatarFilledIcon';
+import { MagnifyingGlassIcon } from '@/components/icons/MagnifyingGlassIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -115,5 +116,11 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'avatar-filled',
         component: <AvatarFilledIcon size={24} key={AvatarFilledIcon.name} />,
+    },
+    {
+        title: 'magnifying-glass',
+        component: (
+            <MagnifyingGlassIcon size={24} key={MagnifyingGlassIcon.name} />
+        ),
     },
 ];
