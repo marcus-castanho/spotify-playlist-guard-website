@@ -1,7 +1,6 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import {
-    UserProfile,
     Playlist,
     getPlaylist,
     getMe,
@@ -12,7 +11,7 @@ import { InternalServerError, Unauthorized } from '@/errors';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getPageReqCookie } from '@/storage/cookies/server';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
-import { Playlist as PlaylistPage } from '@/views/Playlist';
+import { Playlist as PlaylistPage, UserProfile } from '@/views/Playlist';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
@@ -31,11 +30,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         });
 
         const allowedUsers = await Promise.all(
-            playlist.allowed_userIds.map((userId) => {
+            playlist.allowed_userIds.map(async (userId) => {
                 const defaultValue = {
                     id: userId,
-                    name: 'Data not found.',
-                    image_url: 'Data not found.',
+                    name: null,
+                    image_url: null,
                 };
                 return getUserProfile({ userId, authToken })
                     .then(({ success, data }) => {
