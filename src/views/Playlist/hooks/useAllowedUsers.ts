@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import {
-    UserProfile,
     getUserProfile,
     patchPlaylistAllowedUsers,
     Playlist,
@@ -11,13 +10,25 @@ import { useClientErrorHandler } from '@/errors/clientErrorHandlers';
 import { QueryKey } from '@/contexts/QueryContext';
 import { useCookies } from '@/contexts/CookiesContext';
 import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
+import { UserProfile } from '..';
 
 export type AllowedUser = {
     id: string;
-    name: string;
-    imageURL: string;
+    name: string | null;
+    imageURL: string | null;
     status: 'permanent' | 'idle' | 'removed' | 'added';
 };
+
+const remapUserProfileToAllowedUser = (
+    allowedUsers: UserProfile[],
+    ownerSpotifyId: string,
+): AllowedUser[] =>
+    allowedUsers.map(({ id, name, image_url }) => ({
+        id,
+        name: name || null,
+        imageURL: image_url || null,
+        status: id === ownerSpotifyId ? 'permanent' : 'idle',
+    }));
 
 export type UseAllowedUsersParams = {
     playlist: Playlist;
@@ -33,12 +44,7 @@ export function useAllowedUsers({
     const { getCookie } = useCookies();
     const { handleGuardApiResponse } = useClientErrorHandler();
     const [users, setUsers] = useState<AllowedUser[]>(() =>
-        allowedUsers.map(({ id, name, image_url }) => ({
-            id,
-            name,
-            imageURL: image_url,
-            status: id === ownerSpotifyId ? 'permanent' : 'idle',
-        })),
+        remapUserProfileToAllowedUser(allowedUsers, ownerSpotifyId),
     );
     const [updating, setUpdating] = useState(false);
     const usersProfilesKey: QueryKey = 'users-profiles';
@@ -51,8 +57,8 @@ export function useAllowedUsers({
                     .map(({ id }) => {
                         const defaultValue = {
                             id,
-                            name: 'Data not found.',
-                            image_url: 'Data not found.',
+                            name: null,
+                            image_url: null,
                         };
                         return getUserProfile({ userId: id, authToken })
                             .then(handleGuardApiResponse)
