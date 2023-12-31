@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/blocks';
+import { Story } from '@/stories/components/Story.tsx';
+import { Color, colors } from '@/styles/theme';
+import { AvatarFilledIcon } from '@/components/icons/AvatarFilledIcon.tsx';
+import { IconViewer } from '../components/IconViewer.tsx';
+import { ExportButtons } from '../components/ExportButtons.tsx';
+import { IconInfo } from '../components/IconInfo.tsx';
+import { renderToString } from 'react-dom/server';
+
+<Meta title="Foundations/Icons/avatar-filled" />
+
+<Story title={'avatar-filled'}>
+    <IconViewer>
+        <AvatarFilledIcon size={12} />
+    </IconViewer>
+    <ExportButtons
+        iconName={'avatar-filled'}
+        componentCode={renderToString(<AvatarFilledIcon size={12} />)}
+    />
+    <IconInfo>
+        ```js
+        <AvatarFilledIcon size={12} fillColor="black" />
+        ```
+    </IconInfo>
+</Story>

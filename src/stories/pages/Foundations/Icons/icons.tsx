@@ -21,6 +21,7 @@ import { CrossMarkIcon } from '@/components/icons/CrossMarkIcon';
 import { MusicalNoteIcon } from '@/components/icons/MusicalNoteIcon';
 import { ArrowRestoreIcon } from '@/components/icons/ArrowRestoreIcon';
 import { TrashIcon } from '@/components/icons/TrashIcon';
+import { AvatarFilledIcon } from '@/components/icons/AvatarFilledIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -110,5 +111,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'trash',
         component: <TrashIcon size={24} key={TrashIcon.name} />,
+    },
+    {
+        title: 'avatar-filled',
+        component: <AvatarFilledIcon size={24} key={AvatarFilledIcon.name} />,
     },
 ];
