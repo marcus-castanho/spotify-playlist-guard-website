@@ -19,6 +19,7 @@ import { ChevronRightIcon } from '@/components/icons/ChevronRightIcon';
 import { PencilIcon } from '@/components/icons/PencilIcon';
 import { CrossMarkIcon } from '@/components/icons/CrossMarkIcon';
 import { MusicalNoteIcon } from '@/components/icons/MusicalNoteIcon';
+import { ArrowRestoreIcon } from '@/components/icons/ArrowRestoreIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -100,5 +101,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'musical-note',
         component: <MusicalNoteIcon size={24} key={MusicalNoteIcon.name} />,
+    },
+    {
+        title: 'arrow-restore',
+        component: <ArrowRestoreIcon size={24} key={ArrowRestoreIcon.name} />,
     },
 ];
