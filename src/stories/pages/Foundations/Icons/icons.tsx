@@ -20,6 +20,7 @@ import { PencilIcon } from '@/components/icons/PencilIcon';
 import { CrossMarkIcon } from '@/components/icons/CrossMarkIcon';
 import { MusicalNoteIcon } from '@/components/icons/MusicalNoteIcon';
 import { ArrowRestoreIcon } from '@/components/icons/ArrowRestoreIcon';
+import { TrashIcon } from '@/components/icons/TrashIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -105,5 +106,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'arrow-restore',
         component: <ArrowRestoreIcon size={24} key={ArrowRestoreIcon.name} />,
+    },
+    {
+        title: 'trash',
+        component: <TrashIcon size={24} key={TrashIcon.name} />,
     },
 ];
