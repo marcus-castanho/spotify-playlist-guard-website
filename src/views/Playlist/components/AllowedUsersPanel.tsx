@@ -128,13 +128,13 @@ export const AllowedUsersPanel: FC<AllowedUsersPanelProps> = ({
     isUpdating,
 }) => {
     return (
-        <div className="relative w-full rounded-lg bg-white p-5 shadow-md dark:bg-gray-950 dark:shadow-none">
+        <div className="relative h-full w-full rounded-lg bg-white p-5 shadow-md dark:bg-gray-950 dark:shadow-none">
             {isUpdating ? (
                 <div className="flex h-full w-full items-center justify-center">
                     <Spinner size="large" />
                 </div>
             ) : (
-                <ul>
+                <ul className="h-full overflow-auto">
                     {users.map(({ id, imageURL, name, status }) => {
                         return (
                             <ListItem key={id}>
