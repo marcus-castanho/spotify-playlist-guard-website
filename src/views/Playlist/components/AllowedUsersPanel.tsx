@@ -3,10 +3,12 @@ import Image from 'next/image';
 import { ArrowRestoreIcon } from '@/components/icons/ArrowRestoreIcon';
 import { useTheme } from '@/contexts/ThemeContext';
 import { TrashIcon } from '@/components/icons/TrashIcon';
-import { AllowedUser } from '../hooks/useAllowedUsers';
+import { AllowedUser, useAllowedUsers } from '../hooks/useAllowedUsers';
 import { P, match } from 'ts-pattern';
 import { AvatarFilledIcon } from '@/components/icons/AvatarFilledIcon';
 import { colors } from '@/styles/theme';
+import { Spinner } from '@/components/Spinner';
+import { ButtonPrimary } from '@/components/ButtonPrimary';
 
 type ListItemProps = {
     children: ReactNode;
@@ -113,35 +115,63 @@ const ActionButton: FC<ActionButtonProps> = ({ onClick, status }) => {
 
 type AllowedUsersPanelProps = {
     users: AllowedUser[];
+    handleAllowedUsers: ReturnType<
+        typeof useAllowedUsers
+    >['handleAllowedUsers'];
+    handleSubmit: ReturnType<typeof useAllowedUsers>['handleSubmit'];
+    isUpdating: ReturnType<typeof useAllowedUsers>['isUpdating'];
 };
-export const AllowedUsersPanel: FC<AllowedUsersPanelProps> = ({ users }) => {
+export const AllowedUsersPanel: FC<AllowedUsersPanelProps> = ({
+    users,
+    handleAllowedUsers,
+    handleSubmit,
+    isUpdating,
+}) => {
     return (
-        <div className="w-full rounded-lg bg-white p-5 shadow-md dark:bg-gray-950 dark:shadow-none">
-            <ul>
-                {users.map(({ id, imageURL, name, status }) => {
-                    return (
-                        <ListItem key={id}>
-                            <div className="flex w-full gap-1">
-                                <UserProfileImage imageURL={imageURL} />
-                                <div className="flex w-full justify-between">
-                                    <div className="flex items-center pl-3">
-                                        {name || id}
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <StatusSpan status={status} />
-                                        {status !== 'permanent' && (
-                                            <ActionButton
-                                                onClick={() => {}}
-                                                status={status}
-                                            />
-                                        )}
+        <div className="relative w-full rounded-lg bg-white p-5 shadow-md dark:bg-gray-950 dark:shadow-none">
+            {isUpdating ? (
+                <div className="flex h-full w-full items-center justify-center">
+                    <Spinner size="large" />
+                </div>
+            ) : (
+                <ul>
+                    {users.map(({ id, imageURL, name, status }) => {
+                        return (
+                            <ListItem key={id}>
+                                <div className="flex w-full gap-1">
+                                    <UserProfileImage imageURL={imageURL} />
+                                    <div className="flex w-full justify-between">
+                                        <div className="flex items-center pl-3">
+                                            {name || id}
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <StatusSpan status={status} />
+                                            {status !== 'permanent' && (
+                                                <ActionButton
+                                                    onClick={() =>
+                                                        handleAllowedUsers(
+                                                            id,
+                                                            status,
+                                                        )
+                                                    }
+                                                    status={status}
+                                                />
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </ListItem>
-                    );
-                })}
-            </ul>
+                            </ListItem>
+                        );
+                    })}
+                </ul>
+            )}
+            {!isUpdating && (
+                <div className="absolute bottom-10 right-10">
+                    <ButtonPrimary onClick={() => handleSubmit()}>
+                        Save
+                    </ButtonPrimary>
+                </div>
+            )}
         </div>
     );
 };
