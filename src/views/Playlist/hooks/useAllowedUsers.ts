@@ -54,14 +54,21 @@ export function useAllowedUsers({
             return Promise.all(
                 users
                     .filter(({ status }) => status !== 'removed')
-                    .map(({ id }) => {
+                    .map(async ({ id }) => {
                         const defaultValue = {
                             id,
                             name: null,
                             image_url: null,
                         };
                         return getUserProfile({ userId: id, authToken })
-                            .then(handleGuardApiResponse)
+                            .then((result) => {
+                                const { success } = result;
+                                const data = handleGuardApiResponse({
+                                    ...result,
+                                });
+                                if (!success) return defaultValue;
+                                return data;
+                            })
                             .catch(() => defaultValue);
                     }),
             );
