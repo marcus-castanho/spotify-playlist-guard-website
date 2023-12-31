@@ -64,17 +64,17 @@ const StatusSpan: FC<StatusSpanProps> = ({ status }) => {
                 .with(
                     'added',
                     () =>
-                        'rounded-md border-2 border-primary-verdant p-2 text-start text-primary-verdant',
+                        'rounded-md border-2 border-primary-verdant p-2 text-center text-primary-verdant',
                 )
                 .with(
                     'removed',
                     () =>
-                        'rounded-md border-2 border-secondary-red p-2 text-start text-secondary-red',
+                        'rounded-md border-2 border-secondary-red p-2 text-center text-secondary-red',
                 )
                 .with(
                     'permanent',
                     () =>
-                        'rounded-md border-2 border-secondary-blue p-2 text-start text-secondary-blue',
+                        'rounded-md border-2 border-secondary-blue p-2 text-center text-secondary-blue',
                 )
                 .with('idle', () => 'hidden')
                 .otherwise(() => 'hidden')}
@@ -141,7 +141,7 @@ export const AllowedUsersPanel: FC<AllowedUsersPanelProps> = ({
                                 <div className="flex w-full gap-1">
                                     <UserProfileImage imageURL={imageURL} />
                                     <div className="flex w-full justify-between">
-                                        <div className="flex items-center pl-3">
+                                        <div className="flex items-center px-3">
                                             {name || id}
                                         </div>
                                         <div className="flex items-center gap-3">
