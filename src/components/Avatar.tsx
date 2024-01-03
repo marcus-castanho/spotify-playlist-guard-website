@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { DefaultAvatarIcon } from './icons/DefaultAvatarIcon';
-import Image from 'next/image';
 import { useTheme } from '@/contexts/ThemeContext';
+import { CustomImage } from './CustomImage';
 
 type AvatarProps = {
     src?: string;
@@ -15,7 +15,7 @@ export const Avatar: FC<AvatarProps> = ({ src, size = 24, fillColor }) => {
     return (
         <>
             {src ? (
-                <Image
+                <CustomImage
                     alt="Avatar image"
                     src={src}
                     width={size}

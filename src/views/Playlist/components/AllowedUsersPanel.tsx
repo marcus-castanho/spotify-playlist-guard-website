@@ -1,5 +1,4 @@
 import React, { FC, ReactNode } from 'react';
-import Image from 'next/image';
 import { ArrowRestoreIcon } from '@/components/icons/ArrowRestoreIcon';
 import { useTheme } from '@/contexts/ThemeContext';
 import { TrashIcon } from '@/components/icons/TrashIcon';
@@ -9,6 +8,7 @@ import { AvatarFilledIcon } from '@/components/icons/AvatarFilledIcon';
 import { colors } from '@/styles/theme';
 import { Spinner } from '@/components/Spinner';
 import { ButtonPrimary } from '@/components/ButtonPrimary';
+import { CustomImage } from '@/components/CustomImage';
 
 type ListItemProps = {
     children: ReactNode;
@@ -30,10 +30,9 @@ const UserProfileImage: FC<UserProfileImageProps> = ({ imageURL }) => {
     return (
         <div className="relative h-20 w-20 min-w-20">
             {imageURL ? (
-                <Image
+                <CustomImage
                     alt="User profile image"
                     src={imageURL || ''}
-                    fill
                     className="rounded-[50%]"
                 />
             ) : (

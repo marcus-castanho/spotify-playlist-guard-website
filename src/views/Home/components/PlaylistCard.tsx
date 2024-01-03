@@ -2,11 +2,11 @@ import React, { FC, ReactNode } from 'react';
 import { Playlist } from '@/services/spotifyPlaylistGuardApi';
 import { PencilIcon } from '@/components/icons/PencilIcon';
 import { useTheme } from '@/contexts/ThemeContext';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { DefaultAlbumCover } from '@/components/DefaultAlbumCover';
 import { useToast } from '@/contexts/ToastContext';
 import { ToggleSwitch } from '@/components/ToggleSwitch';
+import { CustomImage } from '@/components/CustomImage';
 
 type ActionButtonProps = {
     children: ReactNode;
@@ -41,10 +41,9 @@ export const PlaylistCard: FC<PlaylistCardProps> = ({
                 <div className="flex p-4 sm:flex-col">
                     <div className="relative h-40 w-40 min-w-[10rem]">
                         {playlist.images[0] ? (
-                            <Image
+                            <CustomImage
                                 alt="Playlist cover image"
                                 src={playlist.images[0]}
-                                fill
                             />
                         ) : (
                             <DefaultAlbumCover size={142} />

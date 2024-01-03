@@ -1,5 +1,4 @@
 import React, { FC, ReactNode } from 'react';
-import Image from 'next/image';
 import { useTheme } from '@/contexts/ThemeContext';
 import { AllowedUser, useAllowedUsers } from '../hooks/useAllowedUsers';
 import { match } from 'ts-pattern';
@@ -13,6 +12,7 @@ import { useMutation } from '@tanstack/react-query';
 import { getQueryUsers } from '@/services/spotifyPlaylistGuardApi';
 import { Spinner } from '@/components/Spinner';
 import { PlusIcon } from '@/components/icons/PlusIcon';
+import { CustomImage } from '@/components/CustomImage';
 
 type ListItemProps = {
     children: ReactNode;
@@ -34,10 +34,9 @@ const UserProfileImage: FC<UserProfileImageProps> = ({ imageURL }) => {
     return (
         <div className="relative h-20 w-20 min-w-20">
             {imageURL ? (
-                <Image
+                <CustomImage
                     alt="User profile image"
                     src={imageURL || ''}
-                    fill
                     className="rounded-[50%]"
                 />
             ) : (
