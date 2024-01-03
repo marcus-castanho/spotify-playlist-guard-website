@@ -49,6 +49,9 @@ export function useAllowedUsers({
     const [updating, setUpdating] = useState(false);
     const usersProfilesKey: QueryKey = 'users-profiles';
     const authToken = getCookie(TOKEN_COOKIE_KEY) || '';
+    const playlistOwner = allowedUsers.find(
+        (user) => user.id === ownerSpotifyId,
+    );
     const usersProfilesQuery = useQuery({
         queryFn: () => {
             return Promise.all(
@@ -62,14 +65,24 @@ export function useAllowedUsers({
                         };
                         return getUserProfile({ userId: id, authToken })
                             .then((result) => {
-                                const { success } = result;
-                                const data = handleGuardApiResponse({
-                                    ...result,
-                                });
+                                const { success, status, data } = result;
+                                if (status === 401)
+                                    handleGuardApiResponse({ ...result });
+                                if (!success && id === ownerSpotifyId) {
+                                    return {
+                                        id,
+                                        name: playlistOwner?.name || null,
+                                        image_url:
+                                            playlistOwner?.image_url || null,
+                                    };
+                                }
                                 if (!success) return defaultValue;
                                 return data;
                             })
-                            .catch(() => defaultValue);
+                            .catch(() => {
+                                console.log('erro');
+                                return defaultValue;
+                            });
                     }),
             )
                 .then((data) => {
