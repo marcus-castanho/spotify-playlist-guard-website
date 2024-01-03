@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import {
     getUserProfile,
@@ -71,7 +71,16 @@ export function useAllowedUsers({
                             })
                             .catch(() => defaultValue);
                     }),
-            );
+            )
+                .then((data) => {
+                    const usersProfiles = remapUserProfileToAllowedUser(
+                        data,
+                        ownerSpotifyId,
+                    );
+                    setUsers(usersProfiles);
+                    return data;
+                })
+                .finally(() => setUpdating(false));
         },
         initialData: allowedUsers,
         placeholderData: keepPreviousData,
@@ -151,26 +160,6 @@ export function useAllowedUsers({
                 .otherwise(() => newState);
         });
     };
-
-    useEffect(() => {
-        if (!usersProfilesQuery.data) return;
-
-        const usersProfiles = usersProfilesQuery.data.map((userProfile) => {
-            const { image_url, ...rest } = userProfile;
-
-            return {
-                ...rest,
-                imageURL: image_url,
-                status:
-                    rest.id === ownerSpotifyId
-                        ? ('permanent' as const)
-                        : ('idle' as const),
-            };
-        });
-
-        setUsers(usersProfiles);
-        setUpdating(false);
-    }, [usersProfilesQuery.data, ownerSpotifyId]);
 
     return {
         users,
