@@ -5,14 +5,10 @@ import { match } from 'ts-pattern';
 import { AvatarFilledIcon } from '@/components/icons/AvatarFilledIcon';
 import { colors } from '@/styles/theme';
 import { SearchBoxInput } from '@/components/SearchBoxInput';
-import { useCookies } from '@/contexts/CookiesContext';
-import { useClientErrorHandler } from '@/errors/clientErrorHandlers';
-import { TOKEN_COOKIE_KEY } from '@/contexts/AuthContext';
-import { useMutation } from '@tanstack/react-query';
-import { getQueryUsers } from '@/services/spotifyPlaylistGuardApi';
 import { Spinner } from '@/components/Spinner';
 import { PlusIcon } from '@/components/icons/PlusIcon';
 import { CustomImage } from '@/components/CustomImage';
+import { useUsersQuery } from '../hooks/useUsersQuery';
 
 type ListItemProps = {
     children: ReactNode;
@@ -118,27 +114,14 @@ export const SearchUsersPanel: FC<SearchUsersPanelProps> = ({
     allowedUsers,
     addNewAllowedUser,
 }) => {
-    const { getCookie } = useCookies();
-    const { handleGuardApiResponse } = useClientErrorHandler();
-    const authToken = getCookie(TOKEN_COOKIE_KEY) || '';
-    const defaultValue: Awaited<ReturnType<typeof getQueryUsers>>['data'] = [];
-    const usersQuery = useMutation({
-        mutationFn: async (identifier: string) => {
-            return getQueryUsers({ identifier, authToken })
-                .then(handleGuardApiResponse)
-                .catch(() => defaultValue);
-        },
-    });
-
-    const isPending = usersQuery.isPending;
-    const users = usersQuery.data || [];
+    const { users, isPending, mutate } = useUsersQuery();
 
     return (
         <div className="h-full w-full rounded-lg bg-white p-5 shadow-md dark:bg-gray-950 dark:shadow-none">
             <div className="p-3">
                 <SearchBoxInput
                     placeHolder="Search user..."
-                    onSubmit={(value) => usersQuery.mutate(value)}
+                    onSubmit={(value) => mutate(value)}
                 />
             </div>
             {isPending ? (
