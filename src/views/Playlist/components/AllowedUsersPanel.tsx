@@ -33,7 +33,7 @@ const UserProfileImage: FC<UserProfileImageProps> = ({ imageURL }) => {
                 <CustomImage
                     alt="User profile image"
                     src={imageURL || ''}
-                    className="rounded-[50%]"
+                    className="h-full w-full rounded-[50%] object-cover"
                 />
             ) : (
                 <div className="flex min-h-20 min-w-20 items-center justify-center rounded-[50%] bg-gray-400">
@@ -165,7 +165,7 @@ export const AllowedUsersPanel: FC<AllowedUsersPanelProps> = ({
                 </ul>
             )}
             {!isUpdating && (
-                <div className="absolute bottom-10 right-10">
+                <div className="absolute bottom-2 right-2">
                     <ButtonPrimary onClick={() => handleSubmit()}>
                         Save
                     </ButtonPrimary>

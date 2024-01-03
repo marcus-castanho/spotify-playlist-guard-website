@@ -44,6 +44,7 @@ export const PlaylistCard: FC<PlaylistCardProps> = ({
                             <CustomImage
                                 alt="Playlist cover image"
                                 src={playlist.images[0]}
+                                className="h-full w-full object-cover"
                             />
                         ) : (
                             <DefaultAlbumCover size={142} />

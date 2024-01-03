@@ -37,7 +37,7 @@ const UserProfileImage: FC<UserProfileImageProps> = ({ imageURL }) => {
                 <CustomImage
                     alt="User profile image"
                     src={imageURL || ''}
-                    className="rounded-[50%]"
+                    className="h-full w-full rounded-[50%] object-cover"
                 />
             ) : (
                 <div className="flex min-h-20 min-w-20 items-center justify-center rounded-[50%] bg-gray-400">
