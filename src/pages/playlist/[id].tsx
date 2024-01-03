@@ -29,6 +29,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             return data;
         });
 
+        const user = await getMe({ authToken }).then(
+            ({ success, status, data }) => {
+                if (status === 401)
+                    throw new Unauthorized({ sessionEnd: true });
+                if (!success) throw new InternalServerError({});
+
+                return data;
+            },
+        );
+
         const allowedUsers = await Promise.all(
             playlist.allowed_userIds.map(async (userId) => {
                 const defaultValue = {
@@ -38,21 +48,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 };
                 return getUserProfile({ userId, authToken })
                     .then(({ success, data }) => {
+                        if (!success && userId === user.spotify_id) {
+                            return {
+                                id: user.spotify_id,
+                                name: user.display_name,
+                                image_url: user.images[1],
+                            };
+                        }
                         if (!success) return defaultValue;
                         return data;
                     })
                     .catch(() => defaultValue);
             }),
-        );
-
-        const user = await getMe({ authToken }).then(
-            ({ success, status, data }) => {
-                if (status === 401)
-                    throw new Unauthorized({ sessionEnd: true });
-                if (!success) throw new InternalServerError({});
-
-                return data;
-            },
         );
 
         return {
