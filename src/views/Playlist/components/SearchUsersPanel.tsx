@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useEffect } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { AllowedUser, useAllowedUsers } from '../hooks/useAllowedUsers';
 import { match } from 'ts-pattern';
@@ -9,17 +9,18 @@ import { Spinner } from '@/components/Spinner';
 import { PlusIcon } from '@/components/icons/PlusIcon';
 import { CustomImage } from '@/components/CustomImage';
 import { useUsersQuery } from '../hooks/useUsersQuery';
+import { FormField } from '@/components/FormField';
+import { useAllowedUserInput } from '../hooks/useAllowedUserInput';
 
-type ListItemProps = {
+type ItemBoxProps = {
     children: ReactNode;
+    fixed?: boolean;
 };
-const ListItem: FC<ListItemProps> = ({ children }) => {
+const ItemBox: FC<ItemBoxProps> = ({ children }) => {
     return (
-        <li>
-            <div className="flex w-full items-start rounded-[4px] p-3 hover:bg-gray-50 dark:hover:bg-gray-500">
-                {children}
-            </div>
-        </li>
+        <div className="flex w-full rounded-[4px] p-3 hover:bg-gray-50 dark:hover:bg-gray-500">
+            {children}
+        </div>
     );
 };
 
@@ -106,6 +107,70 @@ const ActionButton: FC<ActionButtonProps> = ({ onClick, status }) => {
     );
 };
 
+type UserItemProps = { user: AllowedUser; onAddUser: () => void };
+const UserItem: FC<UserItemProps> = ({
+    user: { id, imageURL, name, status },
+    onAddUser,
+}) => {
+    return (
+        <div className="flex w-full gap-1">
+            <UserProfileImage imageURL={imageURL} />
+            <div className="flex w-full justify-between">
+                <div className="flex items-center pl-3">{name || id}</div>
+                <div className="flex items-center gap-3">
+                    <StatusSpan status={status} />
+                    {status !== 'permanent' && (
+                        <ActionButton
+                            onClick={() => onAddUser()}
+                            status={status}
+                        />
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+type UserIdInputProps = {
+    onAddUser: (userId: string) => void;
+};
+const UserIdInput: FC<UserIdInputProps> = ({ onAddUser }) => {
+    const { handleUserIdInput, userIdInput, handleSubmit, isValid } =
+        useAllowedUserInput();
+
+    return (
+        <div className="flex w-full rounded-[4px] border-2 bg-gray-50 px-3 dark:bg-black">
+            <div className="flex items-center">
+                <div className="flex min-h-20 min-w-20 items-center justify-center rounded-[50%] bg-gray-400">
+                    <AvatarFilledIcon
+                        fillColor={colors.gray['100']}
+                        size={50}
+                    />
+                </div>
+                <FormField.Root
+                    inputId="userId"
+                    label="Enter a user ID manually"
+                >
+                    <div className="flex gap-3">
+                        <FormField.TextInput
+                            inputId="userId"
+                            defaultValue={''}
+                            onChange={(text) => handleUserIdInput(text)}
+                            error={!isValid}
+                        />
+                        <ActionButton
+                            onClick={() => {
+                                handleSubmit(() => onAddUser(userIdInput));
+                            }}
+                            status="idle"
+                        />
+                    </div>
+                </FormField.Root>
+            </div>
+        </div>
+    );
+};
+
 type SearchUsersPanelProps = {
     allowedUsers: AllowedUser[];
     addNewAllowedUser: ReturnType<typeof useAllowedUsers>['addNewAllowedUser'];
@@ -129,91 +194,100 @@ export const SearchUsersPanel: FC<SearchUsersPanelProps> = ({
                     <Spinner size="large" />
                 </div>
             ) : (
-                <ul className="h-[90%] overflow-auto">
-                    {users.map(({ id, displayName, avatar }, index) => {
-                        const imageURL = avatar?.sources[1]?.url || null;
-                        const allowedUser = allowedUsers.find((allowedUser) => {
-                            return allowedUser.id === id;
-                        });
-                        const isAllowedUser = !!allowedUser;
-                        const status = match({
-                            isAllowedUser,
-                            allowedUser,
-                        })
-                            .with(
-                                { isAllowedUser: false },
-                                () => 'idle' as const,
-                            )
-                            .with(
-                                {
-                                    isAllowedUser: true,
-                                    allowedUser: {
-                                        ...allowedUser,
-                                        status: 'idle',
-                                    },
+                <div className="h-full w-full">
+                    <div className="p-3">
+                        <UserIdInput
+                            onAddUser={(userId) =>
+                                addNewAllowedUser({
+                                    id: userId,
+                                    imageURL: null,
+                                    name: null,
+                                })
+                            }
+                        />
+                    </div>
+                    <ul className="h-[65%] overflow-auto p-3">
+                        {users.map(({ id, displayName, avatar }) => {
+                            const imageURL = avatar?.sources[1]?.url || null;
+                            const allowedUser = allowedUsers.find(
+                                (allowedUser) => {
+                                    return allowedUser.id === id;
                                 },
-                                () => 'added' as const,
-                            )
-                            .with(
-                                {
-                                    isAllowedUser: true,
-                                    allowedUser: {
-                                        ...allowedUser,
-                                        status: 'added',
+                            );
+                            const isAllowedUser = !!allowedUser;
+                            const status = match({
+                                isAllowedUser,
+                                allowedUser,
+                            })
+                                .with(
+                                    { isAllowedUser: false },
+                                    () => 'idle' as const,
+                                )
+                                .with(
+                                    {
+                                        isAllowedUser: true,
+                                        allowedUser: {
+                                            ...allowedUser,
+                                            status: 'idle',
+                                        },
                                     },
-                                },
-                                () => 'added' as const,
-                            )
-                            .with(
-                                {
-                                    isAllowedUser: true,
-                                    allowedUser: {
-                                        ...allowedUser,
-                                        status: 'removed',
+                                    () => 'added' as const,
+                                )
+                                .with(
+                                    {
+                                        isAllowedUser: true,
+                                        allowedUser: {
+                                            ...allowedUser,
+                                            status: 'added',
+                                        },
                                     },
-                                },
-                                () => 'removed' as const,
-                            )
-                            .with(
-                                {
-                                    isAllowedUser: true,
-                                    allowedUser: {
-                                        ...allowedUser,
-                                        status: 'permanent',
+                                    () => 'added' as const,
+                                )
+                                .with(
+                                    {
+                                        isAllowedUser: true,
+                                        allowedUser: {
+                                            ...allowedUser,
+                                            status: 'removed',
+                                        },
                                     },
-                                },
-                                () => 'permanent' as const,
-                            )
-                            .otherwise(() => 'idle' as const);
-                        return (
-                            <ListItem key={index}>
-                                <div className="flex w-full gap-1">
-                                    <UserProfileImage imageURL={imageURL} />
-                                    <div className="flex w-full justify-between">
-                                        <div className="flex items-center pl-3">
-                                            {displayName || id}
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <StatusSpan status={status} />
-                                            {status !== 'permanent' && (
-                                                <ActionButton
-                                                    onClick={() =>
-                                                        addNewAllowedUser({
-                                                            id,
-                                                            imageURL,
-                                                            name: displayName,
-                                                        })
-                                                    }
-                                                    status={status}
-                                                />
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </ListItem>
-                        );
-                    })}
-                </ul>
+                                    () => 'removed' as const,
+                                )
+                                .with(
+                                    {
+                                        isAllowedUser: true,
+                                        allowedUser: {
+                                            ...allowedUser,
+                                            status: 'permanent',
+                                        },
+                                    },
+                                    () => 'permanent' as const,
+                                )
+                                .otherwise(() => 'idle' as const);
+                            return (
+                                <li key={id}>
+                                    <ItemBox>
+                                        <UserItem
+                                            user={{
+                                                id,
+                                                imageURL,
+                                                name: displayName,
+                                                status,
+                                            }}
+                                            onAddUser={() =>
+                                                addNewAllowedUser({
+                                                    id,
+                                                    imageURL,
+                                                    name: displayName,
+                                                })
+                                            }
+                                        />
+                                    </ItemBox>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
             )}
         </div>
     );
