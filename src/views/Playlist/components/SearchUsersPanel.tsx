@@ -232,7 +232,7 @@ export const SearchUsersPanel: FC<SearchUsersPanelProps> = ({
     };
 
     return (
-        <div className="h-full w-full rounded-lg bg-white p-5 shadow-md dark:bg-gray-950 dark:shadow-none">
+        <div className="h-full w-full rounded-lg border-2 bg-white p-5 shadow-md dark:bg-gray-950 dark:shadow-none">
             <div className="p-3">
                 <SearchBoxInput
                     placeHolder="Search user..."
