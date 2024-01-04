@@ -55,7 +55,7 @@ export const PlaylistsList: FC<PlaylistsListProps> = ({
     }, [isFetching]);
 
     return (
-        <div className="flex w-[90vw] flex-col rounded-lg border-2 p-1 shadow-md dark:bg-gradient-to-b dark:from-gray-950 dark:to-black">
+        <div className="flex w-[90vw] flex-col rounded-lg border-2 p-1  shadow-md dark:border-0 dark:bg-gradient-to-b dark:from-gray-950 dark:to-black">
             <div className="flex flex-1 items-center justify-center">
                 {isUpdating ? (
                     <Spinner size="small" />
