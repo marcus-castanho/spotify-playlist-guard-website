@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useEffect } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { AllowedUser, useAllowedUsers } from '../hooks/useAllowedUsers';
 import { match } from 'ts-pattern';

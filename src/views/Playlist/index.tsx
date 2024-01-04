@@ -5,7 +5,10 @@ import {
 } from '@/services/spotifyPlaylistGuardApi';
 import { PageContainer } from '@/components/PageContainer';
 import { Header } from '@/components/Header';
-import { LegacyPlaylist } from './components/LegacyPlaylist';
+import { AllowedUsersPanel } from './components/AllowedUsersPanel';
+import { Main } from '@/components/Main';
+import { useAllowedUsers } from './hooks/useAllowedUsers';
+import { SearchUsersPanel } from './components/SearchUsersPanel';
 
 export type UserProfile = Pick<UserProfileType, 'id'> & {
     name: string | null;
@@ -22,14 +25,31 @@ export const Playlist: FC<PlaylistProps> = ({
     allowedUsers,
     ownerSpotifyId,
 }) => {
+    const {
+        users,
+        addNewAllowedUser,
+        handleAllowedUsers,
+        handleSubmit,
+        isUpdating,
+    } = useAllowedUsers({ playlist, allowedUsers, ownerSpotifyId });
+
     return (
         <PageContainer>
             <Header />
-            <LegacyPlaylist
-                allowedUsers={allowedUsers}
-                ownerSpotifyId={ownerSpotifyId}
-                playlist={playlist}
-            />
+            <Main>
+                <div className="flex h-[85vh] w-full gap-5 p-5">
+                    <SearchUsersPanel
+                        allowedUsers={users}
+                        addNewAllowedUser={addNewAllowedUser}
+                    />
+                    <AllowedUsersPanel
+                        users={users}
+                        handleAllowedUsers={handleAllowedUsers}
+                        handleSubmit={handleSubmit}
+                        isUpdating={isUpdating}
+                    />
+                </div>
+            </Main>
         </PageContainer>
     );
 };
