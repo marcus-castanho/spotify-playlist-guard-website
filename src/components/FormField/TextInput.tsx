@@ -11,6 +11,7 @@ type TextInputProps = {
         'email' | 'tel' | 'text' | 'url'
     >;
     disabled?: boolean;
+    error?: boolean;
 };
 
 export const TextInput: FC<TextInputProps> = ({
@@ -21,13 +22,18 @@ export const TextInput: FC<TextInputProps> = ({
     onChange = () => {},
     type = 'text',
     disabled = false,
+    error = false,
 }) => {
     return (
         <input
             type={type}
             id={inputId}
             onChange={({ target }) => onChange(target.value)}
-            className="w-full rounded border-[1px] px-3.5 py-0.5 dark:border-gray-50 dark:bg-black"
+            className={
+                error
+                    ? 'w-full rounded border-[1px] border-secondary-red px-3.5 py-0.5 dark:border-secondary-red dark:bg-black'
+                    : 'w-full rounded border-[1px] px-3.5 py-0.5 dark:border-gray-50 dark:bg-black'
+            }
             required={required}
             defaultValue={defaultValue}
             placeholder={placeHolder}
