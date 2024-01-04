@@ -16,7 +16,7 @@ export const Home: FC<HomeProps> = ({ playlistsQuery }) => {
             <PageContainer>
                 <Header />
                 <Main>
-                    <div className="flex w-full justify-center">
+                    <div className="flex w-full justify-center p-5">
                         <PlaylistsList
                             pages={playlistsQuery.pages}
                             playlists={playlistsQuery.items}
