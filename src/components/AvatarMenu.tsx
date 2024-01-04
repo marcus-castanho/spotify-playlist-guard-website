@@ -43,7 +43,7 @@ export const AvatarMenu: FC<AvatarMenuProps> = ({
                 onClick={() => switchVisibility()}
                 className="py-2 hover:scale-105"
             >
-                <Avatar />
+                <Avatar src={user.images[1]} />
             </button>
             {isVisible && (
                 <div
