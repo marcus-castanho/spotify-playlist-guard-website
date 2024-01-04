@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { AllowedUser, useAllowedUsers } from '../hooks/useAllowedUsers';
 import { match } from 'ts-pattern';
@@ -11,18 +11,6 @@ import { CustomImage } from '@/components/CustomImage';
 import { useUsersQuery } from '../hooks/useUsersQuery';
 import { FormField } from '@/components/FormField';
 import { useAllowedUserInput } from '../hooks/useAllowedUserInput';
-
-type ItemBoxProps = {
-    children: ReactNode;
-    fixed?: boolean;
-};
-const ItemBox: FC<ItemBoxProps> = ({ children }) => {
-    return (
-        <div className="flex w-full rounded-[4px] p-3 hover:bg-gray-50 dark:hover:bg-gray-500">
-            {children}
-        </div>
-    );
-};
 
 type UserProfileImageProps = {
     imageURL: AllowedUser['imageURL'];
@@ -113,18 +101,20 @@ const UserItem: FC<UserItemProps> = ({
     onAddUser,
 }) => {
     return (
-        <div className="flex w-full gap-1">
-            <UserProfileImage imageURL={imageURL} />
-            <div className="flex w-full justify-between">
-                <div className="flex items-center pl-3">{name || id}</div>
-                <div className="flex items-center gap-3">
-                    <StatusSpan status={status} />
-                    {status !== 'permanent' && (
-                        <ActionButton
-                            onClick={() => onAddUser()}
-                            status={status}
-                        />
-                    )}
+        <div className="flex w-full rounded-[4px] p-3 hover:bg-gray-50 dark:hover:bg-gray-500">
+            <div className="flex w-full gap-1">
+                <UserProfileImage imageURL={imageURL} />
+                <div className="flex w-full justify-between">
+                    <div className="flex items-center pl-3">{name || id}</div>
+                    <div className="flex items-center gap-3">
+                        <StatusSpan status={status} />
+                        {status !== 'permanent' && (
+                            <ActionButton
+                                onClick={() => onAddUser()}
+                                status={status}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
@@ -181,6 +171,66 @@ export const SearchUsersPanel: FC<SearchUsersPanelProps> = ({
 }) => {
     const { users, isPending, mutate } = useUsersQuery();
 
+    const parseUserData = ({
+        id,
+        displayName,
+        avatar,
+    }: (typeof users)[number]) => {
+        const imageURL = avatar?.sources[1]?.url || null;
+        const allowedUser = allowedUsers.find((allowedUser) => {
+            return allowedUser.id === id;
+        });
+        const isAllowedUser = !!allowedUser;
+        const status = match({
+            isAllowedUser,
+            allowedUser,
+        })
+            .with({ isAllowedUser: false }, () => 'idle' as const)
+            .with(
+                {
+                    isAllowedUser: true,
+                    allowedUser: {
+                        ...allowedUser,
+                        status: 'idle',
+                    },
+                },
+                () => 'added' as const,
+            )
+            .with(
+                {
+                    isAllowedUser: true,
+                    allowedUser: {
+                        ...allowedUser,
+                        status: 'added',
+                    },
+                },
+                () => 'added' as const,
+            )
+            .with(
+                {
+                    isAllowedUser: true,
+                    allowedUser: {
+                        ...allowedUser,
+                        status: 'removed',
+                    },
+                },
+                () => 'removed' as const,
+            )
+            .with(
+                {
+                    isAllowedUser: true,
+                    allowedUser: {
+                        ...allowedUser,
+                        status: 'permanent',
+                    },
+                },
+                () => 'permanent' as const,
+            )
+            .otherwise(() => 'idle' as const);
+
+        return { id, imageURL, name: displayName, status };
+    };
+
     return (
         <div className="h-full w-full rounded-lg bg-white p-5 shadow-md dark:bg-gray-950 dark:shadow-none">
             <div className="p-3">
@@ -207,82 +257,26 @@ export const SearchUsersPanel: FC<SearchUsersPanelProps> = ({
                         />
                     </div>
                     <ul className="h-[65%] overflow-auto p-3">
-                        {users.map(({ id, displayName, avatar }) => {
-                            const imageURL = avatar?.sources[1]?.url || null;
-                            const allowedUser = allowedUsers.find(
-                                (allowedUser) => {
-                                    return allowedUser.id === id;
-                                },
-                            );
-                            const isAllowedUser = !!allowedUser;
-                            const status = match({
-                                isAllowedUser,
-                                allowedUser,
-                            })
-                                .with(
-                                    { isAllowedUser: false },
-                                    () => 'idle' as const,
-                                )
-                                .with(
-                                    {
-                                        isAllowedUser: true,
-                                        allowedUser: {
-                                            ...allowedUser,
-                                            status: 'idle',
-                                        },
-                                    },
-                                    () => 'added' as const,
-                                )
-                                .with(
-                                    {
-                                        isAllowedUser: true,
-                                        allowedUser: {
-                                            ...allowedUser,
-                                            status: 'added',
-                                        },
-                                    },
-                                    () => 'added' as const,
-                                )
-                                .with(
-                                    {
-                                        isAllowedUser: true,
-                                        allowedUser: {
-                                            ...allowedUser,
-                                            status: 'removed',
-                                        },
-                                    },
-                                    () => 'removed' as const,
-                                )
-                                .with(
-                                    {
-                                        isAllowedUser: true,
-                                        allowedUser: {
-                                            ...allowedUser,
-                                            status: 'permanent',
-                                        },
-                                    },
-                                    () => 'permanent' as const,
-                                )
-                                .otherwise(() => 'idle' as const);
+                        {users.map((user) => {
+                            const { id, imageURL, name, status } =
+                                parseUserData(user);
                             return (
                                 <li key={id}>
-                                    <ItemBox>
-                                        <UserItem
-                                            user={{
+                                    <UserItem
+                                        user={{
+                                            id,
+                                            imageURL,
+                                            name,
+                                            status,
+                                        }}
+                                        onAddUser={() =>
+                                            addNewAllowedUser({
                                                 id,
                                                 imageURL,
-                                                name: displayName,
-                                                status,
-                                            }}
-                                            onAddUser={() =>
-                                                addNewAllowedUser({
-                                                    id,
-                                                    imageURL,
-                                                    name: displayName,
-                                                })
-                                            }
-                                        />
-                                    </ItemBox>
+                                                name,
+                                            })
+                                        }
+                                    />
                                 </li>
                             );
                         })}
