@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 import { ArrowRestoreIcon } from '@/components/icons/ArrowRestoreIcon';
 import { useTheme } from '@/contexts/ThemeContext';
 import { TrashIcon } from '@/components/icons/TrashIcon';
@@ -9,19 +9,6 @@ import { colors } from '@/styles/theme';
 import { Spinner } from '@/components/Spinner';
 import { ButtonPrimary } from '@/components/ButtonPrimary';
 import { CustomImage } from '@/components/CustomImage';
-
-type ListItemProps = {
-    children: ReactNode;
-};
-const ListItem: FC<ListItemProps> = ({ children }) => {
-    return (
-        <li>
-            <div className="flex w-full items-start rounded-[4px] p-3 hover:bg-gray-50 dark:hover:bg-gray-500">
-                {children}
-            </div>
-        </li>
-    );
-};
 
 type UserProfileImageProps = {
     imageURL: AllowedUser['imageURL'];
@@ -112,6 +99,32 @@ const ActionButton: FC<ActionButtonProps> = ({ onClick, status }) => {
     );
 };
 
+type UserItemProps = { user: AllowedUser; onHandleAllowedUser: () => void };
+const UserItem: FC<UserItemProps> = ({
+    user: { id, imageURL, name, status },
+    onHandleAllowedUser,
+}) => {
+    return (
+        <div className="flex w-full items-start rounded-[4px] p-3 hover:bg-gray-50 dark:hover:bg-gray-500">
+            <div className="flex w-full gap-1">
+                <UserProfileImage imageURL={imageURL} />
+                <div className="flex w-full justify-between">
+                    <div className="flex items-center px-3">{name || id}</div>
+                    <div className="flex items-center gap-3">
+                        <StatusSpan status={status} />
+                        {status !== 'permanent' && (
+                            <ActionButton
+                                onClick={() => onHandleAllowedUser()}
+                                status={status}
+                            />
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 type AllowedUsersPanelProps = {
     users: AllowedUser[];
     handleAllowedUsers: ReturnType<
@@ -136,30 +149,15 @@ export const AllowedUsersPanel: FC<AllowedUsersPanelProps> = ({
                 <ul className="h-full overflow-auto">
                     {users.map(({ id, imageURL, name, status }) => {
                         return (
-                            <ListItem key={id}>
-                                <div className="flex w-full gap-1">
-                                    <UserProfileImage imageURL={imageURL} />
-                                    <div className="flex w-full justify-between">
-                                        <div className="flex items-center px-3">
-                                            {name || id}
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <StatusSpan status={status} />
-                                            {status !== 'permanent' && (
-                                                <ActionButton
-                                                    onClick={() =>
-                                                        handleAllowedUsers(
-                                                            id,
-                                                            status,
-                                                        )
-                                                    }
-                                                    status={status}
-                                                />
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </ListItem>
+                            <li key={id}>
+                                <UserItem
+                                    user={{ id, imageURL, name, status }}
+                                    onHandleAllowedUser={() => {
+                                        if (status === 'permanent') return;
+                                        handleAllowedUsers(id, status);
+                                    }}
+                                />
+                            </li>
                         );
                     })}
                 </ul>
