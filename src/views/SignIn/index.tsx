@@ -25,9 +25,7 @@ export const SignIn: FC<SignInProps> = ({ authError }) => {
                 <Header />
                 <Main>
                     <div className="flex w-full items-center justify-center">
-                        <div>
-                            <SignInOptionsContainer />
-                        </div>
+                        <SignInOptionsContainer />
                     </div>
                 </Main>
                 <Footer />
