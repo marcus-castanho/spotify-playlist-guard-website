@@ -31,8 +31,8 @@ export const TextInput: FC<TextInputProps> = ({
             onChange={({ target }) => onChange(target.value)}
             className={
                 error
-                    ? 'w-full rounded border-[1px] border-secondary-red px-3.5 py-0.5 dark:border-secondary-red dark:bg-black'
-                    : 'w-full rounded border-[1px] px-3.5 py-0.5 dark:border-gray-50 dark:bg-black'
+                    ? 'w-full rounded border-[1px] border-secondary-red px-3.5 py-0.5 placeholder-gray-100 dark:border-secondary-red dark:bg-black'
+                    : 'w-full rounded border-[1px] px-3.5 py-0.5 placeholder-gray-100 dark:border-gray-50 dark:bg-black '
             }
             required={required}
             defaultValue={defaultValue}
