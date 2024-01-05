@@ -24,6 +24,7 @@ import { TrashIcon } from '@/components/icons/TrashIcon';
 import { AvatarFilledIcon } from '@/components/icons/AvatarFilledIcon';
 import { MagnifyingGlassIcon } from '@/components/icons/MagnifyingGlassIcon';
 import { PlusIcon } from '@/components/icons/PlusIcon';
+import { FloppyDiskIcon } from '@/components/icons/FloppyDiskIcon';
 
 export const icons: { title: string; component: ReactNode }[] = [
     {
@@ -127,5 +128,9 @@ export const icons: { title: string; component: ReactNode }[] = [
     {
         title: 'plus',
         component: <PlusIcon size={24} key={PlusIcon.name} />,
+    },
+    {
+        title: 'floppy-disk',
+        component: <FloppyDiskIcon size={24} key={FloppyDiskIcon.name} />,
     },
 ];
