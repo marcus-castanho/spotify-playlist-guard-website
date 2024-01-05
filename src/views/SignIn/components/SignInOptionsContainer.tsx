@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { ButtonPrimary } from '@/components/ButtonPrimary';
 import { SpotifyIcon } from '@/components/icons/SpotifyIcon';
 import { ExternalLink } from '@/components/ExternalLink';
+import { PROXY_URL } from '@/services/spotifyPlaylistGuardApi/proxy';
 
 export const SignInOptionsContainer = () => {
     const router = useRouter();
@@ -14,11 +15,7 @@ export const SignInOptionsContainer = () => {
                     Sign in
                 </h1>
                 <ButtonPrimary
-                    onClick={() =>
-                        router.push(
-                            `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-                        )
-                    }
+                    onClick={() => router.push(`${PROXY_URL}/auth/login`)}
                 >
                     <div className="flex justify-center gap-6">
                         Sign in with Spotify
