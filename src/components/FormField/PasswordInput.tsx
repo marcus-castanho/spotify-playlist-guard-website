@@ -9,6 +9,7 @@ type PasswordInputProps = {
     required?: boolean;
     onChange?: (text: string) => void;
     disabled?: boolean;
+    error?: boolean;
 };
 
 export const PasswordInput: FC<PasswordInputProps> = ({
@@ -17,6 +18,7 @@ export const PasswordInput: FC<PasswordInputProps> = ({
     required = false,
     onChange = () => {},
     disabled = false,
+    error = false,
 }) => {
     const [visible, setVisible] = useState(false);
     const { theme } = useTheme();
@@ -27,7 +29,11 @@ export const PasswordInput: FC<PasswordInputProps> = ({
                 type={visible ? 'text' : 'password'}
                 id={inputId}
                 onChange={({ target }) => onChange(target.value)}
-                className="w-full rounded border-[1px] py-0.5 pl-3.5 pr-11 dark:border-gray-50 dark:bg-black"
+                className={
+                    error
+                        ? 'w-full rounded border-[1px] border-secondary-red py-0.5  pl-3.5 pr-11 dark:border-secondary-red dark:bg-black'
+                        : 'w-full rounded border-[1px] py-0.5 pl-3.5 pr-11 dark:border-gray-50 dark:bg-black'
+                }
                 required={required}
                 placeholder={placeHolder}
                 disabled={disabled}

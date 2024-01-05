@@ -160,4 +160,18 @@ describe('FormField.PasswordInput', () => {
         expect(svgIconTitleMiddle).toBeDefined();
         expect(svgIconTitleEnd).toBeDefined();
     });
+
+    it('should render red border when error prop is true', () => {
+        const RED_BORDER_CLASSES =
+            'border-secondary-red dark:border-secondary-red';
+        const { container } = render(
+            <ContextsProvidersMock>
+                <FormField.PasswordInput inputId={CUSTOM_ID} error />
+            </ContextsProvidersMock>,
+        );
+
+        const input = container.querySelector(`#${CUSTOM_ID}`);
+
+        expect(input).toHaveClass(RED_BORDER_CLASSES);
+    });
 });
