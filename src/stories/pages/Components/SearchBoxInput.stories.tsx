@@ -14,5 +14,5 @@ const meta = {
 export default meta;
 
 export const Default = () => (
-    <SearchBoxInput placeHolder="Search user..." onSubmit={() => {}} />
+    <SearchBoxInput placeHolder="Search..." onSubmit={() => {}} />
 );
