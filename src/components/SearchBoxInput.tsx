@@ -7,6 +7,7 @@ type SearchBoxInputProps = {
     onChange?: (text: string) => void;
     disabled?: boolean;
     onSubmit: (text: string) => void;
+    defaultValue?: string;
 };
 
 export const SearchBoxInput: FC<SearchBoxInputProps> = ({
@@ -15,6 +16,7 @@ export const SearchBoxInput: FC<SearchBoxInputProps> = ({
     onChange = () => {},
     disabled = false,
     onSubmit,
+    defaultValue = '',
 }) => {
     const [value, setValue] = useState('');
 
@@ -31,6 +33,7 @@ export const SearchBoxInput: FC<SearchBoxInputProps> = ({
                 placeholder={placeHolder}
                 disabled={disabled}
                 aria-label="password-input"
+                defaultValue={defaultValue}
             />
             <div className="hidden w-[1px] dark:block dark:bg-black" />
             <button
