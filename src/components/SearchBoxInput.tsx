@@ -21,7 +21,7 @@ export const SearchBoxInput: FC<SearchBoxInputProps> = ({
     const [value, setValue] = useState('');
 
     return (
-        <div className="flex w-[50%] items-center">
+        <div className="flex items-center">
             <input
                 type="text"
                 id={inputId}
