@@ -117,4 +117,16 @@ describe('FormField.TextInput', () => {
         expect(onChange).toHaveBeenCalled();
         expect(inputValue).toBe(INPUT_VALUE);
     });
+
+    it('should render red border when error prop is true', () => {
+        const RED_BORDER_CLASSES =
+            'border-secondary-red dark:border-secondary-red';
+        const { getByRole } = render(
+            <FormField.TextInput inputId={CUSTOM_ID} disabled error />,
+        );
+
+        const input = getByRole('textbox');
+
+        expect(input).toHaveClass(RED_BORDER_CLASSES);
+    });
 });
