@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 
 type AvatarFilledIconProps = {
-    size: number;
+    size?: number;
     fillColor?: string;
 };
 
 export const AvatarFilledIcon: FC<AvatarFilledIconProps> = ({
-    size,
+    size = undefined,
     fillColor = 'black',
 }) => {
     return (
