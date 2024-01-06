@@ -21,5 +21,6 @@ export const useUsersQuery = () => {
         users: usersQuery.data || [],
         isPending: usersQuery.isPending,
         mutate: usersQuery.mutate,
+        reset: usersQuery.reset,
     };
 };
