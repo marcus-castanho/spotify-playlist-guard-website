@@ -153,33 +153,29 @@ const UserIdInput: FC<UserIdInputProps> = ({ onAddUser }) => {
         useAllowedUserInput();
 
     return (
-        <div className="flex w-full rounded-[4px] border-2 bg-gray-50 px-3 dark:bg-black">
-            <div className="flex items-center">
-                <div className="flex min-h-20 min-w-20 items-center justify-center rounded-[50%] bg-gray-400">
+        <div className="flex w-full rounded-[4px] border-2 bg-gray-50 p-3 dark:bg-gray-700">
+            <div className="flex items-center gap-3">
+                <div className="flex min-h-20 min-w-20 items-center justify-center rounded-[50%] bg-gray-400 max-sm:hidden">
                     <AvatarFilledIcon
                         fillColor={colors.gray['100']}
                         size={50}
                     />
                 </div>
-                <FormField.Root
-                    inputId="userId"
-                    label="Enter a user ID manually"
-                >
-                    <div className="flex gap-3">
-                        <FormField.TextInput
-                            inputId="userId"
-                            defaultValue={''}
-                            onChange={(text) => handleUserIdInput(text)}
-                            error={!isValid}
-                        />
-                        <ActionButton
-                            onClick={() => {
-                                handleSubmit(() => onAddUser(userIdInput));
-                            }}
-                            status="idle"
-                        />
-                    </div>
-                </FormField.Root>
+                <div className="flex justify-between gap-3">
+                    <FormField.TextInput
+                        inputId="userId"
+                        defaultValue={''}
+                        onChange={(text) => handleUserIdInput(text)}
+                        error={!isValid}
+                        placeHolder="Enter a user ID manually"
+                    />
+                    <ActionButton
+                        onClick={() => {
+                            handleSubmit(() => onAddUser(userIdInput));
+                        }}
+                        status="idle"
+                    />
+                </div>
             </div>
         </div>
     );
@@ -263,7 +259,7 @@ export const SearchUsersPanel: FC<SearchUsersPanelProps> = ({
 
     return (
         <div className="h-full w-full rounded-lg border-2 bg-white p-5 shadow-md dark:border-0 dark:bg-gray-950 dark:shadow-none">
-            <div className="p-3">
+            <div className="p-3 sm:w-[50%]">
                 <SearchBoxInput
                     placeHolder="Search user..."
                     onSubmit={(value) => mutate(value)}
