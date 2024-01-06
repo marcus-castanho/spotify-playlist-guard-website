@@ -12,7 +12,7 @@ export const Footer = () => {
     return (
         <footer className="flex justify-center gap-4 p-5">
             <Link
-                href="https://github.com/marcus-castanho/spotify-playlist-guard-admin"
+                href="https://github.com/marcus-castanho/spotify-playlist-guard-website"
                 target="_blank"
                 aria-label="github-repository-link"
             >

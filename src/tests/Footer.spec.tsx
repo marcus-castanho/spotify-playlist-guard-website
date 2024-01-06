@@ -26,7 +26,7 @@ describe('Footer', () => {
     it('should render a link to github repository', () => {
         const REPOSITORY_LINK_LABEL = 'github-repository-link';
         const REPOSITORY_URL =
-            'https://github.com/marcus-castanho/spotify-playlist-guard-admin';
+            'https://github.com/marcus-castanho/spotify-playlist-guard-website';
         const { getByRole } = render(
             <ContextsProvidersMock>
                 <Footer />
