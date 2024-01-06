@@ -181,7 +181,7 @@ export const AllowedUsersPanel: FC<AllowedUsersPanelProps> = ({
     isUpdating,
 }) => {
     return (
-        <div className="relative h-full w-full rounded-lg border-2 bg-white p-5  shadow-md max-sm:h-[48%] dark:border-0 dark:bg-gray-950 dark:shadow-none">
+        <div className="relative h-full w-full rounded-lg border-2 bg-white p-5  shadow-md max-sm:h-[35%] dark:border-0 dark:bg-gray-950 dark:shadow-none">
             {isUpdating ? (
                 <div className="flex h-full w-full items-center justify-center">
                     <Spinner size="large" />

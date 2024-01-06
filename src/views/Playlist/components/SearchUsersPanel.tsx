@@ -258,7 +258,7 @@ export const SearchUsersPanel: FC<SearchUsersPanelProps> = ({
     };
 
     return (
-        <div className="h-full w-full rounded-lg border-2 bg-white p-5 shadow-md dark:border-0 dark:bg-gray-950 dark:shadow-none">
+        <div className="h-full w-full rounded-lg border-2 bg-white p-5 shadow-md max-sm:h-[65%] dark:border-0 dark:bg-gray-950 dark:shadow-none">
             <div className="p-3 sm:w-[50%]">
                 <SearchBoxInput
                     placeHolder="Search user..."
@@ -282,7 +282,7 @@ export const SearchUsersPanel: FC<SearchUsersPanelProps> = ({
                             }
                         />
                     </div>
-                    <ul className="h-[65%] overflow-auto p-3">
+                    <ul className="max-h-[65%] overflow-auto p-3 max-sm:max-h-[50%]">
                         {users.map((user) => {
                             const { id, imageURL, name, status } =
                                 parseUserData(user);
