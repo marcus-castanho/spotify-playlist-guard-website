@@ -38,8 +38,8 @@ export const PlaylistCard: FC<PlaylistCardProps> = ({
     return (
         <div className="rounded-lg border-2 bg-white p-1 shadow-md hover:bg-gray-50 max-sm:h-full sm:w-[200px] dark:border-0 dark:bg-gray-950 dark:hover:bg-gray-800">
             <div className="flex h-full flex-col justify-between">
-                <div className="flex p-4 sm:flex-col">
-                    <div className="relative h-40 w-40 min-w-[10rem]">
+                <div className="flex items-center p-4 sm:flex-col">
+                    <div className="relative h-40 w-40 min-w-[10rem] max-sm:h-[50%] max-sm:w-[50%] max-sm:min-w-[50%]">
                         {playlist.images[0] ? (
                             <CustomImage
                                 alt="Playlist cover image"
@@ -47,7 +47,9 @@ export const PlaylistCard: FC<PlaylistCardProps> = ({
                                 className="h-full w-full object-cover"
                             />
                         ) : (
-                            <DefaultAlbumCover size={142} />
+                            <div className="h-full w-full">
+                                <DefaultAlbumCover />
+                            </div>
                         )}
                     </div>
                     <div className="flex flex-col max-sm:p-4">
@@ -63,7 +65,7 @@ export const PlaylistCard: FC<PlaylistCardProps> = ({
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-between p-2">
+                <div className="flex items-center justify-between p-2">
                     <ActionButton
                         onClick={() => router.push(`/playlist/${playlist.id}`)}
                     >
