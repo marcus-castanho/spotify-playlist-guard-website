@@ -25,11 +25,8 @@ const UserProfileImage: FC<UserProfileImageProps> = ({ imageURL }) => {
                     className="h-full w-full rounded-[50%] object-cover"
                 />
             ) : (
-                <div className="flex min-h-20 min-w-20 items-center justify-center rounded-[50%] bg-gray-400">
-                    <AvatarFilledIcon
-                        fillColor={colors.gray['100']}
-                        size={60}
-                    />
+                <div className="flex h-full w-full items-center justify-center rounded-[50%] bg-gray-400 p-3">
+                    <AvatarFilledIcon fillColor={colors.gray['100']} />
                 </div>
             )}
         </div>
