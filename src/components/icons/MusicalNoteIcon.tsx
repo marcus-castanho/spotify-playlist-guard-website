@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 
 type MusicalNoteIconProps = {
-    size: number;
+    size?: number;
     fillColor?: string;
 };
 
 export const MusicalNoteIcon: FC<MusicalNoteIconProps> = ({
-    size,
+    size = undefined,
     fillColor = 'black',
 }) => {
     return (
