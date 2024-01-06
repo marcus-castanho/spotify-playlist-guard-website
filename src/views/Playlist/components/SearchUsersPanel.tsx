@@ -101,13 +101,37 @@ const UserItem: FC<UserItemProps> = ({
     onAddUser,
 }) => {
     return (
-        <div className="flex w-full rounded-[4px] p-3 hover:bg-gray-50 dark:hover:bg-gray-500">
+        <div
+            className={match(status)
+                .with(
+                    'removed',
+                    () =>
+                        'flex w-full rounded-[4px] p-3 hover:bg-gray-50 max-sm:border-2 max-sm:border-secondary-red dark:hover:bg-gray-500',
+                )
+                .with(
+                    'added',
+                    () =>
+                        'flex w-full rounded-[4px] p-3 hover:bg-gray-50 max-sm:border-2 max-sm:border-primary-verdant dark:hover:bg-gray-500',
+                )
+                .otherwise(
+                    () =>
+                        'flex w-full rounded-[4px] p-3 hover:bg-gray-50 dark:hover:bg-gray-500',
+                )}
+        >
             <div className="flex w-full gap-1">
                 <UserProfileImage imageURL={imageURL} />
                 <div className="flex w-full justify-between">
                     <div className="flex items-center pl-3">{name || id}</div>
                     <div className="flex items-center gap-3">
-                        <StatusSpan status={status} />
+                        <div
+                            className={
+                                status === 'permanent'
+                                    ? 'flex'
+                                    : 'flex max-sm:hidden'
+                            }
+                        >
+                            <StatusSpan status={status} />
+                        </div>
                         {status !== 'permanent' && (
                             <ActionButton
                                 onClick={() => onAddUser()}
@@ -267,7 +291,7 @@ export const SearchUsersPanel: FC<SearchUsersPanelProps> = ({
                             const { id, imageURL, name, status } =
                                 parseUserData(user);
                             return (
-                                <li key={id}>
+                                <li key={id} className="p-1">
                                     <UserItem
                                         user={{
                                             id,
