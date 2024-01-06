@@ -9,6 +9,7 @@ import { colors } from '@/styles/theme';
 import { Spinner } from '@/components/Spinner';
 import { ButtonPrimary } from '@/components/ButtonPrimary';
 import { CustomImage } from '@/components/CustomImage';
+import { FloppyDiskIcon } from '@/components/icons/FloppyDiskIcon';
 
 type UserProfileImageProps = {
     imageURL: AllowedUser['imageURL'];
@@ -125,6 +126,22 @@ const UserItem: FC<UserItemProps> = ({
     );
 };
 
+type SaveButtonProps = { onSubmit: () => void };
+const SaveButton: FC<SaveButtonProps> = ({ onSubmit }) => {
+    return (
+        <div>
+            <div className="max-sm:hidden">
+                <ButtonPrimary onClick={() => onSubmit()}>Save</ButtonPrimary>
+            </div>
+            <div className="sm:hidden">
+                <ButtonPrimary round onClick={() => onSubmit()}>
+                    <FloppyDiskIcon size={24} />
+                </ButtonPrimary>
+            </div>
+        </div>
+    );
+};
+
 type AllowedUsersPanelProps = {
     users: AllowedUser[];
     handleAllowedUsers: ReturnType<
@@ -164,9 +181,7 @@ export const AllowedUsersPanel: FC<AllowedUsersPanelProps> = ({
             )}
             {!isUpdating && (
                 <div className="absolute bottom-2 right-2">
-                    <ButtonPrimary onClick={() => handleSubmit()}>
-                        Save
-                    </ButtonPrimary>
+                    <SaveButton onSubmit={() => handleSubmit()} />
                 </div>
             )}
         </div>
