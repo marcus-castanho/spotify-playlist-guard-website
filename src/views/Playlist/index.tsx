@@ -9,6 +9,7 @@ import { AllowedUsersPanel } from './components/AllowedUsersPanel';
 import { Main } from '@/components/Main';
 import { useAllowedUsers } from './hooks/useAllowedUsers';
 import { SearchUsersPanel } from './components/SearchUsersPanel';
+import { useUsersQuery } from './hooks/useUsersQuery';
 
 export type UserProfile = Pick<UserProfileType, 'id'> & {
     name: string | null;
@@ -32,20 +33,29 @@ export const Playlist: FC<PlaylistProps> = ({
         handleSubmit,
         isUpdating,
     } = useAllowedUsers({ playlist, allowedUsers, ownerSpotifyId });
+    const { users: searchUsers, isPending, mutate, reset } = useUsersQuery();
 
     return (
         <PageContainer>
             <Header />
             <Main>
-                <div className="flex h-[85vh] w-full gap-5 p-5">
+                <div className="flex h-[85vh] w-full flex-col gap-5 p-5 sm:flex-row">
                     <SearchUsersPanel
                         allowedUsers={users}
                         addNewAllowedUser={addNewAllowedUser}
+                        query={{
+                            users: searchUsers,
+                            isPending,
+                            mutate,
+                        }}
                     />
                     <AllowedUsersPanel
                         users={users}
                         handleAllowedUsers={handleAllowedUsers}
-                        handleSubmit={handleSubmit}
+                        handleSubmit={() => {
+                            handleSubmit();
+                            reset();
+                        }}
                         isUpdating={isUpdating}
                     />
                 </div>

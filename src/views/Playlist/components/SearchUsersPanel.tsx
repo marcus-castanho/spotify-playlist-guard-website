@@ -164,12 +164,18 @@ const UserIdInput: FC<UserIdInputProps> = ({ onAddUser }) => {
 type SearchUsersPanelProps = {
     allowedUsers: AllowedUser[];
     addNewAllowedUser: ReturnType<typeof useAllowedUsers>['addNewAllowedUser'];
+    query: {
+        users: ReturnType<typeof useUsersQuery>['users'];
+        isPending: ReturnType<typeof useUsersQuery>['isPending'];
+        mutate: ReturnType<typeof useUsersQuery>['mutate'];
+    };
 };
 export const SearchUsersPanel: FC<SearchUsersPanelProps> = ({
     allowedUsers,
     addNewAllowedUser,
+    query,
 }) => {
-    const { users, isPending, mutate } = useUsersQuery();
+    const { users, isPending, mutate } = query;
 
     const parseUserData = ({
         id,
