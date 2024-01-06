@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 type PencilIconProps = {
-    size: number;
+    size?: number;
     fillColor?: 'black' | 'white';
 };
 

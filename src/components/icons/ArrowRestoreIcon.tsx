@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 type ArrowRestoreIconProps = {
-    size: number;
+    size?: number;
     fillColor?: string;
 };
 

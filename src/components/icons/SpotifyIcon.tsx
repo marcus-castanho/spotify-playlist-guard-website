@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 type SpotifyIconProps = {
-    size: number;
+    size?: number;
 };
 
 export const SpotifyIcon: FC<SpotifyIconProps> = ({ size }) => {

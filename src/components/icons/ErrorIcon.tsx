@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 type ErrorIconProps = {
-    size: number;
+    size?: number;
     fillColor?: 'black' | 'white';
 };
 

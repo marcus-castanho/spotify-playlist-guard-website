@@ -6,7 +6,7 @@ type MusicalNoteIconProps = {
 };
 
 export const MusicalNoteIcon: FC<MusicalNoteIconProps> = ({
-    size = undefined,
+    size,
     fillColor = 'black',
 }) => {
     return (

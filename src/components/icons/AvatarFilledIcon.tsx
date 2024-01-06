@@ -6,7 +6,7 @@ type AvatarFilledIconProps = {
 };
 
 export const AvatarFilledIcon: FC<AvatarFilledIconProps> = ({
-    size = undefined,
+    size,
     fillColor = 'black',
 }) => {
     return (

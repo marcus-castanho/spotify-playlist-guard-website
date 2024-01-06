@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 type ArrowLeftIconProps = {
-    size: number;
+    size?: number;
     fillColor?: string;
 };
 

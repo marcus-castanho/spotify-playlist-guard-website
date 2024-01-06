@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 type EyeIconProps = {
-    size: number;
+    size?: number;
     fillColor?: 'black' | 'white';
 };
 
