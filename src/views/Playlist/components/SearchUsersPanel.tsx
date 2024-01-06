@@ -17,7 +17,7 @@ type UserProfileImageProps = {
 };
 const UserProfileImage: FC<UserProfileImageProps> = ({ imageURL }) => {
     return (
-        <div className="relative h-20 w-20 min-w-20">
+        <div className="relative h-20 w-20 min-w-20 max-sm:h-12 max-sm:w-12 max-sm:min-w-12">
             {imageURL ? (
                 <CustomImage
                     alt="User profile image"
@@ -52,17 +52,17 @@ const StatusSpan: FC<StatusSpanProps> = ({ status }) => {
                 .with(
                     'added',
                     () =>
-                        'rounded-md border-2 border-primary-verdant p-2 text-center text-primary-verdant',
+                        'rounded-md border-2 border-primary-verdant p-2 text-center text-primary-verdant max-sm:p-0.5',
                 )
                 .with(
                     'removed',
                     () =>
-                        'rounded-md border-2 border-secondary-red p-2 text-center text-secondary-red',
+                        'rounded-md border-2 border-secondary-red p-2 text-center text-secondary-red max-sm:p-0.5',
                 )
                 .with(
                     'permanent',
                     () =>
-                        'rounded-md border-2 border-secondary-blue p-2 text-center text-secondary-blue',
+                        'rounded-md border-2 border-secondary-blue p-2 text-center text-secondary-blue max-sm:p-0.5',
                 )
                 .with('idle', () => 'hidden')
                 .otherwise(() => 'hidden')}
@@ -155,11 +155,10 @@ const UserIdInput: FC<UserIdInputProps> = ({ onAddUser }) => {
     return (
         <div className="flex w-full rounded-[4px] border-2 bg-gray-50 p-3 dark:bg-gray-700">
             <div className="flex items-center gap-3">
-                <div className="flex min-h-20 min-w-20 items-center justify-center rounded-[50%] bg-gray-400 max-sm:hidden">
-                    <AvatarFilledIcon
-                        fillColor={colors.gray['100']}
-                        size={50}
-                    />
+                <div className="h-20 w-20 min-w-20 max-sm:hidden max-sm:h-12 max-sm:w-12 max-sm:min-w-12">
+                    <div className="flex h-full w-full items-center justify-center rounded-[50%] bg-gray-400 p-3">
+                        <AvatarFilledIcon fillColor={colors.gray['100']} />
+                    </div>
                 </div>
                 <div className="flex justify-between gap-3">
                     <FormField.TextInput

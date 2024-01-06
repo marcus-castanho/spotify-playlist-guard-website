@@ -16,7 +16,7 @@ type UserProfileImageProps = {
 };
 const UserProfileImage: FC<UserProfileImageProps> = ({ imageURL }) => {
     return (
-        <div className="relative h-20 w-20 min-w-20">
+        <div className="relative h-20 w-20 min-w-20 max-sm:h-12 max-sm:w-12 max-sm:min-w-12">
             {imageURL ? (
                 <CustomImage
                     alt="User profile image"
@@ -24,11 +24,8 @@ const UserProfileImage: FC<UserProfileImageProps> = ({ imageURL }) => {
                     className="h-full w-full rounded-[50%] object-cover"
                 />
             ) : (
-                <div className="flex min-h-20 min-w-20 items-center justify-center rounded-[50%] bg-gray-400">
-                    <AvatarFilledIcon
-                        fillColor={colors.gray['100']}
-                        size={60}
-                    />
+                <div className="flex h-full w-full items-center justify-center rounded-[50%] bg-gray-400 p-3">
+                    <AvatarFilledIcon fillColor={colors.gray['100']} />
                 </div>
             )}
         </div>
@@ -51,17 +48,17 @@ const StatusSpan: FC<StatusSpanProps> = ({ status }) => {
                 .with(
                     'added',
                     () =>
-                        'rounded-md border-2 border-primary-verdant p-2 text-center text-primary-verdant',
+                        'rounded-md border-2 border-primary-verdant p-2 text-center text-primary-verdant max-sm:p-0.5',
                 )
                 .with(
                     'removed',
                     () =>
-                        'rounded-md border-2 border-secondary-red p-2 text-center text-secondary-red',
+                        'rounded-md border-2 border-secondary-red p-2 text-center text-secondary-red max-sm:p-0.5',
                 )
                 .with(
                     'permanent',
                     () =>
-                        'rounded-md border-2 border-secondary-blue p-2 text-center text-secondary-blue',
+                        'rounded-md border-2 border-secondary-blue p-2 text-center text-secondary-blue max-sm:p-0.5',
                 )
                 .with('idle', () => 'hidden')
                 .otherwise(() => 'hidden')}
