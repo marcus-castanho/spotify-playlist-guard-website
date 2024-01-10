@@ -20,7 +20,7 @@ export const config = {
 
 export async function middleware(request: NextRequest) {
     try {
-          const { pathname, searchParams } = request.nextUrl;
+        const { pathname, searchParams } = request.nextUrl;
         const isSessionEnd = searchParams.get('sessionEnd');
         const isAuthenticated =
             !!getRequestCookie(TOKEN_COOKIE_KEY, request) && !isSessionEnd;
