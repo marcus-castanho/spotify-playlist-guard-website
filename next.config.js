@@ -1,4 +1,8 @@
 const { i18n } = require('./next-i18next.config');
+const { loadEnvConfig } = require('@next/env');
+loadEnvConfig('.');
+
+console.log(process.env);
 
 /** @type {import('next').NextConfig} */
 module.exports = {
