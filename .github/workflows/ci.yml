@@ -3,7 +3,7 @@ on:
     pull_request:
         branches: [main]
 env:
-    NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+    NEXT_PUBLIC_API_URL: ${{ env.NEXT_PUBLIC_API_URL }}
 jobs:
     lint:
         runs-on: ubuntu-latest
