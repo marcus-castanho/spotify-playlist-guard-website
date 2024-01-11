@@ -1,14 +1,7 @@
 const { i18n } = require('./next-i18next.config');
-const { loadEnvConfig } = require('@next/env');
-loadEnvConfig('.');
-
-console.log(process.env);
 
 /** @type {import('next').NextConfig} */
 module.exports = {
-    env: {
-        customKey: 'my-value',
-    },
     reactStrictMode: true,
     i18n,
     async redirects() {
@@ -30,7 +23,7 @@ module.exports = {
              */
             {
                 source: '/api/external/:path*',
-                destination: `${process.env.customKey}/:path*`,
+                destination: `${process.env.NEXT_PUBLIC_API_URL}/:path*`,
             },
         ];
     },
