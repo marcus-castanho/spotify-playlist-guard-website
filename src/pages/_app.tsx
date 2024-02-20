@@ -7,8 +7,13 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import { ErrorFallback } from '@/components/ErrorFallback';
 import { appWithTranslation } from 'next-i18next';
 import { i18n } from '../../next-i18next.config';
-import { THEME_COOKIE_KEY, Theme } from '@/contexts/ThemeContext';
+import {
+    DEFAULT_THEME,
+    THEME_COOKIE_KEY,
+    Theme,
+} from '@/contexts/ThemeContext';
 import { getPageResCookie } from '@/storage/cookies/server';
+import { match } from 'ts-pattern';
 
 type AppOwnProps = { initialTheme: Theme };
 
@@ -39,7 +44,10 @@ App.getInitialProps = async (
     const ctx = await NextApp.getInitialProps(context);
     const reqCtx = context.ctx;
     const themeCookie = getPageResCookie(THEME_COOKIE_KEY, reqCtx);
-    const theme = themeCookie === 'dark' ? 'dark' : 'light';
+    const theme = match(themeCookie)
+        .with('dark', () => 'dark' as const)
+        .with('light', () => 'light' as const)
+        .otherwise(() => DEFAULT_THEME);
 
     return { ...ctx, initialTheme: theme };
 };

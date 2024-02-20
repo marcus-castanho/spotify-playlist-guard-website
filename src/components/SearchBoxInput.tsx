@@ -21,7 +21,13 @@ export const SearchBoxInput: FC<SearchBoxInputProps> = ({
     const [value, setValue] = useState('');
 
     return (
-        <div className="flex items-center">
+        <form
+            onSubmit={(event) => {
+                event.preventDefault();
+                onSubmit(value);
+            }}
+            className="flex items-center"
+        >
             <input
                 type="text"
                 id={inputId}
@@ -37,12 +43,11 @@ export const SearchBoxInput: FC<SearchBoxInputProps> = ({
             />
             <div className="hidden w-[1px] dark:block dark:bg-black" />
             <button
-                type="button"
-                onClick={() => onSubmit(value)}
+                type="submit"
                 className="dark:border-whit flex w-12 items-center justify-center rounded-r-2xl border-[1px] p-1 dark:border-white dark:bg-white"
             >
                 <MagnifyingGlassIcon size={20} fillColor="black" />
             </button>
-        </div>
+        </form>
     );
 };
