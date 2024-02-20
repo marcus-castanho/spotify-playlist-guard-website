@@ -1,5 +1,9 @@
 import React from 'react';
-import { THEME_COOKIE_KEY } from '@/contexts/ThemeContext';
+import {
+    DEFAULT_THEME,
+    THEME_COOKIE_KEY,
+    Theme,
+} from '@/contexts/ThemeContext';
 import Document, {
     Html,
     Head,
@@ -11,7 +15,7 @@ import Document, {
 import { match } from 'ts-pattern';
 
 class MyDocument extends Document {
-    static initialTheme = 'light';
+    static initialTheme: Theme;
 
     static getCookie(ctx: DocumentContext, key: string) {
         const cookiesStr = ctx.req?.headers.cookie || '';
@@ -30,9 +34,12 @@ class MyDocument extends Document {
         ctx: DocumentContext,
     ): Promise<DocumentInitialProps> {
         const originalRenderPage = ctx.renderPage;
-        const initialTheme =
-            MyDocument.getCookie(ctx, THEME_COOKIE_KEY) || 'light';
-        MyDocument.initialTheme = initialTheme;
+        const initialTheme = MyDocument.getCookie(ctx, THEME_COOKIE_KEY);
+
+        MyDocument.initialTheme = match(initialTheme)
+            .with('light', () => 'light' as const)
+            .with('dark', () => 'dark' as const)
+            .otherwise(() => DEFAULT_THEME);
 
         ctx.renderPage = () =>
             originalRenderPage({
@@ -51,7 +58,8 @@ class MyDocument extends Document {
                 lang="en"
                 className={match(MyDocument.initialTheme)
                     .with('light', () => '')
-                    .otherwise(() => MyDocument.initialTheme)}
+                    .with('dark', () => 'dark')
+                    .otherwise(() => DEFAULT_THEME)}
             >
                 <Head />
                 <body className={`dark:bg-black dark:text-white`}>
