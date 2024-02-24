@@ -22,10 +22,10 @@ A landing page with a hero section containing the guard bot logo, a brief descri
 
 <div style="display:flex; gap:1rem">
     <div>
-        <img src="./public/assets/images/route-landing-page.png" alt="landing page screen shot" />
+        <img src="./public/assets/images/route-landing-page.PNG" alt="landing page screen shot" />
     </div>
     <div>
-        <img style="max-height:1834px" src="./public/assets/images/route-landing-page-mobile.png" alt="mobile landing page screen shot" />
+        <img style="max-height:1834px" src="./public/assets/images/route-landing-page-mobile.PNG" alt="mobile landing page screen shot" />
     </div>
 </div>
 
@@ -35,10 +35,10 @@ The sign in page contains a section with a button for signing in with spotify vi
 
 <div style="display:flex; gap:1rem">
     <div>
-        <img src="./public/assets/images/route-sing-in-page.png" alt="sign in page screen shot" />
+        <img src="./public/assets/images/route-sing-in-page.PNG" alt="sign in page screen shot" />
     </div>
     <div>
-        <img style="max-height:1834px" src="./public/assets/images/route-sing-in-page-mobile.png" alt="mobile sign in page screen shot" />
+        <img style="max-height:1834px" src="./public/assets/images/route-sing-in-page-mobile.PNG" alt="mobile sign in page screen shot" />
     </div>
 </div>
 
@@ -47,17 +47,17 @@ The sign in page contains a section with a button for signing in with spotify vi
 The home page for authenticated users shows a section containing a maximum of 5 cards for the user's spotify playlists. Each card presents a pencil button that leads to the playlist page and a toggle button to turn the guard bot routine on or off for the playlist. The card also shows the playlist image or a default image, name, number of allowed users and status - collaborative or not collaborative (only collaborative playlists can be turned on with the toggle button). The playlists section is paginated with a maximum of 5 playlists per page and a pagination bar ath the bottom with previous and next button as well as the current page and other available pages. The header for authenticated pages also contains a profile image which opens a pop-up container with options of redirection to the profile page or signin out.
 
 <div align="center">
-  <img src="./public/assets/images/route-home-page.png" alt="home page screen shot" />
+  <img src="./public/assets/images/route-home-page.PNG" alt="home page screen shot" />
 </div>
 <div style="display:flex; gap:1rem">
     <div>
-      <img src="./public/assets/images/route-home-page-mobile-1.png" alt="mobile home page screen shot 1" />
+      <img src="./public/assets/images/route-home-page-mobile-1.PNG" alt="mobile home page screen shot 1" />
     </div>
     <div>
-      <img src="./public/assets/images/route-home-page-mobile-2.png" alt="mobile home page screen shot 2" />
+      <img src="./public/assets/images/route-home-page-mobile-2.PNG" alt="mobile home page screen shot 2" />
     </div>
     <div>
-      <img src="./public/assets/images/route-home-page-user-options-mobile.png" alt="mobile home page user options screen shot" />
+      <img src="./public/assets/images/route-home-page-user-options-mobile.PNG" alt="mobile home page user options screen shot" />
     </div>
 </div>
 
@@ -67,10 +67,10 @@ The profile page presents a center section containing the user's spotify profile
 
 <div style="display:flex; gap:1rem">
     <div>
-        <img src="./public/assets/images/route-profile-page.png" alt="profile page screen shot" />
+        <img src="./public/assets/images/route-profile-page.PNG" alt="profile page screen shot" />
     </div>
     <div>
-        <img style="max-height:1834px" src="./public/assets/images/route-profile-page-mobile.png" alt="mobile profile page screen shot" />
+        <img style="max-height:1834px" src="./public/assets/images/route-profile-page-mobile.PNG" alt="mobile profile page screen shot" />
     </div>
 </div>
 
@@ -80,10 +80,10 @@ The playlist presents an interface for searching spotify users, adding users and
 
 <div style="display:flex; gap:1rem">
     <div>
-        <img src="./public/assets/images/route-playlist-page.png" alt="playlist page screen shot" />
+        <img src="./public/assets/images/route-playlist-page.PNG" alt="playlist page screen shot" />
     </div>
     <div>
-        <img style="max-height:1834px" src="./public/assets/images/route-playlist-page-mobile.png" alt="mobile playlist page screen shot" />
+        <img style="max-height:1834px" src="./public/assets/images/route-playlist-page-mobile.PNG" alt="mobile playlist page screen shot" />
     </div>
 </div>
 
