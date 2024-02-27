@@ -18,7 +18,7 @@ Also, please check the **other apps related to this project**:
 
 #### Landing page (not authenticated) - /
 
-A landing page with a hero section containing the guard bot logo, a brief description of the app and a button the redirects to the sign in page. The header is present across all the app and contains a version of the guard bot logo as a button that redirects back to the landing page or the home page if authenticated and a sun/moon button for witching between themes.
+A landing page with a hero section containing the guard bot logo, a brief description of the app and a button the redirects to the sign in page. The header is present across all the app and contains a version of the guard bot logo as a button that redirects back to the landing page or the home page if authenticated and a sun/moon button for switching between themes.
 
 <img src="./public/assets/images/route-landing-page.PNG" alt="landing page screen shot" />
 <div align="center">
