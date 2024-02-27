@@ -7,7 +7,7 @@ This project is a web app that provides an interface for interacting with the [S
 This is the codebase of the web app for configuring spotify collaborative playlists of its users to be guarded from unauthorized editing. Links to the application:
 
 -   The [application](https://spotify-playlist-guard-website.vercel.app/): the url to the live version of this project;
--   [Components storybook documentation](https://spotify-playlist-guard-website.vercel.app/): the url to the storybook docs for all the components used in the application;
+-   [Components storybook documentation](https://spotify-playlist-guard-website.vercel.app/docs): the url to the storybook docs for all the components used in the application;
 
 Also, please check the **other apps related to this project**:
 
