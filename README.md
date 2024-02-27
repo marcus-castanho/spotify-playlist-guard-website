@@ -36,7 +36,7 @@ The sign in page contains a section with a button for signing in with spotify vi
 
 #### Home page (authenticated) - /
 
-The home page for authenticated users shows a section containing a maximum of 5 cards for the user's spotify playlists. Each card presents a pencil button that leads to the playlist page and a toggle button to turn the guard bot routine on or off for the playlist. The card also shows the playlist image or a default image, name, number of allowed users and status - collaborative or not collaborative (only collaborative playlists can be turned on with the toggle button). The playlists section is paginated with a maximum of 5 playlists per page and a pagination bar ath the bottom with previous and next button as well as the current page and other available pages. The header for authenticated pages also contains a profile image which opens a pop-up container with options of redirection to the profile page or signin out.
+The home page for authenticated users shows a section containing a maximum of 5 cards for the user's spotify playlists. Each card presents a pencil button that leads to the playlist page and a toggle button to turn the guard bot routine on or off for the playlist. The card also shows the playlist image or a default image, name, number of allowed users and status - collaborative or not collaborative (only collaborative playlists can be turned on with the toggle button). The playlists section is paginated with a maximum of 5 playlists per page and a pagination bar at the bottom with previous and next button as well as the current page and other available pages. The header for authenticated pages also contains a profile image which opens a pop-up container with options of redirection to the profile page or signin out.
 
 <img src="./public/assets/images/route-home-page.PNG" alt="home page screen shot" />
 <div align="center">
@@ -70,7 +70,7 @@ This projects uses three strategies for authentication of its users and clients:
 
 ### Architecture
 
-This project uses the [Next.js](https://nextjs.org/) framework, and, therefore, uses its routes based architecture (page folder router) with each file in the page folder representing a page route. For more information, please check out [Next.js official documentation](https://nextjs.org/docs/pages). Also, all the application is contained in the `/src` folder and is mainly divided between pages in `/pages` folder, components in `/components` folder, tests in `/tests` folder and other folders that represent other tools, services and adapters that are used in the pages.
+This project uses the [Next.js](https://nextjs.org/) framework, and, therefore, uses its routes based architecture (page folder router) with each file in the `/pages` folder representing a page route. For more information, please check out [Next.js official documentation](https://nextjs.org/docs/pages). Also, all the application is contained in the `/src` folder and is mainly divided between pages in `/pages` folder, components in `/components` folder, tests in `/tests` folder and other folders that represent other tools, services and adapters that are used in the pages.
 
 ### Technologies and libraries
 
