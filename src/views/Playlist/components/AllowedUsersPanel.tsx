@@ -108,12 +108,12 @@ const UserItem: FC<UserItemProps> = ({
                 .with(
                     'removed',
                     () =>
-                        'flex w-full rounded-[4px] p-3 hover:bg-gray-50 max-sm:border-2 max-sm:border-secondary-red dark:hover:bg-gray-500',
+                        'flex w-full rounded-[4px] p-3 hover:bg-gray-50 dark:hover:bg-gray-500 max-sm:border-2 max-sm:border-secondary-red',
                 )
                 .with(
                     'added',
                     () =>
-                        'flex w-full rounded-[4px] p-3 hover:bg-gray-50 max-sm:border-2 max-sm:border-primary-verdant dark:hover:bg-gray-500',
+                        'flex w-full rounded-[4px] p-3 hover:bg-gray-50 dark:hover:bg-gray-500 max-sm:border-2 max-sm:border-primary-verdant',
                 )
                 .otherwise(
                     () =>
@@ -178,7 +178,7 @@ export const AllowedUsersPanel: FC<AllowedUsersPanelProps> = ({
     isUpdating,
 }) => {
     return (
-        <div className="relative h-full w-full rounded-lg border-2 bg-white p-5  shadow-md max-sm:h-[35%] dark:border-0 dark:bg-gray-950 dark:shadow-none">
+        <div className="relative h-full w-full rounded-lg border-2 bg-white p-5  shadow-md dark:border-0 dark:bg-gray-950 dark:shadow-none max-sm:h-[35%]">
             {isUpdating ? (
                 <div className="flex h-full w-full items-center justify-center">
                     <Spinner size="large" />
