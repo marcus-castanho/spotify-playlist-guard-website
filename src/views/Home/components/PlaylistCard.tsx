@@ -36,7 +36,7 @@ export const PlaylistCard: FC<PlaylistCardProps> = ({
     const { toast } = useToast();
 
     return (
-        <div className="rounded-lg border-2 bg-white p-1 shadow-md hover:bg-gray-50 max-sm:h-full sm:w-[200px] dark:border-0 dark:bg-gray-950 dark:hover:bg-gray-800">
+        <div className="rounded-lg border-2 bg-white p-1 shadow-md hover:bg-gray-50 dark:border-0 dark:bg-gray-950 dark:hover:bg-gray-800 max-sm:h-full sm:w-[200px]">
             <div className="flex h-full flex-col justify-between">
                 <div className="flex items-center p-4 sm:flex-col">
                     <div className="relative h-40 w-40 min-w-[10rem] max-sm:h-[50%] max-sm:w-[50%] max-sm:min-w-[50%]">

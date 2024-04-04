@@ -32,7 +32,7 @@ const GuardBotSign = () => {
 
 export const Hero = () => {
     return (
-        <div className="flex h-full rounded-lg max-sm:flex-col-reverse dark:bg-black">
+        <div className="flex h-full rounded-lg dark:bg-black max-sm:flex-col-reverse">
             <div className="flex h-full flex-col items-center justify-center gap-8 p-4 sm:w-[50%] sm:p-16">
                 <div className="flex flex-col gap-4 text-center">
                     <h1 className="text-4xl font-semibold sm:text-5xl">
